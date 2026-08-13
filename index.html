@@ -18,6 +18,7 @@
             --prime-dark: #212529;
             --success: #198754;
             --danger: #DC3545;
+            --warning: #F59E0B;
             --shadow: 0 2px 15px rgba(0,0,0,0.08);
             --transition: all 0.3s ease;
         }
@@ -57,16 +58,19 @@
         .alert { padding: 1.1rem; border-radius: 8px; margin: 1.2rem 0; text-align: center; font-weight: 500; }
         .alert-success { background-color: #D1E7DD; color: #0F5132; border: 1px solid #BADBCC; }
         .alert-danger { background-color: #F8D7DA; color: #842029; border: 1px solid #F5C2C7; }
+        .alert-warning { background-color: #FFF3CD; color: #664D03; border: 1px solid #FFECB5; }
         .alert-info { background-color: #CFF4FC; color: #055160; border: 1px solid #B6EFF9; }
         .welcome-bar { background: linear-gradient(135deg, var(--prime-blue), var(--prime-dark-blue)); color: white; padding: 1.5rem; }
         .welcome-bar h1 { font-size: 1.4rem; margin-bottom: 0.3rem; font-weight: 600; color: white; text-align: left; }
-        .account-type { font-size: 0.95rem; opacity: 0.9; }
+        .account-type { font-size: 0.95rem; opacity: 0.9; margin-bottom: 0.5rem; }
+        .account-number-display { font-size: 1.1rem; font-weight: 600; letter-spacing: 1px; color: #E2E8F0; }
         .balance-section { background-color: var(--prime-white); padding: 1.5rem; margin: 1rem; border-radius: 16px; box-shadow: var(--shadow); }
         .balance-label { font-size: 1rem; color: var(--prime-gray); margin-bottom: 0.5rem; }
         .balance-amount { font-size: 2.5rem; font-weight: 700; color: var(--prime-dark); margin-bottom: 1.2rem; }
         .quick-actions { display: flex; gap: 1rem; margin: 1rem; overflow-x: auto; padding-bottom: 0.5rem; }
         .action-btn { background-color: var(--prime-white); border: 1px solid #E5E7EB; border-radius: 12px; padding: 1rem 1.2rem; min-width: 110px; text-align: center; cursor: pointer; transition: var(--transition); box-shadow: var(--shadow); }
         .action-btn:hover { background-color: var(--prime-light-blue); border-color: var(--prime-blue); transform: translateY(-2px); }
+        .action-btn.locked { opacity: 0.7; cursor: not-allowed; }
         .action-icon { font-size: 1.5rem; margin-bottom: 0.5rem; }
         .action-text { font-size: 0.9rem; font-weight: 500; }
         .section { margin: 1.5rem 1rem; }
@@ -111,6 +115,10 @@
         .footer { text-align: center; padding: 2rem 1rem; color: var(--prime-gray); font-size: 0.9rem; border-top: 1px solid #E5E7EB; margin-top: 2rem; }
         .support-link { color: var(--prime-blue); text-decoration: none; font-weight: 500; }
         .support-link:hover { text-decoration: underline; }
+        .recipient-name { padding: 1rem; background: #F0FDF4; border-radius: 8px; margin: 1rem 0; text-align: center; font-weight: 600; color: #166534; border: 1px solid #BBF7D0; }
+        .forgot-password { text-align: right; margin-top: 0.5rem; }
+        .forgot-password a { color: var(--prime-blue); font-size: 0.9rem; text-decoration: none; font-weight: 500; }
+        .forgot-password a:hover { text-decoration: underline; }
     </style>
 </head>
 <body>
@@ -178,33 +186,48 @@
                         <label>Date of Birth (MM/DD/YYYY) *</label>
                         <input type="date" id="reg-dob" required>
                     </div>
+                    <div class="form-group">
+                        <label>Create Password *</label>
+                        <input type="password" id="reg-password" placeholder="8+ chars: letters, numbers, symbols" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Confirm Password *</label>
+                        <input type="password" id="reg-confirm-password" placeholder="Re-enter your password" required>
+                    </div>
                     <div class="btn-group">
                         <button type="button" class="btn btn-secondary" onclick="showPage('landing-page')">Cancel</button>
                         <button type="button" class="btn btn-primary" onclick="goToStep(2)">Continue</button>
                     </div>
                 </div>
 
-                <!-- Step 2: Location -->
+                <!-- Step 2: Location with Dynamic Country/State/City -->
                 <div id="step2-content" class="hidden">
                     <h3 style="color: var(--prime-blue); margin-bottom: 1.5rem; font-size: 1.2rem;"><span class="label-icon">📍</span> Location Details</h3>
                     <div class="form-group">
                         <label>Country of Residence *</label>
-                        <select id="reg-country" required>
+                        <select id="reg-country" required onchange="loadStates()">
                             <option value="">Select Country</option>
                             <option value="US">United States</option>
                             <option value="GB">United Kingdom</option>
                             <option value="CA">Canada</option>
                             <option value="NG">Nigeria</option>
+                            <option value="ZA">South Africa</option>
+                            <option value="KE">Kenya</option>
+                            <option value="GH">Ghana</option>
                             <option value="Other">Other Countries</option>
                         </select>
                     </div>
                     <div class="form-group">
                         <label>State / Province *</label>
-                        <input type="text" id="reg-state" placeholder="e.g. California" required>
+                        <select id="reg-state" required onchange="loadCities()">
+                            <option value="">Select State First</option>
+                        </select>
                     </div>
                     <div class="form-group">
                         <label>City *</label>
-                        <input type="text" id="reg-city" placeholder="e.g. Los Angeles" required>
+                        <select id="reg-city" required>
+                            <option value="">Select City First</option>
+                        </select>
                     </div>
                     <div class="form-group">
                         <label>Residential Address *</label>
@@ -222,29 +245,23 @@
 
                 <!-- Step 3: Verification -->
                 <div id="step3-content" class="hidden">
-                    <h3 style="color: var(--prime-blue); margin-bottom: 1.5rem; font-size: 1.2rem;"><span class="label-icon">🔒</span> Security & Verification</h3>
-                    <div class="form-group">
-                        <label>Create Password *</label>
-                        <input type="password" id="reg-password" placeholder="8+ characters: letters, numbers, symbols" required>
-                        <div class="input-hint">Must be at least 8 characters with a mix of letters, numbers, and symbols</div>
-                    </div>
-                    <div class="form-group">
-                        <label>Confirm Password *</label>
-                        <input type="password" id="reg-confirm-password" placeholder="Re-enter your password" required>
-                    </div>
+                    <h3 style="color: var(--prime-blue); margin-bottom: 1.5rem; font-size: 1.2rem;"><span class="label-icon">🔒</span> Security Verification</h3>
                     <div class="form-group">
                         <label>Email Verification Code *</label>
                         <div style="display: flex; gap: 0.5rem;">
                             <input type="text" id="reg-email-code" placeholder="Enter code sent to your email" style="flex:1;" required>
-                            <button type="button" class="btn btn-secondary" style="width: auto; white-space: nowrap;">Send Code</button>
+                            <button type="button" class="btn btn-secondary" style="width: auto; white-space: nowrap;" onclick="sendVerificationEmail()">Send Code</button>
                         </div>
                     </div>
                     <div class="form-group">
                         <label>Phone Verification Code *</label>
                         <div style="display: flex; gap: 0.5rem;">
                             <input type="text" id="reg-phone-code" placeholder="Enter code sent via SMS" style="flex:1;" required>
-                            <button type="button" class="btn btn-secondary" style="width: auto; white-space: nowrap;">Send Code</button>
+                            <button type="button" class="btn btn-secondary" style="width: auto; white-space: nowrap;" onclick="sendVerificationSMS()">Send Code</button>
                         </div>
+                    </div>
+                    <div class="alert alert-info">
+                        📧 Codes will be sent to your email and phone number. Enter them to verify your account.
                     </div>
                     <div class="btn-group">
                         <button type="button" class="btn btn-secondary" onclick="goToStep(2)">Back</button>
@@ -269,6 +286,14 @@
                         <input type="text" id="reg-id-number" placeholder="Enter your ID number" required>
                     </div>
                     <div class="form-group">
+                        <label>ID Issue Date *</label>
+                        <input type="date" id="reg-id-issue" required>
+                    </div>
+                    <div class="form-group">
+                        <label>ID Expiry Date *</label>
+                        <input type="date" id="reg-id-expiry" required>
+                    </div>
+                    <div class="form-group">
                         <label>Upload ID — Front Side *</label>
                         <input type="file" id="reg-id-front" accept="image/*" required>
                         <div class="input-hint">Clear photo of the front of your government-issued ID</div>
@@ -279,11 +304,11 @@
                         <div class="input-hint">Clear photo of the back of your government-issued ID</div>
                     </div>
                     <div class="alert alert-info">
-                        🔒 Your personal information is encrypted and securely stored. We never share your data with third parties.
+                        🔒 Your personal information is encrypted and securely stored. Admin will review and approve your account before you can sign in.
                     </div>
                     <div class="btn-group">
                         <button type="button" class="btn btn-secondary" onclick="goToStep(3)">Back</button>
-                        <button type="submit" class="btn btn-primary">Submit Registration</button>
+                        <button type="submit" class="btn btn-primary">Submit Registration for Approval</button>
                     </div>
                 </div>
             </form>
@@ -303,6 +328,9 @@
                 <div class="form-group">
                     <label>Password</label>
                     <input type="password" id="login-password" placeholder="Enter your password" required>
+                    <div class="forgot-password">
+                        <a href="#" onclick="showPage('forgot-password-page')">Forgot your password?</a>
+                    </div>
                 </div>
                 <button type="submit" class="btn btn-primary">Sign In</button>
             </form>
@@ -310,17 +338,34 @@
         </div>
     </div>
 
-    <!-- Dashboard Page — Chase UK Style -->
+    <!-- Forgot Password Page -->
+    <div id="forgot-password-page" class="container hidden">
+        <div class="card">
+            <h1>Reset Password</h1>
+            <p class="subheader">Enter your email or phone number to receive a reset code</p>
+            <form id="forgot-password-form">
+                <div class="form-group">
+                    <label>Email or Phone Number</label>
+                    <input type="text" id="reset-contact" placeholder="Enter your registered email or phone" required>
+                </div>
+                <button type="submit" class="btn btn-primary">Send Reset Code</button>
+            </form>
+            <p style="text-align:center; margin-top:1.2rem;"><a href="#" onclick="showPage('login-page')" style="color:var(--prime-blue); font-weight:500;">Back to Sign In</a></p>
+        </div>
+    </div>
+
+    <!-- Dashboard Page — Fully Functional -->
     <div id="dashboard-page" class="hidden">
         <div class="welcome-bar">
             <h1>Welcome back, <span id="user-name">User</span>!</h1>
             <div class="account-type">Prime Wallet Account • USA</div>
+            <div class="account-number-display">Account: <span id="user-account-number">PW-XXXX-XXXX-XXXX</span></div>
         </div>
         <div class="balance-section">
             <div class="balance-label">Available Balance</div>
             <div class="balance-amount">$<span id="user-balance">0.00</span></div>
             <div class="alert alert-info" id="card-status-alert" style="margin:0;">
-                🔒 Purchase your Prime Wallet ATM Card to create your 4-digit PIN and enable all transactions.
+                🔒 Purchase your Prime Wallet ATM Card to create your 4-digit PIN and enable transfers & transactions.
             </div>
         </div>
         <div class="quick-actions">
@@ -446,7 +491,8 @@
     <div id="card-page" class="container hidden">
         <div class="card" style="box-shadow: none; padding: 0;">
             <h2 style="text-align:center; margin-bottom: 1.5rem; color: var(--prime-dark-blue); font-size: 1.5rem;">Prime Wallet ATM Cards</h2>
-            <p style="text-align:center; margin-bottom: 1.5rem; color: var(--prime-gray);">Select your preferred card — all cards include your name, chip technology, and worldwide acceptance.</p>
+            <p style="text-align:center; margin-bottom: 1.5rem; color: var(--prime-gray);">Purchase required to create your 4-digit transaction PIN and unlock full banking access.</p>
+
             <div class="prime-card visa-card">
                 <div class="card-brand">PRIME WALLET VISA</div>
                 <div class="card-number hidden-details">•••• •••• •••• 4287</div>
@@ -458,10 +504,11 @@
                     ✅ Worldwide acceptance & fraud protection
                 </div>
                 <div class="apply-link" onclick="selectCard('visa', 49.99)">
-                    Apply Now <span>→</span>
+                    Purchase Now <span>→</span>
                 </div>
                 <div class="secured-overlay">🔒 Details visible after admin approval</div>
             </div>
+
             <div class="prime-card mastercard-card" style="margin: 1.5rem 0;">
                 <div class="card-brand">PRIME WALLET MASTERCARD</div>
                 <div class="card-number hidden-details">•••• •••• •••• 9502</div>
@@ -473,10 +520,11 @@
                     ✅ Global acceptance & zero liability
                 </div>
                 <div class="apply-link" onclick="selectCard('mastercard', 49.99)">
-                    Apply Now <span>→</span>
+                    Purchase Now <span>→</span>
                 </div>
                 <div class="secured-overlay">🔒 Details visible after admin approval</div>
             </div>
+
             <div class="prime-card verve-card">
                 <div class="card-brand">PRIME WALLET VERVE</div>
                 <div class="card-number hidden-details">•••• •••• •••• 5831</div>
@@ -488,36 +536,42 @@
                     ✅ No annual fee for first year
                 </div>
                 <div class="apply-link" onclick="selectCard('verve', 39.99)">
-                    Apply Now <span>→</span>
+                    Purchase Now <span>→</span>
                 </div>
                 <div class="secured-overlay">🔒 Details visible after admin approval</div>
             </div>
+
+            <!-- Purchase Form -->
             <div id="purchase-form-section" class="hidden" style="margin-top: 2rem;">
                 <hr style="margin: 2rem 0; border:0; border-top: 1px solid #E5E7EB;">
                 <h3 style="text-align:center; margin-bottom: 1.5rem; color: var(--prime-dark-blue);">Complete Purchase — <span id="selected-card-name"></span> ($<span id="selected-card-price"></span>)</h3>
                 <form id="card-purchase-form">
                     <div class="form-group">
-                        <label>Upload Your Payment Card — Front Side</label>
+                        <label>Upload Your Payment Card — Front Side *</label>
                         <input type="file" id="payment-card-front" accept="image/*" required>
                     </div>
                     <div class="form-group">
-                        <label>Upload Your Payment Card — Back Side</label>
+                        <label>Upload Your Payment Card — Back Side *</label>
                         <input type="file" id="payment-card-back" accept="image/*" required>
                     </div>
                     <div class="form-group">
-                        <label>Card Expiration Date (MM/YY)</label>
+                        <label>Card Expiration Date (MM/YY) *</label>
                         <input type="text" id="payment-card-exp" placeholder="e.g. 08/27" required>
                     </div>
                     <div class="form-group">
-                        <label>Card 4-Digit PIN</label>
+                        <label>Card 4-Digit PIN *</label>
                         <input type="password" id="payment-card-pin" maxlength="4" placeholder="Enter 4-digit PIN" required>
+                    </div>
+                    <div class="alert alert-warning">
+                        ⚠️ Admin will verify your payment card details. Expired, demo, or invalid cards will be declined instantly.
                     </div>
                     <button type="submit" class="btn btn-primary">Submit for Admin Review</button>
                 </form>
                 <div id="purchase-success" class="alert alert-success hidden">
-                    ✅ Your request has been submitted! Waiting for admin approval. You will be notified once approved.
+                    ✅ Your request has been submitted! Admin will review your payment card details. You will be notified once approved or declined.
                 </div>
             </div>
+
             <button class="btn btn-secondary" onclick="showPage('dashboard-page')" style="margin-top: 2rem;">Back to Dashboard</button>
         </div>
     </div>
@@ -526,31 +580,28 @@
     <div id="transfer-page" class="container hidden">
         <div class="card">
             <h2 style="text-align:center; margin-bottom: 1.5rem; color: var(--prime-dark-blue);">Send Money</h2>
-            <div class="alert alert-danger">
+            <div class="alert alert-danger" id="transfer-locked-alert">
                 🔒 Transfers are locked. Purchase your Prime Wallet ATM Card and wait for admin approval to create your 4-digit PIN.
             </div>
             <form id="transfer-form">
                 <div class="form-group">
-                    <label>Recipient Account Number</label>
-                    <input type="text" id="recipient-account" placeholder="Enter account number" disabled>
+                    <label>Recipient Account Number *</label>
+                    <input type="text" id="recipient-account" placeholder="Enter account number" required onblur="verifyAccountName()">
                 </div>
                 <div class="form-group">
-                    <label>Recipient Bank Name</label>
-                    <input type="text" id="recipient-bank" placeholder="Enter bank name" disabled>
+                    <label>Recipient Bank Name *</label>
+                    <input type="text" id="recipient-bank" placeholder="Enter bank name" required onblur="verifyAccountName()">
+                </div>
+                <div id="recipient-name-result" class="recipient-name hidden"></div>
+                <div class="form-group">
+                    <label>Amount (USD) *</label>
+                    <input type="number" id="transfer-amount" min="1" step="0.01" placeholder="0.00" required>
                 </div>
                 <div class="form-group">
-                    <label>Recipient Full Name</label>
-                    <input type="text" id="recipient-name" placeholder="Auto-detect" disabled>
+                    <label>Your 4-Digit Transaction PIN *</label>
+                    <input type="password" id="transfer-pin" maxlength="4" placeholder="Enter your 4-digit PIN" required>
                 </div>
-                <div class="form-group">
-                    <label>Amount (USD)</label>
-                    <input type="number" id="transfer-amount" min="1" step="0.01" placeholder="0.00" disabled>
-                </div>
-                <div class="form-group">
-                    <label>Your 4-Digit PIN</label>
-                    <input type="password" id="transfer-pin" maxlength="4" placeholder="Created after card approval" disabled>
-                </div>
-                <button type="submit" class="btn btn-primary" disabled>Proceed to Transfer</button>
+                <button type="submit" class="btn btn-primary">Proceed to Transfer</button>
             </form>
             <button class="btn btn-secondary" onclick="showPage('dashboard-page')" style="margin-top: 2rem;">Back to Dashboard</button>
         </div>
@@ -581,7 +632,7 @@
                 <button type="submit" class="btn btn-primary">Send Message</button>
             </form>
             <div id="support-success" class="alert alert-success hidden">
-                ✅ Your message has been sent to admin! You will receive a response soon.
+                ✅ Your message has been sent to admin! You will receive a response shortly.
             </div>
             <button class="btn btn-secondary" onclick="showPage('dashboard-page')" style="margin-top: 2rem;">Back to Dashboard</button>
         </div>
@@ -594,6 +645,7 @@
     </div>
 
     <script>
+        // --- Core Navigation ---
         function showPage(pageId) {
             document.querySelectorAll('.container, #dashboard-page').forEach(el => el.classList.add('hidden'));
             document.getElementById(pageId).classList.remove('hidden');
@@ -610,45 +662,97 @@
             document.getElementById(`step${step}-content`).classList.remove('hidden');
         }
 
-        function selectCard(cardType, price) {
-            document.getElementById('selected-card-name').textContent = 'Prime Wallet ' + cardType.charAt(0).toUpperCase() + cardType.slice(1);
-            document.getElementById('selected-card-price').textContent = price.toFixed(2);
-            document.getElementById('purchase-form-section').classList.remove('hidden');
-            document.getElementById('purchase-success').classList.add('hidden');
-            window.scrollTo(0, document.getElementById('purchase-form-section').offsetTop - 20);
+        // --- Dynamic Country/State/City Data ---
+        const locationData = {
+            US: {
+                states: {
+                    CA: ['Los Angeles', 'San Francisco', 'San Diego'],
+                    NY: ['New York', 'Buffalo', 'Rochester'],
+                    TX: ['Houston', 'Dallas', 'Austin'],
+                    IL: ['Chicago', 'Aurora', 'Naperville']
+                }
+            },
+            NG: {
+                states: {
+                    EN: ['Enugu', 'Nsukka', 'Awgu'],
+                    LA: ['Lagos', 'Ikeja', 'Surulere'],
+                    AB: ['Abuja', 'Bwari', 'Gwarinpa'],
+                    RI: ['Port Harcourt', 'Obio-Akpor', 'Eleme']
+                }
+            },
+            GB: {
+                states: {
+                    ENG: ['London', 'Manchester', 'Birmingham'],
+                    SCT: ['Edinburgh', 'Glasgow', 'Aberdeen'],
+                    WLS: ['Cardiff', 'Swansea', 'Newport']
+                }
+            },
+            CA: {
+                states: {
+                    ON: ['Toronto', 'Ottawa', 'Mississauga'],
+                    QC: ['Montreal', 'Quebec City', 'Laval'],
+                    BC: ['Vancouver', 'Victoria', 'Burnaby']
+                }
+            }
+        };
+
+        function loadStates() {
+            const country = document.getElementById('reg-country').value;
+            const stateSelect = document.getElementById('reg-state');
+            const citySelect = document.getElementById('reg-city');
+            
+            stateSelect.innerHTML = '<option value="">Select State</option>';
+            citySelect.innerHTML = '<option value="">Select State First</option>';
+            
+            if (locationData[country] && locationData[country].states) {
+                Object.keys(locationData[country].states).forEach(code => {
+                    const option = document.createElement('option');
+                    option.value = code;
+                    option.textContent = code;
+                    stateSelect.appendChild(option);
+                });
+            }
         }
 
-        document.getElementById('register-form').addEventListener('submit', function(e) {
-            e.preventDefault();
-            alert('✅ Registration submitted! Admin will review and approve your account shortly.');
-            this.reset();
-            showPage('login-page');
-        });
+        function loadCities() {
+            const country = document.getElementById('reg-country').value;
+            const state = document.getElementById('reg-state').value;
+            const citySelect = document.getElementById('reg-city');
+            
+            citySelect.innerHTML = '<option value="">Select City</option>';
+            
+            if (locationData[country] && locationData[country].states && locationData[country].states[state]) {
+                locationData[country].states[state].forEach(city => {
+                    const option = document.createElement('option');
+                    option.value = city;
+                    option.textContent = city;
+                    citySelect.appendChild(option);
+                });
+            }
+        }
 
-        document.getElementById('login-form').addEventListener('submit', function(e) {
-            e.preventDefault();
-            const email = document.getElementById('login-email').value;
-            const userName = email.split('@')[0].charAt(0).toUpperCase() + email.split('@')[0].slice(1);
-            document.getElementById('user-name').textContent = userName;
-            document.getElementById('visa-card-name').textContent = userName;
-            document.getElementById('mastercard-card-name').textContent = userName;
-            document.getElementById('verve-card-name').textContent = userName;
-            showPage('dashboard-page');
-        });
+        // --- Auto Account Number Generation ---
+        function generateAccountNumber() {
+            const chars = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+            let acc = 'PW-';
+            for (let i = 0; i < 4; i++) acc += chars[Math.floor(Math.random() * chars.length)];
+            acc += '-';
+            for (let i = 0; i < 4; i++) acc += chars[Math.floor(Math.random() * chars.length)];
+            acc += '-';
+            for (let i = 0; i < 4; i++) acc += chars[Math.floor(Math.random() * chars.length)];
+            return acc;
+        }
 
-        document.getElementById('card-purchase-form').addEventListener('submit', function(e) {
-            e.preventDefault();
-            this.reset();
-            document.getElementById('purchase-success').classList.remove('hidden');
-            window.scrollTo(0, document.getElementById('purchase-success').offsetTop - 20);
-        });
-
-        document.getElementById('support-form').addEventListener('submit', function(e) {
-            e.preventDefault();
-            alert('✅ Thanks for banking with us! Request under review You will receive a response soon.');
-            this.reset();
-            document.getElementById('support-success').classList.remove('hidden');
-        });
-    </script>
-</body>
-</html>
+        // --- Real Account Name Verification ---
+        async function verifyAccountName() {
+            const accNumber = document.getElementById('recipient-account').value.trim();
+            const bankName = document.getElementById('recipient-bank').value.trim();
+            const resultDiv = document.getElementById('recipient-name-result');
+            
+            if (accNumber.length >= 8 && bankName) {
+                resultDiv.textContent = `Verifying account details...`;
+                resultDiv.classList.remove('hidden');
+                
+                // Simulate real-time API verification (replace with real API in production)
+                setTimeout(() => {
+                    const sampleNames =
