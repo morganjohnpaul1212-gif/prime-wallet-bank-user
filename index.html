@@ -3,7 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- Google verification meta tag — prevents red warning flags -->
     <meta name="google-site-verification" content="g9v8im8X19-iUEDczexVSuwdEJYl1NxOmYTac_Zo" />
     <title>Prime Wallet Bank - USA</title>
     <style>
@@ -12,258 +11,490 @@
             --prime-blue: #0047AB;
             --prime-dark-blue: #002D6D;
             --prime-light-blue: #E8F0FE;
-            --prime-gold: #FFB900;
-            --neutral-white: #FFFFFF;
-            --neutral-light: #F8F9FA;
-            --neutral-mid: #6C757D;
-            --neutral-dark: #212529;
+            --prime-blue-bright: #0057FF;
+            --prime-white: #FFFFFF;
+            --prime-light: #F8F9FA;
+            --prime-gray: #6C757D;
+            --prime-dark: #212529;
             --success: #198754;
             --danger: #DC3545;
             --shadow: 0 2px 15px rgba(0,0,0,0.08);
             --transition: all 0.3s ease;
         }
-        body { background-color: var(--neutral-light); color: var(--neutral-dark); line-height: 1.6; }
-        .header { background: linear-gradient(135deg, var(--prime-blue), var(--prime-dark-blue)); color: white; padding: 1.2rem; text-align: center; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 8px rgba(0,0,0,0.15); }
-        .logo { font-size: 1.6rem; font-weight: 700; margin-bottom: 0.2rem; letter-spacing: 0.3px; }
-        .tagline { font-size: 0.95rem; opacity: 0.92; font-weight: 400; }
-        .container { max-width: 480px; margin: 1.5rem auto; padding: 0 1rem; }
-        .card { background: var(--neutral-white); border-radius: 12px; padding: 1.8rem; box-shadow: var(--shadow); margin-bottom: 1.5rem; animation: fadeIn 0.4s ease; }
+        body { background-color: var(--prime-light); color: var(--prime-dark); line-height: 1.6; padding-bottom: 80px; }
+        .header { background: linear-gradient(135deg, var(--prime-blue), var(--prime-dark-blue)); color: white; padding: 1.2rem; position: sticky; top: 0; z-index: 100; display: flex; align-items: center; justify-content: space-between; }
+        .logo { font-size: 1.5rem; font-weight: 700; display: flex; align-items: center; gap: 0.5rem; }
+        .logo-icon { font-size: 1.8rem; }
+        .sign-in-link { font-size: 1.1rem; font-weight: 500; cursor: pointer; padding: 0.6rem 1.2rem; border-radius: 6px; border: 1px solid white; transition: var(--transition); }
+        .sign-in-link:hover { background: rgba(255,255,255,0.15); }
+        .container { max-width: 480px; margin: 2rem auto; padding: 0 1rem; }
+        .card { background: var(--prime-white); border-radius: 16px; padding: 2rem; box-shadow: var(--shadow); margin-bottom: 1.5rem; animation: fadeIn 0.4s ease; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-        .btn { width: 100%; padding: 0.95rem; border: none; border-radius: 8px; font-size: 1rem; font-weight: 600; cursor: pointer; transition: var(--transition); margin: 0.6rem 0; text-transform: uppercase; letter-spacing: 0.5px; }
+        .hidden { display: none; }
+        h1 { color: var(--prime-dark-blue); text-align: center; margin-bottom: 0.8rem; font-size: 1.8rem; }
+        .subheader { text-align: center; color: var(--prime-gray); margin-bottom: 2rem; font-size: 1.05rem; }
+        .steps { display: flex; justify-content: space-between; margin-bottom: 2rem; position: relative; }
+        .steps::before { content: ''; position: absolute; top: 16px; left: 10%; right: 10%; height: 2px; background: #E9ECEF; z-index: 1; }
+        .step { display: flex; flex-direction: column; align-items: center; position: relative; z-index: 2; }
+        .step-number { width: 32px; height: 32px; border-radius: 50%; background: #E9ECEF; color: var(--prime-gray); display: flex; align-items: center; justify-content: center; font-weight: 600; margin-bottom: 0.5rem; transition: var(--transition); }
+        .step.active .step-number { background: var(--prime-blue); color: white; }
+        .step.completed .step-number { background: var(--success); color: white; }
+        .step-label { font-size: 0.8rem; color: var(--prime-gray); text-align: center; }
+        .step.active .step-label { color: var(--prime-blue); font-weight: 500; }
+        .form-group { margin-bottom: 1.3rem; }
+        label { display: block; margin-bottom: 0.6rem; font-weight: 500; color: var(--prime-dark); font-size: 0.95rem; }
+        .label-icon { margin-right: 0.5rem; color: var(--prime-blue); }
+        input, select, textarea { width: 100%; padding: 0.9rem; border: 1px solid #CED4DA; border-radius: 8px; font-size: 1rem; transition: var(--transition); }
+        input:focus, select:focus, textarea:focus { outline: none; border-color: var(--prime-blue); box-shadow: 0 0 0 3px rgba(0,71,171,0.15); }
+        .input-hint { font-size: 0.9rem; color: var(--prime-gray); margin-top: 0.3rem; }
+        .btn { width: 100%; padding: 1rem; border: none; border-radius: 8px; font-size: 1rem; font-weight: 600; cursor: pointer; transition: var(--transition); text-transform: uppercase; letter-spacing: 0.5px; }
         .btn-primary { background-color: var(--prime-blue); color: white; }
         .btn-primary:hover { background-color: var(--prime-dark-blue); transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,71,171,0.3); }
-        .btn-secondary { background-color: var(--neutral-white); color: var(--prime-blue); border: 2px solid var(--prime-blue); }
+        .btn-secondary { background-color: var(--prime-white); color: var(--prime-blue); border: 2px solid var(--prime-blue); }
         .btn-secondary:hover { background-color: var(--prime-light-blue); }
-        .form-group { margin-bottom: 1.3rem; }
-        label { display: block; margin-bottom: 0.6rem; font-weight: 500; color: var(--neutral-dark); font-size: 0.95rem; }
-        input, select, textarea { width: 100%; padding: 0.9rem; border: 1px solid #CED4DA; border-radius: 6px; font-size: 1rem; transition: var(--transition); }
-        input:focus, select:focus, textarea:focus { outline: none; border-color: var(--prime-blue); box-shadow: 0 0 0 3px rgba(0,71,171,0.15); }
-        .hidden { display: none; }
-        .welcome { text-align: center; margin-bottom: 1.8rem; }
-        .welcome h2 { color: var(--prime-dark-blue); margin-bottom: 0.5rem; font-size: 1.6rem; }
-        .datetime { color: var(--neutral-mid); font-size: 0.95rem; font-weight: 500; }
-        .balance { font-size: 3rem; font-weight: 700; color: var(--prime-dark-blue); margin: 1.5rem 0; text-align: center; letter-spacing: 1px; }
-        .action-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin: 1.8rem 0; }
-        .action-item { background: var(--neutral-white); padding: 1.3rem 1rem; border-radius: 10px; text-align: center; cursor: pointer; transition: var(--transition); border: 1px solid #E9ECEF; }
-        .action-item:hover { background: var(--prime-light-blue); transform: translateY(-3px); border-color: var(--prime-blue); }
-        .action-item h3 { color: var(--prime-dark-blue); margin-bottom: 0.5rem; font-size: 1.1rem; }
-        .action-item p { color: var(--neutral-mid); font-size: 0.9rem; }
+        .btn-group { display: flex; gap: 1rem; margin-top: 2rem; }
+        .btn-group .btn { flex: 1; }
         .alert { padding: 1.1rem; border-radius: 8px; margin: 1.2rem 0; text-align: center; font-weight: 500; }
         .alert-success { background-color: #D1E7DD; color: #0F5132; border: 1px solid #BADBCC; }
         .alert-danger { background-color: #F8D7DA; color: #842029; border: 1px solid #F5C2C7; }
         .alert-info { background-color: #CFF4FC; color: #055160; border: 1px solid #B6EFF9; }
-        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
-        .atm-card { width: 100%; max-width: 340px; height: 210px; border-radius: 16px; padding: 1.8rem; margin: 1.2rem auto; position: relative; color: white; box-shadow: 0 8px 20px rgba(0,0,0,0.15); transition: var(--transition); }
-        .atm-card:hover { transform: translateY(-5px); }
-        .visa-card { background: linear-gradient(135deg, #0047AB, #002D6D); }
-        .mastercard-card { background: linear-gradient(135deg, #2D1169, #4A154B); }
-        .verve-card { background: linear-gradient(135deg, #1A7F38, #0D4A20); }
-        .card-brand { font-size: 1.6rem; font-weight: 700; margin-bottom: 2rem; }
-        .card-chip { width: 50px; height: 40px; background: linear-gradient(135deg, #FFD700, #FFC107); border-radius: 6px; margin-bottom: 2rem; }
-        .card-number { font-size: 1.2rem; letter-spacing: 2px; margin-bottom: 2rem; font-family: monospace; }
-        .card-holder { margin-bottom: 1rem; }
-        .card-label { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 0.3rem; opacity: 0.8; }
-        .card-value { font-size: 1rem; font-weight: 500; }
-        .card-price { position: absolute; bottom: 1.5rem; right: 1.8rem; font-size: 1.3rem; font-weight: 700; color: var(--prime-gold); }
-        .secured-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.65); border-radius: 16px; display: flex; align-items: center; justify-content: center; font-size: 1.3rem; font-weight: 700; text-align: center; padding: 1rem; }
-        .footer { text-align: center; padding: 2rem 1rem; color: var(--neutral-mid); font-size: 0.9rem; border-top: 1px solid #E9ECEF; margin-top: 2rem; }
+        .welcome-bar { background: linear-gradient(135deg, var(--prime-blue), var(--prime-dark-blue)); color: white; padding: 1.5rem; }
+        .welcome-bar h1 { font-size: 1.4rem; margin-bottom: 0.3rem; font-weight: 600; color: white; text-align: left; }
+        .account-type { font-size: 0.95rem; opacity: 0.9; }
+        .balance-section { background-color: var(--prime-white); padding: 1.5rem; margin: 1rem; border-radius: 16px; box-shadow: var(--shadow); }
+        .balance-label { font-size: 1rem; color: var(--prime-gray); margin-bottom: 0.5rem; }
+        .balance-amount { font-size: 2.5rem; font-weight: 700; color: var(--prime-dark); margin-bottom: 1.2rem; }
+        .quick-actions { display: flex; gap: 1rem; margin: 1rem; overflow-x: auto; padding-bottom: 0.5rem; }
+        .action-btn { background-color: var(--prime-white); border: 1px solid #E5E7EB; border-radius: 12px; padding: 1rem 1.2rem; min-width: 110px; text-align: center; cursor: pointer; transition: var(--transition); box-shadow: var(--shadow); }
+        .action-btn:hover { background-color: var(--prime-light-blue); border-color: var(--prime-blue); transform: translateY(-2px); }
+        .action-icon { font-size: 1.5rem; margin-bottom: 0.5rem; }
+        .action-text { font-size: 0.9rem; font-weight: 500; }
+        .section { margin: 1.5rem 1rem; }
+        .section-title { font-size: 1.25rem; font-weight: 700; margin-bottom: 1rem; color: var(--prime-dark); }
+        .card-element { background: var(--prime-white); border-radius: 16px; padding: 1.5rem; margin-bottom: 1rem; box-shadow: var(--shadow); cursor: pointer; transition: var(--transition); }
+        .card-element:hover { transform: translateY(-2px); }
+        .spending-chart { height: 160px; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, var(--prime-light-blue), #FFFFFF); border-radius: 12px; margin: 1rem 0; position: relative; overflow: hidden; }
+        .chart-legend { display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; margin-top: 1rem; }
+        .legend-item { display: flex; align-items: center; gap: 0.5rem; font-size: 0.85rem; }
+        .legend-color { width: 12px; height: 12px; border-radius: 50%; }
+        .goal-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin: 1rem 0; }
+        .goal-card { background: var(--prime-light); border-radius: 12px; padding: 1.2rem; position: relative; overflow: hidden; }
+        .goal-title { font-size: 0.95rem; font-weight: 600; margin-bottom: 0.5rem; }
+        .goal-amount { font-size: 1.1rem; font-weight: 700; margin-bottom: 0.8rem; }
+        .progress-bar { height: 8px; background: #E5E7EB; border-radius: 4px; overflow: hidden; }
+        .progress-fill { height: 100%; background: var(--prime-blue); border-radius: 4px; }
+        .transaction-item { display: flex; align-items: center; justify-content: space-between; padding: 1rem 0; border-bottom: 1px solid #F3F4F6; }
+        .transaction-info { display: flex; align-items: center; gap: 1rem; }
+        .transaction-icon { width: 40px; height: 40px; border-radius: 50%; background: var(--prime-light); display: flex; align-items: center; justify-content: center; font-weight: bold; }
+        .transaction-details h4 { font-size: 0.95rem; font-weight: 500; margin-bottom: 0.2rem; }
+        .transaction-date { font-size: 0.85rem; color: var(--prime-gray); }
+        .transaction-amount { font-weight: 600; font-size: 0.95rem; }
+        .positive { color: var(--success); }
+        .negative { color: var(--prime-dark); }
+        .bottom-nav { position: fixed; bottom: 0; left: 0; width: 100%; background: var(--prime-white); border-top: 1px solid #E5E7EB; display: flex; justify-content: space-around; padding: 0.7rem 0; box-shadow: 0 -2px 10px rgba(0,0,0,0.05); }
+        .nav-item { display: flex; flex-direction: column; align-items: center; gap: 0.3rem; font-size: 0.75rem; color: var(--prime-gray); cursor: pointer; transition: var(--transition); }
+        .nav-item.active { color: var(--prime-blue); }
+        .nav-icon { font-size: 1.4rem; }
+        .prime-card { border-radius: 16px; padding: 1.8rem; margin: 1.5rem 0; color: white; position: relative; overflow: hidden; cursor: pointer; transition: var(--transition); }
+        .prime-card:hover { transform: translateY(-4px); }
+        .visa-card { background: linear-gradient(135deg, #0057FF, #0040C0); }
+        .mastercard-card { background: linear-gradient(135deg, #DC2626, #B91C1C); }
+        .verve-card { background: linear-gradient(135deg, #007A33, #005926); }
+        .card-brand { font-size: 1.3rem; font-weight: 700; margin-bottom: 2rem; }
+        .card-number { font-size: 1.4rem; letter-spacing: 2px; margin-bottom: 2rem; font-family: monospace; }
+        .card-name { font-size: 1.1rem; font-weight: 500; margin-bottom: 0.5rem; }
+        .card-benefits { font-size: 0.95rem; line-height: 1.6; margin: 1.5rem 0; opacity: 0.9; }
+        .apply-link { font-weight: 700; font-size: 1.05rem; display: inline-flex; align-items: center; gap: 0.5rem; cursor: pointer; transition: var(--transition); }
+        .apply-link:hover { opacity: 0.8; }
+        .secured-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); display: flex; align-items: center; justify-content: center; font-size: 1.2rem; font-weight: 700; text-align: center; padding: 1rem; }
+        .hidden-details { filter: blur(4px); user-select: none; }
+        .footer { text-align: center; padding: 2rem 1rem; color: var(--prime-gray); font-size: 0.9rem; border-top: 1px solid #E5E7EB; margin-top: 2rem; }
         .support-link { color: var(--prime-blue); text-decoration: none; font-weight: 500; }
         .support-link:hover { text-decoration: underline; }
-        .hidden-details { filter: blur(4px); user-select: none; }
-        textarea { min-height: 120px; resize: vertical; }
     </style>
 </head>
 <body>
+    <!-- Header -->
     <div class="header">
-        <div class="logo">💳 Prime Wallet Bank</div>
-        <div class="tagline">USA | Secure Banking Anywhere</div>
+        <div class="logo">
+            <span class="logo-icon">🏦</span>
+            <span>Prime Wallet Bank - USA</span>
+        </div>
+        <div class="sign-in-link" onclick="showPage('login-page')">Sign In</div>
     </div>
 
-    <div class="container">
-        <!-- Landing Page -->
-        <div id="landing-page" class="card">
-            <h2 style="text-align:center; margin-bottom:1.5rem; color: var(--prime-dark-blue)">Welcome</h2>
-            <p style="text-align:center; margin-bottom:2rem; color: var(--neutral-mid); font-size:1.05rem;">Your trusted, secure financial partner for all your banking needs.</p>
-            <button class="btn btn-primary" onclick="showPage('register-page')">Create Account</button>
-            <button class="btn btn-secondary" onclick="showPage('login-page')">Sign In</button>
+    <!-- Landing Page -->
+    <div id="landing-page" class="container">
+        <div class="card" style="text-align:center;">
+            <h1>Secure Banking Made for You</h1>
+            <p class="subheader">Join millions of users worldwide. Create your account today.</p>
+            <button class="btn btn-primary" onclick="showPage('register-page')">Create Your Account</button>
         </div>
+    </div>
 
-        <!-- Register Page -->
-        <div id="register-page" class="card hidden">
-            <h2 style="text-align:center; margin-bottom:1.5rem; color: var(--prime-dark-blue)">Register New Account</h2>
+    <!-- Register Page — 4-Step Wizard -->
+    <div id="register-page" class="container hidden">
+        <div class="card">
+            <h1>🔐 Create Your Account</h1>
+            <p class="subheader">Secure Registration — All Fields Required</p>
+            
+            <!-- Steps Indicator -->
+            <div class="steps">
+                <div class="step active" id="step1-indicator">
+                    <div class="step-number">1</div>
+                    <div class="step-label">Personal Info</div>
+                </div>
+                <div class="step" id="step2-indicator">
+                    <div class="step-number">2</div>
+                    <div class="step-label">Location</div>
+                </div>
+                <div class="step" id="step3-indicator">
+                    <div class="step-number">3</div>
+                    <div class="step-label">Verification</div>
+                </div>
+                <div class="step" id="step4-indicator">
+                    <div class="step-number">4</div>
+                    <div class="step-label">Upload ID</div>
+                </div>
+            </div>
+
+            <!-- Step 1: Personal Information -->
             <form id="register-form">
-                <div class="form-group">
-                    <label>Full Name</label>
-                    <input type="text" id="reg-name" placeholder="First & Last Name" required>
+                <div id="step1-content">
+                    <h3 style="color: var(--prime-blue); margin-bottom: 1.5rem; font-size: 1.2rem;"><span class="label-icon">📋</span> Personal Details</h3>
+                    <div class="form-group">
+                        <label>Full Name (First & Last Name) *</label>
+                        <input type="text" id="reg-fullname" placeholder="e.g. John Michael Morgan" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Email Address *</label>
+                        <input type="email" id="reg-email" placeholder="yourname@email.com" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Phone Number *</label>
+                        <input type="tel" id="reg-phone" placeholder="+1 (___) ___-____" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Date of Birth (MM/DD/YYYY) *</label>
+                        <input type="date" id="reg-dob" required>
+                    </div>
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-secondary" onclick="showPage('landing-page')">Cancel</button>
+                        <button type="button" class="btn btn-primary" onclick="goToStep(2)">Continue</button>
+                    </div>
                 </div>
-                <div class="form-group">
-                    <label>Email Address</label>
-                    <input type="email" id="reg-email" placeholder="your@email.com" required>
-                </div>
-                <div class="form-group">
-                    <label>Phone Number</label>
-                    <input type="tel" id="reg-phone" placeholder="+1 (___) ___-____" required>
-                </div>
-                <div class="form-group">
-                    <label>Date of Birth (MM/DD/YYYY)</label>
-                    <input type="date" id="reg-dob" required>
-                </div>
-                <div class="form-group">
-                    <label>Country</label>
-                    <select id="reg-country" required>
-                        <option value="">Select Country</option>
-                        <option value="US">United States</option>
-                        <option value="GB">United Kingdom</option>
-                        <option value="CA">Canada</option>
-                        <option value="NG">Nigeria</option>
-                        <option value="Other">Other Countries</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label>Residential Address</label>
-                    <input type="text" id="reg-address" placeholder="Street, City, State, ZIP" required>
-                </div>
-                <div class="form-group">
-                    <label>Password (8+ chars: letters, numbers, symbols)</label>
-                    <input type="password" id="reg-password" required>
-                </div>
-                <div class="form-group">
-                    <label>Government ID Type</label>
-                    <select id="reg-id-type" required>
-                        <option value="">Select ID Type</option>
-                        <option value="drivers-license">Driver's License</option>
-                        <option value="passport">Passport</option>
-                        <option value="national-id">National ID Card</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label>ID Number</label>
-                    <input type="text" id="reg-id-number" required>
-                </div>
-                <div class="form-group">
-                    <label>Upload ID — Front Side</label>
-                    <input type="file" id="reg-id-front" accept="image/*" required>
-                </div>
-                <div class="form-group">
-                    <label>Upload ID — Back Side</label>
-                    <input type="file" id="reg-id-back" accept="image/*" required>
-                </div>
-                <button type="submit" class="btn btn-primary">Submit for Approval</button>
-            </form>
-            <p style="text-align:center; margin-top:1.2rem;">Already have an account? <a href="#" onclick="showPage('login-page')" style="color:var(--prime-blue); font-weight:500;">Sign In</a></p>
-        </div>
 
-        <!-- Login Page -->
-        <div id="login-page" class="card hidden">
-            <h2 style="text-align:center; margin-bottom:1.5rem; color: var(--prime-dark-blue)">Sign In</h2>
+                <!-- Step 2: Location -->
+                <div id="step2-content" class="hidden">
+                    <h3 style="color: var(--prime-blue); margin-bottom: 1.5rem; font-size: 1.2rem;"><span class="label-icon">📍</span> Location Details</h3>
+                    <div class="form-group">
+                        <label>Country of Residence *</label>
+                        <select id="reg-country" required>
+                            <option value="">Select Country</option>
+                            <option value="US">United States</option>
+                            <option value="GB">United Kingdom</option>
+                            <option value="CA">Canada</option>
+                            <option value="NG">Nigeria</option>
+                            <option value="Other">Other Countries</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>State / Province *</label>
+                        <input type="text" id="reg-state" placeholder="e.g. California" required>
+                    </div>
+                    <div class="form-group">
+                        <label>City *</label>
+                        <input type="text" id="reg-city" placeholder="e.g. Los Angeles" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Residential Address *</label>
+                        <input type="text" id="reg-address" placeholder="Street address, Apartment, Suite" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Postal / ZIP Code *</label>
+                        <input type="text" id="reg-zip" placeholder="e.g. 90001" required>
+                    </div>
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-secondary" onclick="goToStep(1)">Back</button>
+                        <button type="button" class="btn btn-primary" onclick="goToStep(3)">Continue</button>
+                    </div>
+                </div>
+
+                <!-- Step 3: Verification -->
+                <div id="step3-content" class="hidden">
+                    <h3 style="color: var(--prime-blue); margin-bottom: 1.5rem; font-size: 1.2rem;"><span class="label-icon">🔒</span> Security & Verification</h3>
+                    <div class="form-group">
+                        <label>Create Password *</label>
+                        <input type="password" id="reg-password" placeholder="8+ characters: letters, numbers, symbols" required>
+                        <div class="input-hint">Must be at least 8 characters with a mix of letters, numbers, and symbols</div>
+                    </div>
+                    <div class="form-group">
+                        <label>Confirm Password *</label>
+                        <input type="password" id="reg-confirm-password" placeholder="Re-enter your password" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Email Verification Code *</label>
+                        <div style="display: flex; gap: 0.5rem;">
+                            <input type="text" id="reg-email-code" placeholder="Enter code sent to your email" style="flex:1;" required>
+                            <button type="button" class="btn btn-secondary" style="width: auto; white-space: nowrap;">Send Code</button>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Phone Verification Code *</label>
+                        <div style="display: flex; gap: 0.5rem;">
+                            <input type="text" id="reg-phone-code" placeholder="Enter code sent via SMS" style="flex:1;" required>
+                            <button type="button" class="btn btn-secondary" style="width: auto; white-space: nowrap;">Send Code</button>
+                        </div>
+                    </div>
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-secondary" onclick="goToStep(2)">Back</button>
+                        <button type="button" class="btn btn-primary" onclick="goToStep(4)">Continue</button>
+                    </div>
+                </div>
+
+                <!-- Step 4: Upload ID -->
+                <div id="step4-content" class="hidden">
+                    <h3 style="color: var(--prime-blue); margin-bottom: 1.5rem; font-size: 1.2rem;"><span class="label-icon">🪪</span> Identification</h3>
+                    <div class="form-group">
+                        <label>Government ID Type *</label>
+                        <select id="reg-id-type" required>
+                            <option value="">Select ID Type</option>
+                            <option value="drivers-license">Driver's License</option>
+                            <option value="passport">Passport</option>
+                            <option value="national-id">National ID Card</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>ID Number *</label>
+                        <input type="text" id="reg-id-number" placeholder="Enter your ID number" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Upload ID — Front Side *</label>
+                        <input type="file" id="reg-id-front" accept="image/*" required>
+                        <div class="input-hint">Clear photo of the front of your government-issued ID</div>
+                    </div>
+                    <div class="form-group">
+                        <label>Upload ID — Back Side *</label>
+                        <input type="file" id="reg-id-back" accept="image/*" required>
+                        <div class="input-hint">Clear photo of the back of your government-issued ID</div>
+                    </div>
+                    <div class="alert alert-info">
+                        🔒 Your personal information is encrypted and securely stored. We never share your data with third parties.
+                    </div>
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-secondary" onclick="goToStep(3)">Back</button>
+                        <button type="submit" class="btn btn-primary">Submit Registration</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Login Page -->
+    <div id="login-page" class="container hidden">
+        <div class="card">
+            <h1>Sign In</h1>
+            <p class="subheader">Access your Prime Wallet Bank account</p>
             <form id="login-form">
                 <div class="form-group">
                     <label>Email Address</label>
-                    <input type="email" id="login-email" required>
+                    <input type="email" id="login-email" placeholder="yourname@email.com" required>
                 </div>
                 <div class="form-group">
                     <label>Password</label>
-                    <input type="password" id="login-password" required>
+                    <input type="password" id="login-password" placeholder="Enter your password" required>
                 </div>
                 <button type="submit" class="btn btn-primary">Sign In</button>
             </form>
-            <p style="text-align:center; margin-top:1.2rem;">Don't have an account? <a href="#" onclick="showPage('register-page')" style="color:var(--prime-blue); font-weight:500;">Register</a></p>
+            <p style="text-align:center; margin-top:1.2rem;">Don't have an account? <a href="#" onclick="showPage('register-page')" style="color:var(--prime-blue); font-weight:500;">Create one now</a></p>
         </div>
+    </div>
 
-        <!-- Dashboard Page -->
-        <div id="dashboard-page" class="card hidden">
-            <div class="welcome">
-                <h2>Welcome, <span id="user-name">User</span>!</h2>
-                <p id="current-datetime" class="datetime"></p>
-            </div>
-            <div class="balance">USD $<span id="user-balance">0.00</span></div>
-            <div class="alert alert-info" id="card-status-alert">
-                🔒 Please purchase your Prime Wallet ATM Card to create your 4-digit PIN and enable all transactions.
-            </div>
-            <div class="action-grid">
-                <div class="action-item" onclick="showPage('card-page')">
-                    <h3>Get ATM Card</h3>
-                    <p>Order your Prime Wallet card</p>
-                </div>
-                <div class="action-item" onclick="showPage('transfer-page')">
-                    <h3>Send Money</h3>
-                    <p>Transfer funds</p>
-                </div>
-                <div class="action-item">
-                    <h3>Deposit</h3>
-                    <p>Add funds to account</p>
-                </div>
-                <div class="action-item">
-                    <h3>Pay Bills</h3>
-                    <p>Pay utilities & services</p>
-                </div>
-            </div>
-            <button class="btn btn-secondary" onclick="showPage('support-page')">Contact Support</button>
-            <button class="btn btn-secondary" onclick="logout()">Sign Out</button>
+    <!-- Dashboard Page — Chase UK Style -->
+    <div id="dashboard-page" class="hidden">
+        <div class="welcome-bar">
+            <h1>Welcome back, <span id="user-name">User</span>!</h1>
+            <div class="account-type">Prime Wallet Account • USA</div>
         </div>
+        <div class="balance-section">
+            <div class="balance-label">Available Balance</div>
+            <div class="balance-amount">$<span id="user-balance">0.00</span></div>
+            <div class="alert alert-info" id="card-status-alert" style="margin:0;">
+                🔒 Purchase your Prime Wallet ATM Card to create your 4-digit PIN and enable all transactions.
+            </div>
+        </div>
+        <div class="quick-actions">
+            <div class="action-btn" onclick="showPage('card-page')">
+                <div class="action-icon">💳</div>
+                <div class="action-text">Get Card</div>
+            </div>
+            <div class="action-btn" onclick="showPage('transfer-page')">
+                <div class="action-icon">↗️</div>
+                <div class="action-text">Send Money</div>
+            </div>
+            <div class="action-btn">
+                <div class="action-icon">⬇️</div>
+                <div class="action-text">Deposit</div>
+            </div>
+            <div class="action-btn">
+                <div class="action-icon">📄</div>
+                <div class="action-text">Pay Bills</div>
+            </div>
+        </div>
+        <div class="section">
+            <h2 class="section-title">Spending & Insights</h2>
+            <div class="card-element">
+                <div class="spending-chart">
+                    <div style="text-align: center; color: var(--prime-gray);">
+                        📊 Spending chart visualization<br><span style="font-size: 0.9rem;">Auto-updates with your transactions</span>
+                    </div>
+                </div>
+                <div class="chart-legend">
+                    <div class="legend-item"><span class="legend-color" style="background: #EF4444;"></span> Shopping 32%</div>
+                    <div class="legend-item"><span class="legend-color" style="background: #3B82F6;"></span> Transport 24%</div>
+                    <div class="legend-item"><span class="legend-color" style="background: #F59E0B;"></span> Food & Dining 18%</div>
+                    <div class="legend-item"><span class="legend-color" style="background: #10B981;"></span> Bills 15%</div>
+                    <div class="legend-item"><span class="legend-color" style="background: #8B5CF6;"></span> Entertainment 11%</div>
+                </div>
+            </div>
+        </div>
+        <div class="section">
+            <h2 class="section-title">Savings Goals</h2>
+            <div class="goal-grid">
+                <div class="goal-card" style="border-top: 4px solid #3B82F6;">
+                    <h3 class="goal-title">Holiday Fund</h3>
+                    <div class="goal-amount">$6,300 / $10,000</div>
+                    <div class="progress-bar"><div class="progress-fill" style="width: 63%;"></div></div>
+                </div>
+                <div class="goal-card" style="border-top: 4px solid #EF4444;">
+                    <h3 class="goal-title">Emergency Fund</h3>
+                    <div class="goal-amount">$5,000 / $15,000</div>
+                    <div class="progress-bar"><div class="progress-fill" style="width: 33%;"></div></div>
+                </div>
+            </div>
+        </div>
+        <div class="section">
+            <h2 class="section-title">Recent Transactions</h2>
+            <div class="card-element">
+                <div class="transaction-item">
+                    <div class="transaction-info">
+                        <div class="transaction-icon">🏪</div>
+                        <div>
+                            <h4>Retail Store</h4>
+                            <div class="transaction-date">Aug 12, 2026 • 2:15 PM</div>
+                        </div>
+                    </div>
+                    <div class="transaction-amount negative">-$45.30</div>
+                </div>
+                <div class="transaction-item">
+                    <div class="transaction-info">
+                        <div class="transaction-icon">🚇</div>
+                        <div>
+                            <h4>Transport Services</h4>
+                            <div class="transaction-date">Aug 11, 2026 • 9:40 AM</div>
+                        </div>
+                    </div>
+                    <div class="transaction-amount negative">-$6.50</div>
+                </div>
+                <div class="transaction-item">
+                    <div class="transaction-info">
+                        <div class="transaction-icon">🎬</div>
+                        <div>
+                            <h4>Streaming Subscription</h4>
+                            <div class="transaction-date">Aug 10, 2026 • 7:00 AM</div>
+                        </div>
+                    </div>
+                    <div class="transaction-amount negative">-$10.99</div>
+                </div>
+                <div class="transaction-item" style="border-bottom: none;">
+                    <div class="transaction-info">
+                        <div class="transaction-icon">💰</div>
+                        <div>
+                            <h4>Initial Deposit</h4>
+                            <div class="transaction-date">Aug 09, 2026 • 10:00 AM</div>
+                        </div>
+                    </div>
+                    <div class="transaction-amount positive">+$620.00</div>
+                </div>
+            </div>
+        </div>
+        <div class="bottom-nav">
+            <div class="nav-item active" onclick="showPage('dashboard-page')">
+                <div class="nav-icon">🏠</div>
+                <div>Home</div>
+            </div>
+            <div class="nav-item" onclick="showPage('transfer-page')">
+                <div class="nav-icon">↗️</div>
+                <div>Payments</div>
+            </div>
+            <div class="nav-item" onclick="showPage('card-page')">
+                <div class="nav-icon">💳</div>
+                <div>Cards</div>
+            </div>
+            <div class="nav-item">
+                <div class="nav-icon">📊</div>
+                <div>Insights</div>
+            </div>
+            <div class="nav-item" onclick="showPage('support-page')">
+                <div class="nav-icon">❓</div>
+                <div>Support</div>
+            </div>
+        </div>
+    </div>
 
-        <!-- ATM Card Purchase Page -->
-        <div id="card-page" class="card hidden">
-            <h2 style="text-align:center; margin-bottom:1.5rem; color: var(--prime-dark-blue)">Prime Wallet ATM Cards</h2>
-            <p style="text-align:center; margin-bottom:1.5rem; color: var(--neutral-mid);">Select your preferred card — all cards include your name, secure chip technology, and full worldwide acceptance.</p>
-            
-            <!-- Visa Card -->
-            <div class="atm-card visa-card">
-                <div class="card-brand">VISA</div>
-                <div class="card-chip"></div>
-                <div class="card-number hidden-details">•••• •••• •••• 4242</div>
-                <div class="card-holder">
-                    <div class="card-label">Card Holder</div>
-                    <div class="card-value" id="visa-card-name">John Doe</div>
+    <!-- ATM Card Page -->
+    <div id="card-page" class="container hidden">
+        <div class="card" style="box-shadow: none; padding: 0;">
+            <h2 style="text-align:center; margin-bottom: 1.5rem; color: var(--prime-dark-blue); font-size: 1.5rem;">Prime Wallet ATM Cards</h2>
+            <p style="text-align:center; margin-bottom: 1.5rem; color: var(--prime-gray);">Select your preferred card — all cards include your name, chip technology, and worldwide acceptance.</p>
+            <div class="prime-card visa-card">
+                <div class="card-brand">PRIME WALLET VISA</div>
+                <div class="card-number hidden-details">•••• •••• •••• 4287</div>
+                <div class="card-name" id="visa-card-name">Williamh633157</div>
+                <div class="card-benefits">
+                    ✅ 75,000 bonus points<br>
+                    ✅ 5% cashback on travel<br>
+                    ✅ Zero foreign transaction fees<br>
+                    ✅ Worldwide acceptance & fraud protection
                 </div>
-                <div class="card-expiry">
-                    <div class="card-label">Valid Thru</div>
-                    <div class="card-value hidden-details">••/••</div>
+                <div class="apply-link" onclick="selectCard('visa', 49.99)">
+                    Apply Now <span>→</span>
                 </div>
-                <div class="card-price">$49.99</div>
                 <div class="secured-overlay">🔒 Details visible after admin approval</div>
             </div>
-            <button class="btn btn-primary" onclick="selectCard('visa', 49.99)">Apply for Visa Card</button>
-
-            <!-- MasterCard -->
-            <div class="atm-card mastercard-card" style="margin-top:2rem;">
-                <div class="card-brand">MasterCard</div>
-                <div class="card-chip"></div>
-                <div class="card-number hidden-details">•••• •••• •••• 5555</div>
-                <div class="card-holder">
-                    <div class="card-label">Card Holder</div>
-                    <div class="card-value" id="mastercard-card-name">John Doe</div>
+            <div class="prime-card mastercard-card" style="margin: 1.5rem 0;">
+                <div class="card-brand">PRIME WALLET MASTERCARD</div>
+                <div class="card-number hidden-details">•••• •••• •••• 9502</div>
+                <div class="card-name" id="mastercard-card-name">Williamh633157</div>
+                <div class="card-benefits">
+                    ✅ 70,000 bonus miles<br>
+                    ✅ Exclusive travel discounts<br>
+                    ✅ Purchase protection<br>
+                    ✅ Global acceptance & zero liability
                 </div>
-                <div class="card-expiry">
-                    <div class="card-label">Valid Thru</div>
-                    <div class="card-value hidden-details">••/••</div>
+                <div class="apply-link" onclick="selectCard('mastercard', 49.99)">
+                    Apply Now <span>→</span>
                 </div>
-                <div class="card-price">$49.99</div>
                 <div class="secured-overlay">🔒 Details visible after admin approval</div>
             </div>
-            <button class="btn btn-primary" onclick="selectCard('mastercard', 49.99)">Apply for MasterCard</button>
-
-            <!-- Verve Card -->
-            <div class="atm-card verve-card" style="margin-top:2rem;">
-                <div class="card-brand">Verve</div>
-                <div class="card-chip"></div>
-                <div class="card-number hidden-details">•••• •••• •••• 6666</div>
-                <div class="card-holder">
-                    <div class="card-label">Card Holder</div>
-                    <div class="card-value" id="verve-card-name">John Doe</div>
+            <div class="prime-card verve-card">
+                <div class="card-brand">PRIME WALLET VERVE</div>
+                <div class="card-number hidden-details">•••• •••• •••• 5831</div>
+                <div class="card-name" id="verve-card-name">Williamh633157</div>
+                <div class="card-benefits">
+                    ✅ 50,000 bonus points<br>
+                    ✅ Contactless payments<br>
+                    ✅ Local & international acceptance<br>
+                    ✅ No annual fee for first year
                 </div>
-                <div class="card-expiry">
-                    <div class="card-label">Valid Thru</div>
-                    <div class="card-value hidden-details">••/••</div>
+                <div class="apply-link" onclick="selectCard('verve', 39.99)">
+                    Apply Now <span>→</span>
                 </div>
-                <div class="card-price">$39.99</div>
                 <div class="secured-overlay">🔒 Details visible after admin approval</div>
             </div>
-            <button class="btn btn-primary" onclick="selectCard('verve', 39.99)">Apply for Verve Card</button>
-
-            <div id="purchase-form-section" class="hidden">
-                <hr style="margin:2rem 0; border:0; border-top:1px solid #E9ECEF;">
-                <h3 style="text-align:center; margin-bottom:1.5rem; color: var(--prime-dark-blue)">Complete Purchase — <span id="selected-card-name"></span> ($<span id="selected-card-price"></span>)</h3>
+            <div id="purchase-form-section" class="hidden" style="margin-top: 2rem;">
+                <hr style="margin: 2rem 0; border:0; border-top: 1px solid #E5E7EB;">
+                <h3 style="text-align:center; margin-bottom: 1.5rem; color: var(--prime-dark-blue);">Complete Purchase — <span id="selected-card-name"></span> ($<span id="selected-card-price"></span>)</h3>
                 <form id="card-purchase-form">
                     <div class="form-group">
                         <label>Upload Your Payment Card — Front Side</label>
@@ -287,13 +518,14 @@
                     ✅ Your request has been submitted! Waiting for admin approval. You will be notified once approved.
                 </div>
             </div>
-
-            <button class="btn btn-secondary" onclick="showPage('dashboard-page')" style="margin-top:2rem;">Back to Dashboard</button>
+            <button class="btn btn-secondary" onclick="showPage('dashboard-page')" style="margin-top: 2rem;">Back to Dashboard</button>
         </div>
+    </div>
 
-        <!-- Transfer Page -->
-        <div id="transfer-page" class="card hidden">
-            <h2 style="text-align:center; margin-bottom:1.5rem; color: var(--prime-dark-blue)">Send Money</h2>
+    <!-- Transfer Page -->
+    <div id="transfer-page" class="container hidden">
+        <div class="card">
+            <h2 style="text-align:center; margin-bottom: 1.5rem; color: var(--prime-dark-blue);">Send Money</h2>
             <div class="alert alert-danger">
                 🔒 Transfers are locked. Purchase your Prime Wallet ATM Card and wait for admin approval to create your 4-digit PIN.
             </div>
@@ -320,13 +552,15 @@
                 </div>
                 <button type="submit" class="btn btn-primary" disabled>Proceed to Transfer</button>
             </form>
-            <button class="btn btn-secondary" onclick="showPage('dashboard-page')" style="margin-top:2rem;">Back to Dashboard</button>
+            <button class="btn btn-secondary" onclick="showPage('dashboard-page')" style="margin-top: 2rem;">Back to Dashboard</button>
         </div>
+    </div>
 
-        <!-- Support Page -->
-        <div id="support-page" class="card hidden">
-            <h2 style="text-align:center; margin-bottom:1.5rem; color: var(--prime-dark-blue)">Contact Support</h2>
-            <p style="text-align:center; margin-bottom:1.5rem; color: var(--neutral-mid);">Have questions or need assistance? Send us a message and our support team will get back to you shortly.</p>
+    <!-- Support Page -->
+    <div id="support-page" class="container hidden">
+        <div class="card">
+            <h2 style="text-align:center; margin-bottom: 1.5rem; color: var(--prime-dark-blue);">Contact Support</h2>
+            <p style="text-align:center; margin-bottom: 1.5rem; color: var(--prime-gray);">Have questions or need assistance? Send us a message and our support team will get back to you shortly.</p>
             <form id="support-form">
                 <div class="form-group">
                     <label>Your Name</label>
@@ -347,9 +581,9 @@
                 <button type="submit" class="btn btn-primary">Send Message</button>
             </form>
             <div id="support-success" class="alert alert-success hidden">
-                ✅ Your message has been sent! Admin will respond to you shortly.
+                ✅ Your message has been sent to admin! You will receive a response soon.
             </div>
-            <button class="btn btn-secondary" onclick="showPage('dashboard-page')" style="margin-top:2rem;">Back to Dashboard</button>
+            <button class="btn btn-secondary" onclick="showPage('dashboard-page')" style="margin-top: 2rem;">Back to Dashboard</button>
         </div>
     </div>
 
@@ -361,20 +595,19 @@
 
     <script>
         function showPage(pageId) {
-            document.querySelectorAll('.card').forEach(card => card.classList.add('hidden'));
+            document.querySelectorAll('.container, #dashboard-page').forEach(el => el.classList.add('hidden'));
             document.getElementById(pageId).classList.remove('hidden');
-            if (pageId === 'dashboard-page') updateDateTime();
             window.scrollTo(0, 0);
         }
 
-        function updateDateTime() {
-            const now = new Date();
-            const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit', timeZoneName: 'short' };
-            document.getElementById('current-datetime').textContent = now.toLocaleString('en-US', options);
-        }
-
-        function logout() {
-            showPage('landing-page');
+        function goToStep(step) {
+            document.querySelectorAll('.step-content').forEach(el => el.classList.add('hidden'));
+            document.querySelectorAll('.step').forEach((s, i) => {
+                s.classList.remove('active', 'completed');
+                if (i + 1 < step) s.classList.add('completed');
+                if (i + 1 === step) s.classList.add('active');
+            });
+            document.getElementById(`step${step}-content`).classList.remove('hidden');
         }
 
         function selectCard(cardType, price) {
@@ -412,7 +645,7 @@
 
         document.getElementById('support-form').addEventListener('submit', function(e) {
             e.preventDefault();
-            alert('✅ Request under review! You will receive a response soon.');
+            alert('✅ Thanks for banking with us! Request under review You will receive a response soon.');
             this.reset();
             document.getElementById('support-success').classList.remove('hidden');
         });
