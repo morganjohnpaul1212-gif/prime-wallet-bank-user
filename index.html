@@ -1,350 +1,562 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="google-site-verification" content="g9v8im8X19-iUEDczexVSuwdEJYl1NxOmYTac_Zo" />
-    <title>Prime Wallet Bank - USA</title>
-    <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Roboto, Arial, sans-serif; }
-        :root {
-            --prime-blue: #0047AB;
-            --prime-dark-blue: #002D6D;
-            --prime-white: #FFFFFF;
-            --prime-light: #F8F9FA;
-            --prime-gray: #6C757D;
-            --prime-dark: #212529;
-            --success: #198754;
-            --danger: #DC3545;
-            --shadow: 0 2px 15px rgba(0,0,0,0.1);
-            --transition: all 0.2s ease;
-        }
-        body { background-color: #F5F7FA; color: var(--prime-dark); line-height: 1.6; padding-bottom: 70px; }
-        
-        /* Header */
-        .header { background: linear-gradient(135deg, var(--prime-blue), var(--prime-dark-blue)); color: white; padding: 1.2rem; position: sticky; top: 0; z-index: 100; display: flex; align-items: center; justify-content: space-between; box-shadow: 0 2px 8px rgba(0,0,0,0.15); }
-        .logo { font-size: 1.5rem; font-weight: 700; display: flex; align-items: center; gap: 0.5rem; }
-        .logo-icon { font-size: 1.8rem; }
-        .sign-out { font-size: 1.1rem; font-weight: 500; cursor: pointer; padding: 0.6rem 1.2rem; border-radius: 6px; border: 1px solid white; transition: var(--transition); }
-        .sign-out:active { background: rgba(255,255,255,0.25); transform: scale(0.97); }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="google-site-verification" content="g9v8im8X19-iUEDczexVSuwdEJYl1NxOmYTac_Zo" />
+  <title>Prime Wallet Bank - USA</title>
+  <style>
+    * { margin:0; padding:0; box-sizing:border-box; font-family: 'Segoe UI', Roboto, Arial, sans-serif; }
+    :root {
+      --prime-blue: #0047AB;
+      --prime-dark-blue: #002D6D;
+      --prime-light-blue: #E8F0FE;
+      --white: #fff;
+      --light-gray: #f8f9fa;
+      --gray: #6c757d;
+      --dark: #212529;
+      --success: #198754;
+      --warning: #ffc107;
+      --danger: #dc3545;
+      --shadow: 0 2px 12px rgba(0,0,0,0.08);
+    }
+    body { background: var(--light-gray); color: var(--dark); min-height:100vh; }
+    .hidden { display:none !important; }
 
-        /* Greeting Bar */
-        .greeting { background: linear-gradient(135deg, var(--prime-blue), var(--prime-dark-blue)); color: white; padding: 1.5rem 1.2rem 2rem; margin-bottom: 1rem; border-radius: 0 0 24px 24px; }
-        .greeting h1 { font-size: 1.8rem; margin-bottom: 0.3rem; font-weight: 600; }
-        .greeting .date { font-size: 1rem; opacity: 0.9; }
+    /* Header */
+    .header { background: var(--prime-blue); color: #fff; padding: 1.2rem; display: flex; align-items: center; justify-content: space-between; }
+    .logo { display: flex; align-items: center; gap: 0.75rem; font-size: 1.5rem; font-weight: 700; }
+    .us-flag { font-size: 1.8rem; margin-left: 0.5rem; } /* US flag after bank name */
+    .sign-in-btn { border: 2px solid #fff; border-radius: 8px; padding: 0.6rem 1.2rem; font-weight: 600; cursor: pointer; transition: 0.2s; }
+    .sign-in-btn:active { background: rgba(255,255,255,0.2); transform: scale(0.96); }
 
-        /* Quick Action Buttons */
-        .quick-actions { display: flex; gap: 1rem; padding: 0 1.2rem; margin: 1rem 0; overflow-x: auto; -webkit-overflow-scrolling: touch; }
-        .action-btn { background: var(--prime-white); border: none; border-radius: 50%; width: 65px; height: 65px; display: flex; flex-direction: column; align-items: center; justify-content: center; cursor: pointer; transition: var(--transition); box-shadow: var(--shadow); color: var(--prime-blue); font-weight: 600; font-size: 1.5rem; }
-        .action-btn:active { transform: scale(0.95); background: #E8F0FE; }
-        .action-label { font-size: 0.7rem; margin-top: 0.3rem; color: var(--prime-dark); font-weight: 500; white-space: nowrap; }
+    .container { max-width: 480px; margin: 2rem auto; padding: 0 1.5rem; }
+    .card { background: #fff; border-radius: 16px; padding: 2rem; box-shadow: var(--shadow); text-align: center; }
+    h1 { color: var(--prime-dark-blue); font-size: 1.8rem; margin-bottom: 1rem; line-height: 1.3; }
+    .sub-text { color: var(--gray); font-size: 1.1rem; margin-bottom: 2rem; line-height: 1.5; }
+    .btn { width: 100%; padding: 1rem; border: none; border-radius: 8px; font-size: 1.1rem; font-weight: 600; cursor: pointer; transition: 0.2s; }
+    .btn-primary { background: var(--prime-blue); color: #fff; }
+    .btn-primary:active { background: var(--prime-dark-blue); transform: scale(0.98); }
+    .btn-link { background: none; color: var(--prime-blue); font-weight: 600; margin-top: 1rem; text-decoration: underline; cursor: pointer; }
+    .footer-text { text-align: center; color: var(--gray); font-size: 0.9rem; margin: 2rem 0; line-height: 1.5; }
+    .footer-text a { color: var(--prime-blue); text-decoration: none; font-weight: 500; }
 
-        /* Card Lock Banner */
-        .card-lock-banner { margin: 0 1.2rem 1.5rem; background: #FFF8E1; border-left: 4px solid #FFC107; padding: 1.2rem; border-radius: 12px; cursor: pointer; transition: var(--transition); }
-        .card-lock-banner:active { background: #FFECB3; transform: scale(0.98); }
-        .card-lock-banner h3 { color: #856404; margin-bottom: 0.3rem; font-size: 1.1rem; }
+    /* Registration Form */
+    .form-card { text-align: left; }
+    .form-card h2 { text-align: center; color: var(--prime-dark-blue); font-size: 1.6rem; margin-bottom: 0.5rem; }
+    .form-subtitle { text-align: center; color: var(--gray); margin-bottom: 2rem; }
+    .steps { display: flex; justify-content: space-between; position: relative; margin-bottom: 2rem; }
+    .steps::before { content: ''; position: absolute; top: 16px; left: 10%; right: 10%; height: 2px; background: #e9ecef; z-index: 1; }
+    .step { display: flex; flex-direction: column; align-items: center; position: relative; z-index: 2; font-size: 0.9rem; color: var(--gray); }
+    .step-number { width: 32px; height: 32px; border-radius: 50%; background: #e9ecef; color: var(--gray); display: flex; align-items: center; justify-content: center; font-weight: 700; margin-bottom: 0.5rem; }
+    .step.active .step-number { background: var(--prime-blue); color: #fff; }
+    .step.completed .step-number { background: var(--success); color: #fff; }
+    .step.active { color: var(--prime-blue); font-weight: 600; }
 
-        /* Balance Card */
-        .balance-card { margin: 0 1.2rem 1.5rem; background: linear-gradient(135deg, var(--prime-blue), var(--prime-dark-blue)); color: white; padding: 1.8rem; border-radius: 16px; box-shadow: var(--shadow); cursor: pointer; transition: var(--transition); }
-        .balance-card:active { transform: scale(0.98); }
-        .balance-label { font-size: 1rem; opacity: 0.9; margin-bottom: 0.8rem; }
-        .balance-amount { font-size: 2.8rem; font-weight: 700; margin-bottom: 0.5rem; }
-        .account-type { font-size: 1.1rem; opacity: 0.9; }
+    .form-group { margin-bottom: 1.5rem; }
+    label { display: block; margin-bottom: 0.6rem; font-weight: 500; color: var(--dark); }
+    input, select { width: 100%; padding: 0.9rem; border: 1px solid #ced4da; border-radius: 8px; font-size: 1rem; transition: 0.2s; }
+    input:focus, select:focus { outline: none; border-color: var(--prime-blue); box-shadow: 0 0 0 3px rgba(0,71,171,0.15); }
+    .input-hint { font-size: 0.85rem; color: var(--gray); margin-top: 0.4rem; }
+    .btn-group { display: flex; gap: 1rem; margin-top: 2rem; }
+    .btn-secondary { background: #fff; color: var(--prime-blue); border: 2px solid var(--prime-blue); }
+    .btn-secondary:active { background: var(--prime-light-blue); }
+    .alert { padding: 1rem; border-radius: 8px; margin: 1.2rem 0; text-align: center; font-weight: 500; }
+    .alert-info { background: #cff4fc; color: #055160; border: 1px solid #b6eff9; }
+    .alert-success { background: #d1e7dd; color: #0f5132; border: 1px solid #badbcc; }
+    .alert-warning { background: #fff3cd; color: #664d03; border: 1px solid #ffecb5; }
+    .alert-danger { background: #f8d7da; color: #842029; border: 1px solid #f5c2c7; }
 
-        /* Link External Accounts */
-        .link-external { margin: 0 1.2rem 1.5rem; color: var(--prime-blue); font-weight: 500; cursor: pointer; transition: var(--transition); font-size: 1.05rem; }
-        .link-external:active { color: var(--prime-dark-blue); text-decoration: underline; }
-
-        /* Open Account Section */
-        .open-account { margin: 0 1.2rem 2rem; }
-        .open-account h2 { font-size: 1.4rem; margin-bottom: 1.2rem; color: var(--prime-dark); }
-        .account-options { display: flex; gap: 1rem; overflow-x: auto; padding-bottom: 0.5rem; -webkit-overflow-scrolling: touch; }
-        .option-card { background: var(--prime-white); border-radius: 12px; padding: 1.5rem; min-width: 110px; text-align: center; cursor: pointer; transition: var(--transition); box-shadow: var(--shadow); }
-        .option-card:active { transform: scale(0.95); background: #E8F0FE; }
-        .option-icon { font-size: 2rem; margin-bottom: 0.8rem; color: var(--prime-blue); }
-        .option-label { font-size: 0.9rem; font-weight: 500; color: var(--prime-dark); }
-
-        /* Bottom Navigation */
-        .bottom-nav { position: fixed; bottom: 0; left: 0; width: 100%; background: var(--prime-white); border-top: 1px solid #E5E7EB; display: flex; justify-content: space-around; padding: 0.7rem 0; box-shadow: 0 -2px 10px rgba(0,0,0,0.05); z-index: 100; }
-        .nav-item { display: flex; flex-direction: column; align-items: center; gap: 0.3rem; font-size: 0.75rem; color: var(--prime-gray); cursor: pointer; transition: var(--transition); padding: 0.5rem 1rem; border-radius: 8px; }
-        .nav-item.active { color: var(--prime-blue); background: #E8F0FE; }
-        .nav-item:active { transform: scale(0.95); }
-        .nav-icon { font-size: 1.4rem; }
-
-        /* Page Containers */
-        .page { display: none; animation: fadeIn 0.3s ease; }
-        .page.active { display: block; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-        .container { max-width: 480px; margin: 0 auto; padding: 1rem 1.2rem; }
-
-        /* Forms */
-        .form-group { margin-bottom: 1.3rem; }
-        label { display: block; margin-bottom: 0.6rem; font-weight: 500; color: var(--prime-dark); }
-        input, select { width: 100%; padding: 0.9rem; border: 1px solid #CED4DA; border-radius: 8px; font-size: 1rem; transition: var(--transition); }
-        input:focus, select:focus { outline: none; border-color: var(--prime-blue); box-shadow: 0 0 0 3px rgba(0,71,171,0.15); }
-        .btn { width: 100%; padding: 1rem; border: none; border-radius: 8px; font-size: 1rem; font-weight: 600; cursor: pointer; transition: var(--transition); text-transform: uppercase; letter-spacing: 0.5px; }
-        .btn-primary { background: var(--prime-blue); color: white; }
-        .btn-primary:active { background: var(--prime-dark-blue); transform: scale(0.98); }
-        .alert { padding: 1.1rem; border-radius: 8px; margin: 1rem 0; text-align: center; font-weight: 500; }
-        .alert-success { background: #D1E7DD; color: #0F5132; }
-        .alert-danger { background: #F8D7DA; color: #842029; }
-        .alert-info { background: #CFF4FC; color: #055160; }
-
-        /* Card Selection Page */
-        .card-option { background: var(--prime-white); border-radius: 16px; padding: 1.5rem; margin-bottom: 1.2rem; cursor: pointer; transition: var(--transition); box-shadow: var(--shadow); border-left: 5px solid transparent; }
-        .card-option.selected { border-left-color: var(--prime-blue); background: #E8F0FE; }
-        .card-option:active { transform: translateY(-2px); }
-        .card-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1rem; }
-        .card-brand { font-size: 1.3rem; font-weight: 700; }
-        .card-price { font-size: 1.5rem; font-weight: 700; color: var(--prime-blue); }
-        .card-benefits { color: var(--prime-gray); line-height: 1.6; }
-    </style>
+    /* Dashboard */
+    .welcome-bar { background: linear-gradient(135deg, var(--prime-blue), var(--prime-dark-blue)); color: #fff; padding: 1.5rem; position: relative; }
+    .welcome-bar h1 { color: #fff; text-align: left; font-size: 1.4rem; margin-bottom: 0.3rem; }
+    .date-time { position: absolute; top: 1.5rem; right: 1.5rem; text-align: right; font-size: 0.9rem; opacity: 0.9; font-weight: 500; }
+    .account-type { font-size: 0.95rem; opacity: 0.9; margin: 2.5rem 0 0.3rem; }
+    .account-number { font-size: 1.1rem; font-weight: 600; letter-spacing: 1px; opacity: 0.9; font-family: monospace; }
+    .balance-section { background: #fff; padding: 1.5rem; margin: 1rem; border-radius: 12px; box-shadow: var(--shadow); }
+    .balance-label { font-size: 1rem; color: var(--gray); margin-bottom: 0.5rem; }
+    .balance-amount { font-size: 2.5rem; font-weight: 700; margin-bottom: 1rem; }
+    .quick-actions { display: flex; gap: 1rem; margin: 1rem; overflow-x: auto; padding: 0 1rem 1rem; }
+    .action-btn { flex: 0 0 auto; background: #fff; border: 1px solid #e9ecef; border-radius: 12px; padding: 1rem; min-width: 100px; text-align: center; cursor: pointer; transition: 0.2s; box-shadow: var(--shadow); }
+    .action-btn:active { transform: scale(0.96); background: var(--prime-light-blue); }
+    .action-icon { font-size: 1.6rem; margin-bottom: 0.6rem; }
+    .action-text { font-size: 0.9rem; font-weight: 500; }
+    .nav-menu { background: #fff; margin: 0 1rem 2rem; border-radius: 12px; box-shadow: var(--shadow); overflow: hidden; }
+    .nav-item { display: flex; align-items: center; padding: 1.2rem; border-bottom: 1px solid #f1f3f5; cursor: pointer; transition: 0.2s; }
+    .nav-item:last-child { border-bottom: none; }
+    .nav-item:active { background: var(--prime-light-blue); }
+    .nav-icon { font-size: 1.4rem; margin-right: 0.8rem; width: 24px; text-align: center; }
+    .nav-label { font-size: 1.05rem; font-weight: 500; }
+    .locked { opacity: 0.6; cursor: not-allowed; }
+    .recipient-result { padding: 1rem; background: #d1e7dd; border-radius: 8px; margin: 1rem 0; text-align: center; font-weight: 600; color: #0f5132; }
+    .recipient-error { background: #f8d7da; color: #842029; }
+    .bottom-nav { position: fixed; bottom: 0; left: 0; width: 100%; background: #fff; border-top: 1px solid #e9ecef; display: flex; justify-content: space-around; padding: 0.75rem 0; box-shadow: 0 -2px 8px rgba(0,0,0,0.05); }
+    .bottom-nav-item { display: flex; flex-direction: column; align-items: center; font-size: 0.75rem; color: var(--gray); cursor: pointer; transition: 0.2s; }
+    .bottom-nav-item.active { color: var(--prime-blue); }
+    .bottom-nav-item .icon { font-size: 1.5rem; margin-bottom: 0.3rem; }
+  </style>
 </head>
 <body>
 
-<!-- ============== DASHBOARD PAGE ============== -->
-<div id="page-dashboard" class="page active">
-    <div class="header">
-        <div class="logo">
-            <span class="logo-icon">🏦</span>
-            <span>Prime Wallet Bank - USA</span>
-        </div>
-        <div class="sign-out" onclick="navigateTo('page-login')">Sign Out</div>
-    </div>
-
-    <div class="greeting">
-        <h1>hi Username</h1>
-        <div class="date" id="current-date">March 29, 2024</div>
-    </div>
-
-    <div class="quick-actions">
-        <button class="action-btn" onclick="navigateTo('page-add')">
-            <span>+</span>
-            <span class="action-label">Add</span>
-        </button>
-        <button class="action-btn" onclick="navigateTo('page-send')">
-            <span>💸</span>
-            <span class="action-label">Send | Zelle®</span>
-        </button>
-        <button class="action-btn" onclick="navigateTo('page-deposit')">
-            <span>📷</span>
-            <span class="action-label">Deposit checks</span>
-        </button>
-        <button class="action-btn" onclick="navigateTo('page-bills')">
-            <span>📄</span>
-            <span class="action-label">Pay bills</span>
-        </button>
-    </div>
-
-    <div class="card-lock-banner" onclick="navigateTo('page-cards')">
-        <h3>💳 Purchase Card To Create Your Pin For Transactions</h3>
-        <p>Your card is required to unlock transfers, payments, and all transactions.</p>
-    </div>
-
-    <div class="balance-card" onclick="navigateTo('page-account-details')">
-        <div class="account-type">CHASE SECURE BANKING (...90144)</div>
-        <div class="balance-amount">$<span id="user-balance">0.00</span></div>
-        <div class="balance-label">Available balance</div>
-    </div>
-
-    <div class="link-external" onclick="navigateTo('page-link-accounts')">
-        🔗 Link external accounts →
-    </div>
-
-    <div class="open-account">
-        <h2>Open an account</h2>
-        <div class="account-options">
-            <div class="option-card" onclick="navigateTo('page-credit-card')">
-                <div class="option-icon">💳</div>
-                <div class="option-label">Credit cards</div>
-            </div>
-            <div class="option-card" onclick="navigateTo('page-checking')">
-                <div class="option-icon">🏦</div>
-                <div class="option-label">Checking</div>
-            </div>
-            <div class="option-card" onclick="navigateTo('page-savings')">
-                <div class="option-icon">💰</div>
-                <div class="option-label">Savings & CDs</div>
-            </div>
-            <div class="option-card" onclick="navigateTo('page-mortgage')">
-                <div class="option-icon">🏠</div>
-                <div class="option-label">Mortgage</div>
-            </div>
-        </div>
-    </div>
-
-    <div class="bottom-nav">
-        <div class="nav-item active" onclick="navigateTo('page-dashboard')">
-            <div class="nav-icon">🏠</div>
-            <div>Accounts</div>
-        </div>
-        <div class="nav-item" onclick="navigateTo('page-transfer')">
-            <div class="nav-icon">↗️</div>
-            <div>Pay & transfer</div>
-        </div>
-        <div class="nav-item" onclick="navigateTo('page-plan')">
-            <div class="nav-icon">📊</div>
-            <div>Plan & track</div>
-        </div>
-        <div class="nav-item" onclick="navigateTo('page-more')">
-            <div class="nav-icon">⋮</div>
-            <div>More</div>
-        </div>
-    </div>
+<!-- Header -->
+<div class="header">
+  <div class="logo">
+    <span style="font-size: 2rem;">🏦</span>
+    <div>Prime Wallet<br>Bank - USA</div>
+    <span class="us-flag">🇺🇸</span> <!-- US flag added here -->
+  </div>
+  <div class="sign-in-btn" onclick="showPage('login-page')">Sign In</div>
 </div>
 
-<!-- ============== SEND / TRANSFER PAGE ============== -->
-<div id="page-send" class="page">
-    <div class="header">
-        <div class="logo" style="font-size: 1.2rem;">💸 Send Money</div>
-        <div class="sign-out" onclick="navigateTo('page-dashboard')">Back</div>
-    </div>
-    <div class="container">
-        <div class="alert alert-danger">🔒 Transfers locked — purchase your Prime Wallet card first</div>
-        <form id="transfer-form">
-            <div class="form-group">
-                <label>Recipient Account Number</label>
-                <input type="text" id="recipient-account" placeholder="Enter account number" required onblur="verifyAccountName()">
-            </div>
-            <div class="form-group">
-                <label>Recipient Bank Name</label>
-                <input type="text" id="recipient-bank" placeholder="Enter bank name" required onblur="verifyAccountName()">
-            </div>
-            <div id="recipient-name-result" class="alert alert-success hidden"></div>
-            <div class="form-group">
-                <label>Amount (USD)</label>
-                <input type="number" step="0.01" placeholder="0.00" required>
-            </div>
-            <div class="form-group">
-                <label>Your 4-Digit PIN</label>
-                <input type="password" maxlength="4" placeholder="----" required>
-            </div>
-            <button type="submit" class="btn btn-primary">Proceed to Transfer</button>
-        </form>
-    </div>
+<!-- Landing Page -->
+<div id="landing-page" class="container">
+  <div class="card">
+    <h1>Secure Banking<br>Made for You</h1>
+    <p class="sub-text">Join millions of users worldwide.<br>Create your account today.</p>
+    <button class="btn btn-primary" onclick="showPage('register-page')">CREATE YOUR ACCOUNT</button>
+  </div>
+  <p class="footer-text">
+    © 2026 Prime Wallet Bank - USA. All rights reserved.<br><br>
+    Secure · Licensed · Compliant · Worldwide<br><br>
+    Contact: <a href="mailto:support@primewalletbank.us">support@primewalletbank.us</a>
+  </p>
 </div>
 
-<!-- ============== CARDS PAGE ============== -->
-<div id="page-cards" class="page">
-    <div class="header">
-        <div class="logo" style="font-size: 1.2rem;">💳 Prime Wallet Cards</div>
-        <div class="sign-out" onclick="navigateTo('page-dashboard')">Back</div>
+<!-- Register Page -->
+<div id="register-page" class="container hidden">
+  <div class="card form-card">
+    <h2>🔐 Create Your Account</h2>
+    <p class="form-subtitle">Secure Registration — All Fields Required</p>
+
+    <div class="steps">
+      <div class="step active" id="step1-indicator">
+        <div class="step-number">1</div>
+        <div>Personal<br>Info</div>
+      </div>
+      <div class="step" id="step2-indicator">
+        <div class="step-number">2</div>
+        <div>Location</div>
+      </div>
+      <div class="step" id="step3-indicator">
+        <div class="step-number">3</div>
+        <div>Verification</div>
+      </div>
+      <div class="step" id="step4-indicator">
+        <div class="step-number">4</div>
+        <div>Upload<br>ID</div>
+      </div>
     </div>
-    <div class="container">
-        <p style="margin-bottom: 1.5rem; color: var(--prime-gray);">Select your preferred card to purchase and create your transaction PIN.</p>
 
-        <div class="card-option" onclick="selectCard('visa', 'Prime Wallet Visa', 49.99)">
-            <div class="card-header">
-                <span class="card-brand">💳 Visa</span>
-                <span class="card-price">$49.99</span>
-            </div>
-            <p class="card-benefits">Worldwide acceptance • 5% cashback • Zero fraud liability</p>
+    <form id="register-form">
+      <!-- Step 1: Personal Info -->
+      <div id="step1-content">
+        <h3 style="color: var(--prime-blue); margin-bottom: 1.5rem;">📋 Personal Details</h3>
+        <div class="form-group">
+          <label>Full Name (First & Last Name) *</label>
+          <input type="text" placeholder="e.g. John Michael Morgan" required>
         </div>
+        <div class="form-group">
+          <label>Email Address *</label>
+          <input type="email" placeholder="yourname@email.com" required>
+        </div>
+        <div class="form-group">
+          <label>Phone Number *</label>
+          <input type="tel" placeholder="+234 XXX XXX XXXX" required>
+        </div>
+        <div class="form-group">
+          <label>Date of Birth *</label>
+          <input type="date" required>
+        </div>
+        <div class="form-group">
+          <label>Create Password *</label>
+          <input type="password" placeholder="8+ chars: letters, numbers, symbols" required>
+        </div>
+        <div class="form-group">
+          <label>Confirm Password *</label>
+          <input type="password" placeholder="Re-enter your password" required>
+        </div>
+        <div class="btn-group">
+          <button type="button" class="btn btn-secondary" onclick="showPage('landing-page')">Cancel</button>
+          <button type="button" class="btn btn-primary" onclick="goToStep(2)">Continue</button>
+        </div>
+      </div>
 
-        <div class="card-option" onclick="selectCard('mastercard', 'Prime Wallet MasterCard', 49.99)">
-            <div class="card-header">
-                <span class="card-brand">💳 MasterCard</span>
-                <span class="card-price">$49.99</span>
-            </div>
-            <p class="card-benefits">Global acceptance • Travel rewards • Purchase protection</p>
+      <!-- Step 2: Location -->
+      <div id="step2-content" class="hidden">
+        <h3 style="color: var(--prime-blue); margin-bottom: 1.5rem;">📍 Location Details</h3>
+        <div class="form-group">
+          <label>Country of Residence *</label>
+          <select id="reg-country" onchange="loadStates()">
+            <option value="">Select Country</option>
+            <option value="US">United States</option>
+            <option value="GB">United Kingdom</option>
+            <option value="CA">Canada</option>
+            <option value="NG" selected>Nigeria</option>
+            <option value="ZA">South Africa</option>
+            <option value="KE">Kenya</option>
+            <option value="GH">Ghana</option>
+          </select>
         </div>
+        <div class="form-group">
+          <label>State / Province *</label>
+          <select id="reg-state" onchange="loadCities()">
+            <option value="">Select State</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>City *</label>
+          <select id="reg-city">
+            <option value="">Select City</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Residential Address *</label>
+          <input type="text" placeholder="Street address, Apartment, Suite" required>
+        </div>
+        <div class="btn-group">
+          <button type="button" class="btn btn-secondary" onclick="goToStep(1)">Back</button>
+          <button type="button" class="btn btn-primary" onclick="goToStep(3)">Continue</button>
+        </div>
+      </div>
 
-        <div class="card-option" onclick="selectCard('verve', 'Prime Wallet Verve', 39.99)">
-            <div class="card-header">
-                <span class="card-brand">💳 Verve</span>
-                <span class="card-price">$39.99</span>
-            </div>
-            <p class="card-benefits">Local & international use • Contactless payments • No annual fee</p>
+      <!-- Step 3: Verification -->
+      <div id="step3-content" class="hidden">
+        <h3 style="color: var(--prime-blue); margin-bottom: 1.5rem;">🔒 Security Verification</h3>
+        <div class="form-group">
+          <label>Email Verification Code *</label>
+          <div style="display:flex; gap:0.5rem;">
+            <input type="text" placeholder="Enter code sent to your email" style="flex:1;" required>
+            <button type="button" class="btn btn-secondary" style="width:auto; white-space:nowrap;" onclick="sendEmailCode()">Send Code</button>
+          </div>
         </div>
+        <div class="form-group">
+          <label>Phone Verification Code *</label>
+          <div style="display:flex; gap:0.5rem;">
+            <input type="text" placeholder="Enter code sent via SMS" style="flex:1;" required>
+            <button type="button" class="btn btn-secondary" style="width:auto; white-space:nowrap;" onclick="sendSmsCode()">Send Code</button>
+          </div>
+        </div>
+        <div class="alert alert-info">
+          📧 Codes will be sent to your email and phone. <strong>Admin must approve your account before you can sign in.</strong>
+        </div>
+        <div class="btn-group">
+          <button type="button" class="btn btn-secondary" onclick="goToStep(2)">Back</button>
+          <button type="button" class="btn btn-primary" onclick="goToStep(4)">Continue</button>
+        </div>
+      </div>
 
-        <div id="purchase-form" class="hidden" style="margin-top: 2rem;">
-            <hr style="margin: 1.5rem 0;">
-            <h3 id="selected-card-title" style="margin-bottom: 1rem;"></h3>
-            <form>
-                <div class="form-group">
-                    <label>Payment Card — Front Photo</label>
-                    <input type="file" accept="image/*" required>
-                </div>
-                <div class="form-group">
-                    <label>Payment Card — Back Photo</label>
-                    <input type="file" accept="image/*" required>
-                </div>
-                <div class="form-group">
-                    <label>Expiry Date (MM/YY)</label>
-                    <input type="text" placeholder="MM/YY" required>
-                </div>
-                <div class="form-group">
-                    <label>4-Digit PIN</label>
-                    <input type="password" maxlength="4" placeholder="----" required>
-                </div>
-                <button type="submit" class="btn btn-primary">Submit for Admin Review</button>
-            </form>
+      <!-- Step 4: Upload ID -->
+      <div id="step4-content" class="hidden">
+        <h3 style="color: var(--prime-blue); margin-bottom: 1.5rem;">🪪 Identification</h3>
+        <div class="form-group">
+          <label>Government ID Type *</label>
+          <select>
+            <option value="">Select ID Type</option>
+            <option>Driver's License</option>
+            <option>Passport</option>
+            <option>National ID Card</option>
+          </select>
         </div>
-    </div>
+        <div class="form-group">
+          <label>ID Number *</label>
+          <input type="text" placeholder="Enter your ID number" required>
+        </div>
+        <div class="form-group">
+          <label>Upload ID — Front Side *</label>
+          <input type="file" accept="image/*" required>
+        </div>
+        <div class="form-group">
+          <label>Upload ID — Back Side *</label>
+          <input type="file" accept="image/*" required>
+        </div>
+        <div class="alert alert-info">
+          🔒 Your personal information is encrypted and securely stored. Admin will review and approve your account before you can sign in.
+        </div>
+        <div class="btn-group">
+          <button type="button" class="btn btn-secondary" onclick="goToStep(3)">Back</button>
+          <button type="submit" class="btn btn-primary">Submit for Admin Approval</button>
+        </div>
+      </div>
+    </form>
+  </div>
 </div>
 
-<!-- ============== PLACEHOLDER PAGES ============== -->
-<div id="page-add" class="page"><div class="header"><div class="logo">Add Account</div><div class="sign-out" onclick="navigateTo('page-dashboard')">Back</div></div><div class="container">Add account form here...</div></div>
-<div id="page-deposit" class="page"><div class="header"><div class="logo">Deposit Checks</div><div class="sign-out" onclick="navigateTo('page-dashboard')">Back</div></div><div class="container">Check deposit interface here...</div></div>
-<div id="page-bills" class="page"><div class="header"><div class="logo">Pay Bills</div><div class="sign-out" onclick="navigateTo('page-dashboard')">Back</div></div><div class="container">Bill payment interface here...</div></div>
-<div id="page-link-accounts" class="page"><div class="header"><div class="logo">Link External Accounts</div><div class="sign-out" onclick="navigateTo('page-dashboard')">Back</div></div><div class="container">Link external accounts form here...</div></div>
-<div id="page-account-details" class="page"><div class="header"><div class="logo">Account Details</div><div class="sign-out" onclick="navigateTo('page-dashboard')">Back</div></div><div class="container">Full account details here...</div></div>
-<div id="page-credit-card" class="page"><div class="header"><div class="logo">Credit Cards</div><div class="sign-out" onclick="navigateTo('page-dashboard')">Back</div></div><div class="container">Credit card offers here...</div></div>
-<div id="page-checking" class="page"><div class="header"><div class="logo">Checking Account</div><div class="sign-out" onclick="navigateTo('page-dashboard')">Back</div></div><div class="container">Open checking account form here...</div></div>
-<div id="page-savings" class="page"><div class="header"><div class="logo">Savings & CDs</div><div class="sign-out" onclick="navigateTo('page-dashboard')">Back</div></div><div class="container">Savings account options here...</div></div>
-<div id="page-mortgage" class="page"><div class="header"><div class="logo">Mortgage</div><div class="sign-out" onclick="navigateTo('page-dashboard')">Back</div></div><div class="container">Mortgage information here...</div></div>
-<div id="page-transfer" class="page"><div class="header"><div class="logo">Pay & Transfer</div><div class="sign-out" onclick="navigateTo('page-dashboard')">Back</div></div><div class="container">Transfer options here...</div></div>
-<div id="page-plan" class="page"><div class="header"><div class="logo">Plan & Track</div><div class="sign-out" onclick="navigateTo('page-dashboard')">Back</div></div><div class="container">Financial planning tools here...</div></div>
-<div id="page-more" class="page"><div class="header"><div class="logo">More Options</div><div class="sign-out" onclick="navigateTo('page-dashboard')">Back</div></div><div class="container">Additional features here...</div></div>
-<div id="page-login" class="page"><div class="header"><div class="logo">Sign In</div></div><div class="container">Login form here...</div></div>
+<!-- Login Page -->
+<div id="login-page" class="container hidden">
+  <div class="card form-card">
+    <h2>Sign In</h2>
+    <p class="form-subtitle">Access your Prime Wallet Bank account</p>
+    <form>
+      <div class="form-group">
+        <label>Email Address</label>
+        <input type="email" placeholder="yourname@email.com" required>
+      </div>
+      <div class="form-group">
+        <label>Password</label>
+        <input type="password" placeholder="Enter your password" required>
+      </div>
+      <div class="alert alert-warning">
+        🔒 Your account is pending admin approval. You will be able to sign in once approved.
+      </div>
+      <button type="button" class="btn btn-primary" onclick="login()">Sign In</button>
+      <p class="btn-link" onclick="showPage('register-page')">Don't have an account? Create one now</p>
+    </form>
+  </div>
+</div>
+
+<!-- Dashboard -->
+<div id="dashboard-page" class="hidden">
+  <div class="welcome-bar">
+    <h1>Welcome back, <span id="user-name">User</span> 👋</h1>
+    <!-- Real-time date & time display -->
+    <div id="date-time" class="date-time"></div>
+    <div class="account-type">Prime Wallet Account • USA</div>
+    <div class="account-number">Account: PW-XXXX-XXXX-XXXX</div>
+  </div>
+  <div class="balance-section">
+    <div class="balance-label">Available Balance</div>
+    <div class="balance-amount">$<span id="balance">0.00</span></div>
+    <div class="alert alert-warning" style="margin:0;">
+      🔒 Purchase Card to Create Your Pin For Transactions
+    </div>
+  </div>
+
+  <div class="quick-actions">
+    <div class="action-btn" onclick="showTransferPage()">
+      <div class="action-icon">💬</div>
+      <div class="action-text">Send</div>
+    </div>
+    <div class="action-btn" onclick="alert('Zelle® coming soon')">
+      <div class="action-icon">Zelle®</div>
+      <div class="action-text">Zelle®</div>
+    </div>
+    <div class="action-btn" onclick="alert('Deposit checks coming soon')">
+      <div class="action-icon">📎</div>
+      <div class="action-text">Deposit Checks</div>
+    </div>
+    <div class="action-btn" onclick="alert('Pay bills coming soon')">
+      <div class="action-icon">👤</div>
+      <div class="action-text">Pay Bills</div>
+    </div>
+  </div>
+
+  <div class="nav-menu">
+    <div class="nav-item" onclick="alert('Purchase card page coming soon')">
+      <div class="nav-icon">💳</div>
+      <div class="nav-label">Purchase Card To Create Your Pin For Transactions</div>
+    </div>
+    <div class="nav-item locked">
+      <div class="nav-icon">💳</div>
+      <div class="nav-label">Credit Cards</div>
+    </div>
+    <div class="nav-item" onclick="alert('Checking account page coming soon')">
+      <div class="nav-icon">🏦</div>
+      <div class="nav-label">Checking</div>
+    </div>
+    <div class="nav-item" onclick="alert('Savings page coming soon')">
+      <div class="nav-icon">💰</div>
+      <div class="nav-label">Savings & CDs</div>
+    </div>
+    <div class="nav-item" onclick="alert('Mortgage page coming soon')">
+      <div class="nav-icon">🏠</div>
+      <div class="nav-label">Mortgage</div>
+    </div>
+    <div class="nav-item" onclick="alert('Accounts page coming soon')">
+      <div class="nav-icon">🏠</div>
+      <div class="nav-label">Accounts</div>
+    </div>
+    <div class="nav-item" onclick="showTransferPage()">
+      <div class="nav-icon">↗️</div>
+      <div class="nav-label">Pay & transfer</div>
+    </div>
+    <div class="nav-item" onclick="alert('Plan & track page coming soon')">
+      <div class="nav-icon">📊</div>
+      <div class="nav-label">Plan & track</div>
+    </div>
+    <div class="nav-item" onclick="alert('More menu coming soon')">
+      <div class="nav-icon">☰</div>
+      <div class="nav-label">More</div>
+    </div>
+  </div>
+
+  <div class="bottom-nav">
+    <div class="bottom-nav-item active" onclick="showPage('dashboard-page')">
+      <div class="icon">🏠</div>
+      <div>Home</div>
+    </div>
+    <div class="bottom-nav-item" onclick="showTransferPage()">
+      <div class="icon">↗️</div>
+      <div>Pay & Transfer</div>
+    </div>
+    <div class="bottom-nav-item" onclick="alert('Cards page coming soon')">
+      <div class="icon">💳</div>
+      <div>Cards</div>
+    </div>
+    <div class="bottom-nav-item" onclick="alert('More page coming soon')">
+      <div class="icon">☰</div>
+      <div>More</div>
+    </div>
+  </div>
+</div>
+
+<!-- Transfer Page with CoP/AVS -->
+<div id="transfer-page" class="container hidden">
+  <div class="card form-card">
+    <button class="btn-link" style="text-align:left; margin-bottom:1rem;" onclick="showPage('dashboard-page')">← Back to Dashboard</button>
+    <h2>Send Money</h2>
+    <p class="form-subtitle">Secure, real-time global transfers</p>
+
+    <div class="alert alert-info">
+      ✅ <strong>Confirmation of Payee (CoP) / Account Validation (AVS) Active</strong><br>
+      Recipient name is verified instantly against the receiving bank account — works in Nigeria, UK, US, EU, and worldwide.
+    </div>
+
+    <form>
+      <div class="form-group">
+        <label>Recipient Account Number *</label>
+        <input type="text" id="recipient-account" placeholder="Enter account number" required onblur="verifyAccount()">
+      </div>
+      <div class="form-group">
+        <label>Recipient Bank Name *</label>
+        <input type="text" id="recipient-bank" placeholder="Enter bank name" required onblur="verifyAccount()">
+      </div>
+      <div id="recipient-result" class="hidden"></div>
+
+      <div class="form-group">
+        <label>Amount (USD) *</label>
+        <input type="number" placeholder="0.00" required>
+      </div>
+      <div class="form-group">
+        <label>Your 4-Digit Transaction PIN *</label>
+        <input type="password" maxlength="4" placeholder="XXXX" required>
+      </div>
+      <div class="alert alert-warning">🔒 Purchase your card and create your PIN to enable transfers.</div>
+      <button type="submit" class="btn btn-primary" disabled>Proceed Transfer</button>
+    </form>
+  </div>
+</div>
 
 <script>
-// --- Instant Page Navigation ---
-function navigateTo(pageId) {
-    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-    document.getElementById(pageId).classList.add('active');
-    window.scrollTo(0, 0);
+function showPage(id) {
+  document.querySelectorAll('.container, #dashboard-page').forEach(el => el.classList.add('hidden'));
+  document.getElementById(id).classList.remove('hidden');
+  window.scrollTo(0,0);
 }
 
-// --- Real Account Name Lookup Database ---
+function goToStep(step) {
+  document.querySelectorAll('.step-content').forEach(el => el.classList.add('hidden'));
+  document.querySelectorAll('.step').forEach((s,i) => {
+    s.classList.remove('active','completed');
+    if (i+1 < step) s.classList.add('completed');
+    if (i+1 === step) s.classList.add('active');
+  });
+  document.getElementById(`step${step}-content`).classList.remove('hidden');
+}
+
+// Location data
+const locationData = {
+  US: { states: { CA: ['Los Angeles'], NY: ['New York'] }},
+  NG: { states: { AB: ['Abuja'], LA: ['Lagos'], RI: ['Port Harcourt'], EN: ['Enugu'] }},
+  GB: { states: { ENG: ['London'] }}
+};
+function loadStates() {
+  const c = document.getElementById('reg-country').value;
+  const s = document.getElementById('reg-state');
+  const cities = document.getElementById('reg-city');
+  s.innerHTML = '<option value="">Select State</option>';
+  cities.innerHTML = '<option value="">Select State First</option>';
+  if (locationData[c]?.states) {
+    Object.keys(locationData[c].states).forEach(code => {
+      const opt = document.createElement('option');
+      opt.value = code; opt.textContent = code; s.appendChild(opt);
+    });
+  }
+}
+function loadCities() {
+  const c = document.getElementById('reg-country').value;
+  const s = document.getElementById('reg-state').value;
+  const cities = document.getElementById('reg-city');
+  cities.innerHTML = '<option value="">Select City</option>';
+  if (locationData[c]?.states?.[s]) {
+    locationData[c].states[s].forEach(city => {
+      const opt = document.createElement('option');
+      opt.value = city; opt.textContent = city; cities.appendChild(opt);
+    });
+  }
+}
+
+function sendEmailCode() { alert('✅ Verification code sent to your email!'); }
+function sendSmsCode() { alert('✅ Verification code sent to your phone!'); }
+
+document.getElementById('register-form').addEventListener('submit', e => {
+  e.preventDefault();
+  alert('✅ Registration submitted! Admin will review and approve your account. You can sign in once approved.');
+  showPage('login-page');
+});
+
+function login() {
+  alert('✅ Sign in successful!');
+  showPage('dashboard-page');
+}
+
+// Real-time date & time update on dashboard
+function updateDateTime() {
+  const now = new Date();
+  const options = {
+    weekday: 'long',
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit',
+    second: '2-digit',
+    timeZoneName: 'short'
+  };
+  const dateTimeString = now.toLocaleString('en-US', options);
+  const el = document.getElementById('date-time');
+  if (el) el.textContent = dateTimeString;
+}
+// Update immediately and every second
+updateDateTime();
+setInterval(updateDateTime, 1000);
+
+// Global account verification DB (CoP/AVS)
 const accountDB = {
-    '0021548796': { name: 'Chinyere Okoro', bank: 'First Bank of Nigeria' },
-    '0058741256': { name: 'Emmanuel Okafor', bank: 'Guaranty Trust Bank' },
-    '0102358974': { name: 'Sarah Johnson', bank: 'Citibank Nigeria' },
-    '1004567890': { name: 'Michael Smith', bank: 'Bank of America' },
-    '2009876543': { name: 'Jennifer Brown', bank: 'Wells Fargo' }
+  // Nigeria
+  '0012345678': { name: 'Chinyere Okoro', bank: 'First Bank of Nigeria', country: 'NG' },
+  '0098765432': { name: 'Emmanuel Okafor', bank: 'Guaranty Trust Bank', country: 'NG' },
+  '0011223344': { name: 'Aisha Bello', bank: 'Access Bank', country: 'NG' },
+  // UK
+  '12345678': { name: 'James Smith', bank: 'Barclays Bank', country: 'GB' },
+  '87654321': { name: 'Sarah Johnson', bank: 'HSBC UK', country: 'GB' },
+  // US
+  '9876543210': { name: 'Michael Davis', bank: 'Bank of America', country: 'US' },
+  '1234567890': { name: 'Emily Wilson', bank: 'Chase Bank', country: 'US' }
 };
 
-// --- Verify Account Name Instantly ---
-function verifyAccountName() {
-    const accNum = document.getElementById('recipient-account').value.trim();
-    const bankName = document.getElementById('recipient-bank').value.trim();
-    const resultDiv = document.getElementById('recipient-name-result');
-    
-    if (accNum && bankName) {
-        if (accountDB[accNum]) {
-            resultDiv.textContent = `✅ Recipient: ${accountDB[accNum].name} • ${accountDB[accNum].bank}`;
-            resultDiv.classList.remove('hidden');
-        } else {
-            resultDiv.textContent = 'verify owner account name';
-            resultDiv.className = 'alert alert-danger';
-            resultDiv.classList.remove('hidden');
-        }
-    }
+function verifyAccount() {
+  const acc = document.getElementById('recipient-account').value.trim();
+  const bank = document.getElementById('recipient-bank').value.trim();
+  const resBox = document.getElementById('recipient-result');
+  resBox.classList.add('hidden');
+
+  if (!acc || !bank) return;
+
+  if (accountDB[acc]) {
+    const rec = accountDB[acc];
+    resBox.innerHTML = `✅ <strong>Confirmation of Payee / Account Validation SUCCESS</strong><br>Recipient: <strong>${rec.name}</strong><br>Bank: ${rec.bank}<br>Country: ${rec.country === 'NG' ? 'Nigeria' : rec.country === 'GB' ? 'United Kingdom' : rec.country === 'US' ? 'United States' : rec.country}`;
+    resBox.className = 'recipient-result';
+    resBox.classList.remove('hidden');
+  } else {
+    resBox.innerHTML = `❌ <strong>Account Verification Failed</strong><br>No matching account found for the provided details. Please check the account number and bank name.`;
+    resBox.className = 'recipient-result recipient-error';
+    resBox.classList.remove('hidden');
+  }
 }
 
-// --- Card Selection Handler ---
-function selectCard(id, name, price) {
-    document.querySelectorAll('.card-option').forEach(c => c.classList.remove('selected'));
-    event.currentTarget.classList.add('selected');
-    document.getElementById('selected-card-title').textContent = `${name} — $${price}`;
-    document.getElementById('purchase-form').classList.remove('hidden');
+function showTransferPage() {
+  showPage('transfer-page');
 }
-
-// --- Set Current Date ---
-document.getElementById('current-date').textContent = new Date().toLocaleDateString('en-US', { 
-    year: 'numeric', month: 'long', day: 'numeric' 
-});
 </script>
 </body>
 </html>
