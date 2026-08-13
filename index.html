@@ -20,18 +20,19 @@
             --danger: #DC3545;
             --warning: #F59E0B;
             --shadow: 0 2px 15px rgba(0,0,0,0.08);
-            --transition: all 0.3s ease;
+            --transition: all 0.2s ease;
+            --active: #0057FF;
         }
-        body { background-color: var(--prime-light); color: var(--prime-dark); line-height: 1.6; padding-bottom: 80px; }
-        .header { background: linear-gradient(135deg, var(--prime-blue), var(--prime-dark-blue)); color: white; padding: 1.2rem; position: sticky; top: 0; z-index: 100; display: flex; align-items: center; justify-content: space-between; }
+        body { background-color: var(--prime-light); color: var(--prime-dark); line-height: 1.6; padding-bottom: 80px; -webkit-tap-highlight-color: transparent; }
+        .header { background: linear-gradient(135deg, var(--prime-blue), var(--prime-dark-blue)); color: white; padding: 1.2rem; position: sticky; top: 0; z-index: 100; display: flex; align-items: center; justify-content: space-between; box-shadow: 0 2px 8px rgba(0,0,0,0.15); }
         .logo { font-size: 1.5rem; font-weight: 700; display: flex; align-items: center; gap: 0.5rem; }
         .logo-icon { font-size: 1.8rem; }
         .sign-in-link { font-size: 1.1rem; font-weight: 500; cursor: pointer; padding: 0.6rem 1.2rem; border-radius: 6px; border: 1px solid white; transition: var(--transition); }
-        .sign-in-link:hover { background: rgba(255,255,255,0.15); }
-        .container { max-width: 480px; margin: 2rem auto; padding: 0 1rem; }
-        .card { background: var(--prime-white); border-radius: 16px; padding: 2rem; box-shadow: var(--shadow); margin-bottom: 1.5rem; animation: fadeIn 0.4s ease; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-        .hidden { display: none; }
+        .sign-in-link:active { background: rgba(255,255,255,0.25); transform: scale(0.97); }
+        .container { max-width: 480px; margin: 1rem auto; padding: 0 1rem; }
+        .card { background: var(--prime-white); border-radius: 16px; padding: 1.8rem; box-shadow: var(--shadow); margin-bottom: 1.5rem; animation: fadeIn 0.3s ease; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+        .hidden { display: none !important; }
         h1 { color: var(--prime-dark-blue); text-align: center; margin-bottom: 0.8rem; font-size: 1.8rem; }
         .subheader { text-align: center; color: var(--prime-gray); margin-bottom: 2rem; font-size: 1.05rem; }
         .steps { display: flex; justify-content: space-between; margin-bottom: 2rem; position: relative; }
@@ -42,15 +43,16 @@
         .step.completed .step-number { background: var(--success); color: white; }
         .step-label { font-size: 0.8rem; color: var(--prime-gray); text-align: center; }
         .step.active .step-label { color: var(--prime-blue); font-weight: 500; }
-        .form-group { margin-bottom: 1.3rem; }
+        .form-group { margin-bottom: 1.2rem; }
         label { display: block; margin-bottom: 0.6rem; font-weight: 500; color: var(--prime-dark); font-size: 0.95rem; }
         .label-icon { margin-right: 0.5rem; color: var(--prime-blue); }
-        input, select, textarea { width: 100%; padding: 0.9rem; border: 1px solid #CED4DA; border-radius: 8px; font-size: 1rem; transition: var(--transition); }
+        input, select, textarea { width: 100%; padding: 0.9rem; border: 1px solid #CED4DA; border-radius: 8px; font-size: 1rem; transition: var(--transition); background: white; }
         input:focus, select:focus, textarea:focus { outline: none; border-color: var(--prime-blue); box-shadow: 0 0 0 3px rgba(0,71,171,0.15); }
         .input-hint { font-size: 0.9rem; color: var(--prime-gray); margin-top: 0.3rem; }
-        .btn { width: 100%; padding: 1rem; border: none; border-radius: 8px; font-size: 1rem; font-weight: 600; cursor: pointer; transition: var(--transition); text-transform: uppercase; letter-spacing: 0.5px; }
+        .btn { width: 100%; padding: 1rem; border: none; border-radius: 8px; font-size: 1rem; font-weight: 600; cursor: pointer; transition: var(--transition); text-transform: uppercase; letter-spacing: 0.5px; position: relative; overflow: hidden; }
+        .btn:active { transform: scale(0.98); }
         .btn-primary { background-color: var(--prime-blue); color: white; }
-        .btn-primary:hover { background-color: var(--prime-dark-blue); transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,71,171,0.3); }
+        .btn-primary:hover { background-color: var(--prime-dark-blue); }
         .btn-secondary { background-color: var(--prime-white); color: var(--prime-blue); border: 2px solid var(--prime-blue); }
         .btn-secondary:hover { background-color: var(--prime-light-blue); }
         .btn-group { display: flex; gap: 1rem; margin-top: 2rem; }
@@ -63,13 +65,14 @@
         .welcome-bar { background: linear-gradient(135deg, var(--prime-blue), var(--prime-dark-blue)); color: white; padding: 1.5rem; }
         .welcome-bar h1 { font-size: 1.4rem; margin-bottom: 0.3rem; font-weight: 600; color: white; text-align: left; }
         .account-type { font-size: 0.95rem; opacity: 0.9; margin-bottom: 0.5rem; }
-        .account-number-display { font-size: 1.1rem; font-weight: 600; letter-spacing: 1px; color: #E2E8F0; }
+        .account-number-display { font-size: 1.1rem; font-weight: 600; letter-spacing: 1px; color: #E2E8F0; font-family: monospace; }
         .balance-section { background-color: var(--prime-white); padding: 1.5rem; margin: 1rem; border-radius: 16px; box-shadow: var(--shadow); }
         .balance-label { font-size: 1rem; color: var(--prime-gray); margin-bottom: 0.5rem; }
         .balance-amount { font-size: 2.5rem; font-weight: 700; color: var(--prime-dark); margin-bottom: 1.2rem; }
-        .quick-actions { display: flex; gap: 1rem; margin: 1rem; overflow-x: auto; padding-bottom: 0.5rem; }
+        .quick-actions { display: flex; gap: 1rem; margin: 1rem; overflow-x: auto; padding-bottom: 0.5rem; -webkit-overflow-scrolling: touch; }
         .action-btn { background-color: var(--prime-white); border: 1px solid #E5E7EB; border-radius: 12px; padding: 1rem 1.2rem; min-width: 110px; text-align: center; cursor: pointer; transition: var(--transition); box-shadow: var(--shadow); }
         .action-btn:hover { background-color: var(--prime-light-blue); border-color: var(--prime-blue); transform: translateY(-2px); }
+        .action-btn:active { transform: translateY(0) scale(0.97); }
         .action-btn.locked { opacity: 0.7; cursor: not-allowed; }
         .action-icon { font-size: 1.5rem; margin-bottom: 0.5rem; }
         .action-text { font-size: 0.9rem; font-weight: 500; }
@@ -95,9 +98,10 @@
         .transaction-amount { font-weight: 600; font-size: 0.95rem; }
         .positive { color: var(--success); }
         .negative { color: var(--prime-dark); }
-        .bottom-nav { position: fixed; bottom: 0; left: 0; width: 100%; background: var(--prime-white); border-top: 1px solid #E5E7EB; display: flex; justify-content: space-around; padding: 0.7rem 0; box-shadow: 0 -2px 10px rgba(0,0,0,0.05); }
-        .nav-item { display: flex; flex-direction: column; align-items: center; gap: 0.3rem; font-size: 0.75rem; color: var(--prime-gray); cursor: pointer; transition: var(--transition); }
-        .nav-item.active { color: var(--prime-blue); }
+        .bottom-nav { position: fixed; bottom: 0; left: 0; width: 100%; background: var(--prime-white); border-top: 1px solid #E5E7EB; display: flex; justify-content: space-around; padding: 0.7rem 0; box-shadow: 0 -2px 10px rgba(0,0,0,0.05); z-index: 100; }
+        .nav-item { display: flex; flex-direction: column; align-items: center; gap: 0.3rem; font-size: 0.75rem; color: var(--prime-gray); cursor: pointer; transition: var(--transition); padding: 0.5rem; border-radius: 8px; }
+        .nav-item.active { color: var(--prime-blue); background: var(--prime-light-blue); }
+        .nav-item:active { transform: scale(0.95); }
         .nav-icon { font-size: 1.4rem; }
         .prime-card { border-radius: 16px; padding: 1.8rem; margin: 1.5rem 0; color: white; position: relative; overflow: hidden; cursor: pointer; transition: var(--transition); }
         .prime-card:hover { transform: translateY(-4px); }
@@ -107,8 +111,10 @@
         .card-brand { font-size: 1.3rem; font-weight: 700; margin-bottom: 2rem; }
         .card-number { font-size: 1.4rem; letter-spacing: 2px; margin-bottom: 2rem; font-family: monospace; }
         .card-name { font-size: 1.1rem; font-weight: 500; margin-bottom: 0.5rem; }
+        .card-bank-name { font-size: 1rem; font-weight: 600; margin-bottom: 1rem; opacity: 0.9; }
+        .card-price { font-size: 1.8rem; font-weight: 700; margin-bottom: 1.5rem; color: #FFEB3B; }
         .card-benefits { font-size: 0.95rem; line-height: 1.6; margin: 1.5rem 0; opacity: 0.9; }
-        .apply-link { font-weight: 700; font-size: 1.05rem; display: inline-flex; align-items: center; gap: 0.5rem; cursor: pointer; transition: var(--transition); }
+        .apply-link { font-weight: 700; font-size: 1.1rem; display: inline-flex; align-items: center; gap: 0.5rem; cursor: pointer; transition: var(--transition); }
         .apply-link:hover { opacity: 0.8; }
         .secured-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); display: flex; align-items: center; justify-content: center; font-size: 1.2rem; font-weight: 700; text-align: center; padding: 1rem; }
         .hidden-details { filter: blur(4px); user-select: none; }
@@ -180,7 +186,7 @@
                     </div>
                     <div class="form-group">
                         <label>Phone Number *</label>
-                        <input type="tel" id="reg-phone" placeholder="+1 (___) ___-____" required>
+                        <input type="tel" id="reg-phone" placeholder="+234 XXX XXX XXXX" required>
                     </div>
                     <div class="form-group">
                         <label>Date of Birth (MM/DD/YYYY) *</label>
@@ -210,7 +216,7 @@
                             <option value="US">United States</option>
                             <option value="GB">United Kingdom</option>
                             <option value="CA">Canada</option>
-                            <option value="NG">Nigeria</option>
+                            <option value="NG" selected>Nigeria</option>
                             <option value="ZA">South Africa</option>
                             <option value="KE">Kenya</option>
                             <option value="GH">Ghana</option>
@@ -235,7 +241,7 @@
                     </div>
                     <div class="form-group">
                         <label>Postal / ZIP Code *</label>
-                        <input type="text" id="reg-zip" placeholder="e.g. 90001" required>
+                        <input type="text" id="reg-zip" placeholder="e.g. 400001" required>
                     </div>
                     <div class="btn-group">
                         <button type="button" class="btn btn-secondary" onclick="goToStep(1)">Back</button>
@@ -261,7 +267,7 @@
                         </div>
                     </div>
                     <div class="alert alert-info">
-                        📧 Codes will be sent to your email and phone number. Enter them to verify your account.
+                        📧 Codes will be sent to your email and phone. Admin will review and approve your account before you can sign in.
                     </div>
                     <div class="btn-group">
                         <button type="button" class="btn btn-secondary" onclick="goToStep(2)">Back</button>
@@ -342,7 +348,7 @@
     <div id="forgot-password-page" class="container hidden">
         <div class="card">
             <h1>Reset Password</h1>
-            <p class="subheader">Enter your email or phone number to receive a reset code</p>
+            <p class="subheader">Enter your email or phone to receive a reset code</p>
             <form id="forgot-password-form">
                 <div class="form-group">
                     <label>Email or Phone Number</label>
@@ -365,7 +371,7 @@
             <div class="balance-label">Available Balance</div>
             <div class="balance-amount">$<span id="user-balance">0.00</span></div>
             <div class="alert alert-info" id="card-status-alert" style="margin:0;">
-                🔒 Purchase your Prime Wallet ATM Card to create your 4-digit PIN and enable transfers & transactions.
+                🔒 Purchase your Prime Wallet ATM Card to create your 4-digit PIN and enable all transactions.
             </div>
         </div>
         <div class="quick-actions">
@@ -397,7 +403,7 @@
                 <div class="chart-legend">
                     <div class="legend-item"><span class="legend-color" style="background: #EF4444;"></span> Shopping 32%</div>
                     <div class="legend-item"><span class="legend-color" style="background: #3B82F6;"></span> Transport 24%</div>
-                    <div class="legend-item"><span class="legend-color" style="background: #F59E0B;"></span> Food & Dining 18%</div>
+                    <div class="legend-item"><span class="legend-item"><span class="legend-color" style="background: #F59E0B;"></span> Food & Dining 18%</div>
                     <div class="legend-item"><span class="legend-color" style="background: #10B981;"></span> Bills 15%</div>
                     <div class="legend-item"><span class="legend-color" style="background: #8B5CF6;"></span> Entertainment 11%</div>
                 </div>
@@ -487,16 +493,19 @@
         </div>
     </div>
 
-    <!-- ATM Card Page -->
+    <!-- ATM Card Page — All Cards Displayed with Prices & Branding -->
     <div id="card-page" class="container hidden">
         <div class="card" style="box-shadow: none; padding: 0;">
             <h2 style="text-align:center; margin-bottom: 1.5rem; color: var(--prime-dark-blue); font-size: 1.5rem;">Prime Wallet ATM Cards</h2>
-            <p style="text-align:center; margin-bottom: 1.5rem; color: var(--prime-gray);">Purchase required to create your 4-digit transaction PIN and unlock full banking access.</p>
+            <p style="text-align:center; margin-bottom: 1.5rem; color: var(--prime-gray);">Purchase your card to create your 4-digit transaction PIN and unlock full banking access. All cards include your name, Prime Wallet Bank - USA branding, and worldwide acceptance.</p>
 
+            <!-- Visa Card -->
             <div class="prime-card visa-card">
                 <div class="card-brand">PRIME WALLET VISA</div>
+                <div class="card-bank-name">Prime Wallet Bank - USA</div>
                 <div class="card-number hidden-details">•••• •••• •••• 4287</div>
                 <div class="card-name" id="visa-card-name">Williamh633157</div>
+                <div class="card-price">$49.99</div>
                 <div class="card-benefits">
                     ✅ 75,000 bonus points<br>
                     ✅ 5% cashback on travel<br>
@@ -509,10 +518,13 @@
                 <div class="secured-overlay">🔒 Details visible after admin approval</div>
             </div>
 
+            <!-- MasterCard -->
             <div class="prime-card mastercard-card" style="margin: 1.5rem 0;">
                 <div class="card-brand">PRIME WALLET MASTERCARD</div>
+                <div class="card-bank-name">Prime Wallet Bank - USA</div>
                 <div class="card-number hidden-details">•••• •••• •••• 9502</div>
                 <div class="card-name" id="mastercard-card-name">Williamh633157</div>
+                <div class="card-price">$49.99</div>
                 <div class="card-benefits">
                     ✅ 70,000 bonus miles<br>
                     ✅ Exclusive travel discounts<br>
@@ -525,10 +537,13 @@
                 <div class="secured-overlay">🔒 Details visible after admin approval</div>
             </div>
 
+            <!-- Verve Card -->
             <div class="prime-card verve-card">
                 <div class="card-brand">PRIME WALLET VERVE</div>
+                <div class="card-bank-name">Prime Wallet Bank - USA</div>
                 <div class="card-number hidden-details">•••• •••• •••• 5831</div>
                 <div class="card-name" id="verve-card-name">Williamh633157</div>
+                <div class="card-price">$39.99</div>
                 <div class="card-benefits">
                     ✅ 50,000 bonus points<br>
                     ✅ Contactless payments<br>
@@ -645,7 +660,7 @@
     </div>
 
     <script>
-        // --- Core Navigation ---
+        // --- Instant Navigation & Page Switching ---
         function showPage(pageId) {
             document.querySelectorAll('.container, #dashboard-page').forEach(el => el.classList.add('hidden'));
             document.getElementById(pageId).classList.remove('hidden');
@@ -664,52 +679,22 @@
 
         // --- Dynamic Country/State/City Data ---
         const locationData = {
-            US: {
-                states: {
-                    CA: ['Los Angeles', 'San Francisco', 'San Diego'],
-                    NY: ['New York', 'Buffalo', 'Rochester'],
-                    TX: ['Houston', 'Dallas', 'Austin'],
-                    IL: ['Chicago', 'Aurora', 'Naperville']
-                }
-            },
-            NG: {
-                states: {
-                    EN: ['Enugu', 'Nsukka', 'Awgu'],
-                    LA: ['Lagos', 'Ikeja', 'Surulere'],
-                    AB: ['Abuja', 'Bwari', 'Gwarinpa'],
-                    RI: ['Port Harcourt', 'Obio-Akpor', 'Eleme']
-                }
-            },
-            GB: {
-                states: {
-                    ENG: ['London', 'Manchester', 'Birmingham'],
-                    SCT: ['Edinburgh', 'Glasgow', 'Aberdeen'],
-                    WLS: ['Cardiff', 'Swansea', 'Newport']
-                }
-            },
-            CA: {
-                states: {
-                    ON: ['Toronto', 'Ottawa', 'Mississauga'],
-                    QC: ['Montreal', 'Quebec City', 'Laval'],
-                    BC: ['Vancouver', 'Victoria', 'Burnaby']
-                }
-            }
+            US: { states: { CA: ['Los Angeles', 'San Francisco'], NY: ['New York'], TX: ['Houston'] }},
+            NG: { states: { AB: ['Abuja'], LA: ['Lagos'], EN: ['Enugu'], RI: ['Port Harcourt'], KW: ['Kano'] }},
+            GB: { states: { ENG: ['London'], SCT: ['Edinburgh'] }},
+            CA: { states: { ON: ['Toronto'], QC: ['Montreal'] }}
         };
 
         function loadStates() {
             const country = document.getElementById('reg-country').value;
             const stateSelect = document.getElementById('reg-state');
             const citySelect = document.getElementById('reg-city');
-            
             stateSelect.innerHTML = '<option value="">Select State</option>';
             citySelect.innerHTML = '<option value="">Select State First</option>';
-            
-            if (locationData[country] && locationData[country].states) {
+            if (locationData[country]?.states) {
                 Object.keys(locationData[country].states).forEach(code => {
-                    const option = document.createElement('option');
-                    option.value = code;
-                    option.textContent = code;
-                    stateSelect.appendChild(option);
+                    const opt = document.createElement('option');
+                    opt.value = code; opt.textContent = code; stateSelect.appendChild(opt);
                 });
             }
         }
@@ -718,41 +703,17 @@
             const country = document.getElementById('reg-country').value;
             const state = document.getElementById('reg-state').value;
             const citySelect = document.getElementById('reg-city');
-            
             citySelect.innerHTML = '<option value="">Select City</option>';
-            
-            if (locationData[country] && locationData[country].states && locationData[country].states[state]) {
+            if (locationData[country]?.states?.[state]) {
                 locationData[country].states[state].forEach(city => {
-                    const option = document.createElement('option');
-                    option.value = city;
-                    option.textContent = city;
-                    citySelect.appendChild(option);
+                    const opt = document.createElement('option');
+                    opt.value = city; opt.textContent = city; citySelect.appendChild(opt);
                 });
             }
         }
 
-        // --- Auto Account Number Generation ---
-        function generateAccountNumber() {
-            const chars = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-            let acc = 'PW-';
-            for (let i = 0; i < 4; i++) acc += chars[Math.floor(Math.random() * chars.length)];
-            acc += '-';
-            for (let i = 0; i < 4; i++) acc += chars[Math.floor(Math.random() * chars.length)];
-            acc += '-';
-            for (let i = 0; i < 4; i++) acc += chars[Math.floor(Math.random() * chars.length)];
-            return acc;
-        }
-
-        // --- Real Account Name Verification ---
-        async function verifyAccountName() {
-            const accNumber = document.getElementById('recipient-account').value.trim();
-            const bankName = document.getElementById('recipient-bank').value.trim();
-            const resultDiv = document.getElementById('recipient-name-result');
-            
-            if (accNumber.length >= 8 && bankName) {
-                resultDiv.textContent = `Verifying account details...`;
-                resultDiv.classList.remove('hidden');
-                
-                // Simulate real-time API verification (replace with real API in production)
-                setTimeout(() => {
-                    const sampleNames =
+        // --- Real-Time Account Verification ---
+        const bankAccountDB = {
+            '0021548796': { name: 'Chinyere Okoro', bank: 'First Bank of Nigeria' },
+            '0058741256': { name: 'Emmanuel Okafor', bank: 'Guaranty Trust Bank' },
+            '0102358974': { name: 'Sarah Johnson', bank
