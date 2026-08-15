@@ -3,37 +3,31 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Prime Wallet Bank - USA 🇺🇸</title>
+  <title>Prime Wallet Bank - USA</title>
   <style>
     * { margin:0; padding:0; box-sizing:border-box; font-family: 'Segoe UI', Roboto, Arial, sans-serif; }
     :root {
       --prime-blue: #0047AB; --prime-dark-blue: #002D6D; --prime-light-blue: #E8F0FE;
-      --white: #fff; --light-gray: #f5f7fa; --gray: #6c757d; --dark: #212529;
+      --white: #fff; --light-gray: #f8f9fa; --gray: #6c757d; --dark: #212529;
       --success: #198754; --warning: #ffc107; --danger: #dc3545; --shadow: 0 2px 12px rgba(0,0,0,0.08);
     }
-    body { background: var(--light-gray); color: var(--dark); min-height:100vh; }
+    body { background: var(--white); color: var(--dark); min-height:100vh; }
     .hidden { display:none !important; }
-
-    .notification { position:fixed; top:1rem; left:50%; transform:translateX(-50%); z-index:9999; padding:1rem 2rem; border-radius:8px; color:#fff; font-weight:500; opacity:0; transition:opacity 0.3s; }
-    .notification.show { opacity:1; }
-    .notification.info { background:rgba(13, 110, 253, 0.95); }
-    .notification.success { background:rgba(25, 135, 84, 0.95); }
-    .notification.danger { background:rgba(220, 53, 69, 0.95); }
 
     .header { background: var(--prime-blue); color: #fff; padding: 1.2rem; display: flex; align-items: center; justify-content: space-between; position: sticky; top:0; z-index:100; }
     .logo { display: flex; align-items: center; gap: 0.75rem; font-size: 1.5rem; font-weight: 700; }
     .us-flag { font-size: 1.8rem; margin-left: 0.5rem; }
-    .auth-btn { border: 2px solid #fff; border-radius: 8px; padding: 0.6rem 1.2rem; font-weight: 600; cursor:pointer; transition:0.2s; }
+    .auth-btn { border: 2px solid #fff; border-radius: 8px; padding: 0.6rem 1.2rem; font-weight: 600; cursor: pointer; transition: 0.2s; }
     .auth-btn:active { background: rgba(255,255,255,0.2); transform: scale(0.96); }
 
     .container { max-width: 480px; margin: 2rem auto; padding: 0 1.5rem; }
-    .card { background: #fff; border-radius: 16px; padding: 2rem; box-shadow: var(--shadow); text-align: center; }
+    .card { background: #fff; border-radius: 16px; padding: 2rem; box-shadow: var(--shadow); text-align: center; border: 1px solid var(--light-gray); }
     h1 { color: var(--prime-dark-blue); font-size: 1.8rem; margin-bottom: 1rem; line-height: 1.3; }
     .sub-text { color: var(--gray); font-size: 1.1rem; margin-bottom: 2rem; line-height: 1.5; }
-    .btn { width: 100%; padding: 1rem; border: none; border-radius: 8px; font-size: 1.1rem; font-weight: 600; cursor:pointer; transition:0.2s; }
+    .btn { width: 100%; padding: 1rem; border: none; border-radius: 8px; font-size: 1.1rem; font-weight: 600; cursor: pointer; transition: 0.2s; }
     .btn-primary { background: var(--prime-blue); color: #fff; }
     .btn-primary:active { background: var(--prime-dark-blue); transform: scale(0.98); }
-    .btn-link { background: none; color: var(--prime-blue); font-weight: 600; margin-top: 1rem; text-decoration: underline; cursor:pointer; }
+    .btn-link { background: none; color: var(--prime-blue); font-weight: 600; margin-top: 1rem; text-decoration: underline; cursor: pointer; }
     .footer-text { text-align: center; color: var(--gray); font-size: 0.9rem; margin: 2rem 0; line-height: 1.5; }
     .footer-text a { color: var(--prime-blue); text-decoration: none; font-weight: 500; }
 
@@ -41,57 +35,55 @@
     .form-card h2 { text-align: center; color: var(--prime-dark-blue); font-size: 1.6rem; margin-bottom: 0.5rem; }
     .form-subtitle { text-align: center; color: var(--gray); margin-bottom: 2rem; }
     .steps { display: flex; justify-content: space-between; position: relative; margin-bottom: 2rem; }
-    .steps::before { content: ''; position: absolute; top: 16px; left: 10%; right: 10%; height: 2px; background: #e9ecef; z-index:1; }
-    .step { display: flex; flex-direction: column; align-items: center; position: relative; z-index:2; font-size: 0.9rem; color: var(--gray); }
-    .step-number { width: 32px; height: 32px; border-radius: 50%; background: #e9ecef; color: var(--gray); display: flex; align-items: center; justify-content: center; font-weight:700; margin-bottom: 0.5rem; }
+    .steps::before { content: ''; position: absolute; top: 16px; left: 10%; right: 10%; height: 2px; background: #e9ecef; z-index: 1; }
+    .step { display: flex; flex-direction: column; align-items: center; position: relative; z-index: 2; font-size: 0.9rem; color: var(--gray); }
+    .step-number { width: 32px; height: 32px; border-radius: 50%; background: #e9ecef; color: var(--gray); display: flex; align-items: center; justify-content: center; font-weight: 700; margin-bottom: 0.5rem; }
     .step.active .step-number { background: var(--prime-blue); color: #fff; }
     .step.completed .step-number { background: var(--success); color: #fff; }
-    .step.active { color: var(--prime-blue); font-weight:600; }
+    .step.active { color: var(--prime-blue); font-weight: 600; }
 
     .form-group { margin-bottom: 1.5rem; }
-    label { display: block; margin-bottom: 0.6rem; font-weight:500; color: var(--dark); }
-    input, select { width:100%; padding:0.9rem; border:1px solid #ced4da; border-radius:8px; font-size:1rem; transition:0.2s; }
-    input:focus, select:focus { outline:none; border-color: var(--prime-blue); box-shadow: 0 0 0 3px rgba(0,71,171,0.15); }
-    .btn-group { display: flex; gap:1rem; margin-top:2rem; }
-    .btn-secondary { background: #fff; color: var(--prime-blue); border:2px solid var(--prime-blue); }
+    label { display: block; margin-bottom: 0.6rem; font-weight: 500; color: var(--dark); }
+    input, select { width: 100%; padding: 0.9rem; border: 1px solid #ced4da; border-radius: 8px; font-size: 1rem; transition: 0.2s; }
+    input:focus, select:focus { outline: none; border-color: var(--prime-blue); box-shadow: 0 0 0 3px rgba(0,71,171,0.15); }
+    .input-hint { font-size: 0.85rem; color: var(--gray); margin-top: 0.4rem; }
+    .btn-group { display: flex; gap: 1rem; margin-top: 2rem; }
+    .btn-secondary { background: #fff; color: var(--prime-blue); border: 2px solid var(--prime-blue); }
     .btn-secondary:active { background: var(--prime-light-blue); }
-    .alert { padding:1rem; border-radius:8px; margin:1.2rem 0; text-align:center; font-weight:500; }
-    .alert-info { background: #cff4fc; color: #055160; border:1px solid #b6eff9; }
-    .alert-success { background: #d1e7dd; color: #0f5132; border:1px solid #badbcc; }
-    .alert-warning { background: #fff3cd; color: #664d03; border:1px solid #ffecb5; }
-    .alert-danger { background: #f8d7da; color: #842029; border:1px solid #f5c2c7; }
+    .alert { padding: 1rem; border-radius: 8px; margin: 1.2rem 0; text-align: center; font-weight: 500; }
+    .alert-info { background: #cff4fc; color: #055160; border: 1px solid #b6eff9; }
+    .alert-success { background: #d1e7dd; color: #0f5132; border: 1px solid #badbcc; }
+    .alert-warning { background: #fff3cd; color: #664d03; border: 1px solid #ffecb5; }
+    .alert-danger { background: #f8d7da; color: #842029; border: 1px solid #f5c2c7; }
 
-    .welcome-bar { background: linear-gradient(135deg, var(--prime-blue), var(--prime-dark-blue)); color: #fff; padding:1.5rem; position:relative; }
-    .welcome-bar h1 { color: #fff; text-align:left; font-size:1.4rem; margin-bottom:0.3rem; }
-    .date-time { position:absolute; top:1.5rem; right:1.5rem; text-align:right; font-size:0.9rem; opacity:0.9; font-weight:500; }
-    .account-type { font-size:0.95rem; opacity:0.9; margin:2.5rem 0 0.3rem; }
-    .account-number { font-size:1.1rem; font-weight:600; letter-spacing:1px; opacity:0.9; font-family: monospace; }
-    .balance-section { background: #fff; padding:1.5rem; margin:1rem; border-radius:12px; box-shadow: var(--shadow); }
-    .balance-label { font-size:1rem; color: var(--gray); margin-bottom:0.5rem; }
-    .balance-amount { font-size:2.5rem; font-weight:700; margin-bottom:1rem; }
-    .alert-locked { background: #fff3cd; color: #664d03; border:1px solid #ffecb5; padding:1rem; border-radius:8px; text-align:center; font-weight:500; }
-    .quick-actions { display: flex; gap:1rem; margin:1rem; overflow-x:auto; padding:0 1rem 1rem; }
-    .action-btn { flex:0 0 auto; background: #fff; border:1px solid #e9ecef; border-radius:12px; padding:1rem; min-width:100px; text-align:center; cursor:pointer; transition:0.2s; box-shadow: var(--shadow); }
+    .welcome-bar { background: linear-gradient(135deg, var(--prime-blue), var(--prime-dark-blue)); color: #fff; padding: 1.5rem; position: relative; }
+    .welcome-bar h1 { color: #fff; text-align: left; font-size: 1.4rem; margin-bottom: 0.3rem; }
+    .date-time { position: absolute; top: 1.5rem; right: 1.5rem; text-align: right; font-size: 0.9rem; opacity: 0.9; font-weight: 500; }
+    .account-type { font-size: 0.95rem; opacity: 0.9; margin: 2.5rem 0 0.3rem; }
+    .account-number { font-size: 1.1rem; font-weight: 600; letter-spacing: 1px; opacity: 0.9; font-family: monospace; }
+    .balance-section { background: #fff; padding: 1.5rem; margin: 1rem; border-radius: 12px; box-shadow: var(--shadow); }
+    .balance-label { font-size: 1rem; color: var(--gray); margin-bottom: 0.5rem; }
+    .balance-amount { font-size: 2.5rem; font-weight: 700; margin-bottom: 1rem; }
+    .quick-actions { display: flex; gap: 1rem; margin: 1rem; overflow-x: auto; padding: 0 1rem 1rem; }
+    .action-btn { flex: 0 0 auto; background: #fff; border: 1px solid #e9ecef; border-radius: 12px; padding: 1rem; min-width: 100px; text-align: center; cursor: pointer; transition: 0.2s; box-shadow: var(--shadow); }
     .action-btn:active { transform: scale(0.96); background: var(--prime-light-blue); }
-    .action-icon { font-size:1.6rem; margin-bottom:0.6rem; }
-    .action-text { font-size:0.9rem; font-weight:500; }
-    .nav-menu { background: #fff; margin:0 1rem 2rem; border-radius:12px; box-shadow: var(--shadow); overflow:hidden; }
-    .nav-item { display: flex; align-items: center; padding:1.2rem; border-bottom:1px solid #f1f3f5; cursor:pointer; transition:0.2s; }
-    .nav-item:last-child { border-bottom:none; }
+    .action-icon { font-size: 1.6rem; margin-bottom: 0.6rem; }
+    .action-text { font-size: 0.9rem; font-weight: 500; }
+    .nav-menu { background: #fff; margin: 0 1rem 2rem; border-radius: 12px; box-shadow: var(--shadow); overflow: hidden; }
+    .nav-item { display: flex; align-items: center; padding: 1.2rem; border-bottom: 1px solid #f1f3f5; cursor: pointer; transition: 0.2s; }
+    .nav-item:last-child { border-bottom: none; }
     .nav-item:active { background: var(--prime-light-blue); }
-    .nav-icon { font-size:1.4rem; margin-right:0.8rem; width:24px; text-align:center; }
-    .nav-label { font-size:1.05rem; font-weight:500; }
-    .bottom-nav { position:fixed; bottom:0; left:0; width:100%; background: #fff; border-top:1px solid #e9ecef; display: flex; justify-content: space-around; padding:0.75rem 0; box-shadow: 0 -2px 8px rgba(0,0,0,0.05); }
-    .bottom-nav-item { display: flex; flex-direction: column; align-items: center; font-size:0.75rem; color: var(--gray); cursor:pointer; transition:0.2s; }
+    .nav-icon { font-size: 1.4rem; margin-right: 0.8rem; width: 24px; text-align: center; }
+    .nav-label { font-size: 1.05rem; font-weight: 500; }
+    .bottom-nav { position: fixed; bottom: 0; left: 0; width: 100%; background: #fff; border-top: 1px solid #e9ecef; display: flex; justify-content: space-around; padding: 0.75rem 0; box-shadow: 0 -2px 8px rgba(0,0,0,0.05); }
+    .bottom-nav-item { display: flex; flex-direction: column; align-items: center; font-size: 0.75rem; color: var(--gray); cursor: pointer; transition: 0.2s; }
     .bottom-nav-item.active { color: var(--prime-blue); }
-    .bottom-nav-item .icon { font-size:1.5rem; margin-bottom:0.3rem; }
-
-    .page-content { padding:1rem; }
-    .page-header { font-size:1.5rem; font-weight:700; color: var(--prime-dark-blue); margin-bottom:1.5rem; display: flex; align-items: center; gap:0.75rem; }
-    .back-btn { background:none; border:none; color: var(--prime-blue); font-size:1rem; font-weight:600; cursor:pointer; padding:0; margin-bottom:1rem; display: flex; align-items: center; gap:0.5rem; }
-    .result-box { padding:1rem; border-radius:8px; margin:1rem 0; text-align:center; font-weight:500; }
-    .result-success { background: #d1e7dd; color: #0f5132; border:1px solid #badbcc; }
-    .result-error { background: #f8d7da; color: #842029; border:1px solid #f5c2c7; }
+    .bottom-nav-item .icon { font-size: 1.5rem; margin-bottom: 0.3rem; }
+    .page-content { padding: 1rem; }
+    .response-page { background: #fff; border-radius: 12px; padding: 2rem; box-shadow: var(--shadow); margin: 1rem; text-align: center; }
+    .response-page h2 { color: var(--prime-blue); margin-bottom: 1rem; }
+    .recipient-result { padding: 1rem; background: #d1e7dd; border-radius: 8px; margin: 1rem 0; text-align: center; font-weight: 600; color: #0f5132; }
+    .recipient-error { background: #f8d7da; color: #842029; }
   </style>
 </head>
 <body>
@@ -100,11 +92,11 @@
 
 <div class="header">
   <div class="logo">
-    <span style="font-size:2rem;">🏦</span>
+    <span style="font-size: 2rem;">🏦</span>
     <div>Prime Wallet<br>Bank - USA</div>
     <span class="us-flag">🇺🇸</span>
   </div>
-  <div id="auth-btn" class="auth-btn" onclick="toggleAuth()">Sign In</div>
+  <div class="auth-btn" id="auth-btn" onclick="toggleAuth()">Sign In</div>
 </div>
 
 <div id="landing-page" class="container">
@@ -122,92 +114,131 @@
 
 <div id="register-page" class="container hidden">
   <div class="card form-card">
-    <button class="back-btn" onclick="showPage('landing-page')">← Back to Home</button>
     <h2>🔐 Create Your Account</h2>
     <p class="form-subtitle">Secure Registration — All Fields Required</p>
+
     <div class="steps">
-      <div class="step active" id="step1-indicator"><div class="step-number">1</div><div>Personal<br>Info</div></div>
-      <div class="step" id="step2-indicator"><div class="step-number">2</div><div>Location</div></div>
-      <div class="step" id="step3-indicator"><div class="step-number">3</div><div>Verification</div></div>
-      <div class="step" id="step4-indicator"><div class="step-number">4</div><div>Upload<br>ID</div></div>
+      <div class="step active" id="step1-indicator">
+        <div class="step-number">1</div>
+        <div>Personal<br>Info</div>
+      </div>
+      <div class="step" id="step2-indicator">
+        <div class="step-number">2</div>
+        <div>Location</div>
+      </div>
+      <div class="step" id="step3-indicator">
+        <div class="step-number">3</div>
+        <div>Verification</div>
+      </div>
+      <div class="step" id="step4-indicator">
+        <div class="step-number">4</div>
+        <div>Upload<br>ID</div>
+      </div>
     </div>
+
     <form id="register-form">
       <div id="step1-content">
-        <h3 style="color: var(--prime-blue); margin-bottom:1.5rem;">📋 Personal Details</h3>
+        <h3 style="color: var(--prime-blue); margin-bottom: 1.5rem;">📋 Personal Details</h3>
         <div class="form-group">
-          <label>Full Name *</label><input type="text" id="reg-fullname" placeholder="John Michael Morgan" required>
+          <label>Full Name (First & Last Name) *</label>
+          <input type="text" id="reg-fullname" placeholder="e.g. John Michael Morgan" required>
         </div>
         <div class="form-group">
-          <label>Email *</label><input type="email" id="reg-email" placeholder="yourname@email.com" required>
+          <label>Email Address *</label>
+          <input type="email" id="reg-email" placeholder="yourname@email.com" required>
         </div>
         <div class="form-group">
-          <label>Phone *</label><input type="tel" id="reg-phone" placeholder="+234 XXX XXX XXXX" required>
+          <label>Phone Number *</label>
+          <input type="tel" id="reg-phone" placeholder="+234 XXX XXX XXXX" required>
         </div>
         <div class="form-group">
-          <label>Date of Birth *</label><input type="date" id="reg-dob" required>
+          <label>Date of Birth *</label>
+          <input type="date" id="reg-dob" required>
         </div>
         <div class="form-group">
-          <label>Password *</label><input type="password" id="reg-password" placeholder="8+ chars: letters, numbers, symbols" required>
+          <label>Create Password *</label>
+          <input type="password" id="reg-password" placeholder="8+ chars: letters, numbers, symbols" required>
         </div>
         <div class="form-group">
-          <label>Confirm Password *</label><input type="password" id="reg-confirmpwd" placeholder="Re-enter password" required>
+          <label>Confirm Password *</label>
+          <input type="password" id="reg-confirmpwd" placeholder="Re-enter your password" required>
         </div>
         <div class="btn-group">
           <button type="button" class="btn btn-secondary" onclick="showPage('landing-page')">Cancel</button>
           <button type="button" class="btn btn-primary" onclick="goToStep(2)">Continue</button>
         </div>
       </div>
+
       <div id="step2-content" class="hidden">
-        <h3 style="color: var(--prime-blue); margin-bottom:1.5rem;">📍 Location Details</h3>
+        <h3 style="color: var(--prime-blue); margin-bottom: 1.5rem;">📍 Location Details</h3>
         <div class="form-group">
-          <label>Country *</label>
+          <label>Country of Residence *</label>
           <select id="reg-country" onchange="loadStates()">
             <option value="">Select Country</option>
-            <option>United States</option><option>United Kingdom</option><option>Canada</option><option selected>Nigeria</option>
-            <option>South Africa</option><option>Kenya</option><option>Ghana</option><option>Germany</option><option>France</option><option>India</option>
           </select>
         </div>
         <div class="form-group">
-          <label>State / Province *</label><select id="reg-state" onchange="loadCities()"><option value="">Select State</option></select>
+          <label>State / Province *</label>
+          <select id="reg-state" onchange="loadCities()">
+            <option value="">Select State</option>
+          </select>
         </div>
         <div class="form-group">
-          <label>City *</label><input type="text" id="reg-city" placeholder="Your city" required>
+          <label>City *</label>
+          <input type="text" id="reg-city" placeholder="Type your city name" required>
         </div>
         <div class="form-group">
-          <label>Residential Address *</label><input type="text" id="reg-address" placeholder="Street, Apartment, Suite" required>
+          <label>Full Residential Address *</label>
+          <input type="text" id="reg-address" placeholder="Street address, Apartment, Suite" required>
+        </div>
+        <div class="alert alert-info">
+          📍 <strong>Location Permission Required:</strong> Please allow location access when prompted to complete registration.
         </div>
         <div class="btn-group">
           <button type="button" class="btn btn-secondary" onclick="goToStep(1)">Back</button>
           <button type="button" class="btn btn-primary" onclick="goToStep(3)">Continue</button>
         </div>
       </div>
+
       <div id="step3-content" class="hidden">
-        <h3 style="color: var(--prime-blue); margin-bottom:1.5rem;">🔒 Security Verification</h3>
-        <div class="alert alert-info">📧 Your registration will be reviewed by admin. <strong>Admin must approve before you can sign in.</strong></div>
+        <h3 style="color: var(--prime-blue); margin-bottom: 1.5rem;">🔒 Security Verification</h3>
+        <div class="alert alert-info">
+          📧 Your registration will be reviewed by admin. <strong>Admin must approve your account before you can sign in.</strong>
+        </div>
         <div class="btn-group">
           <button type="button" class="btn btn-secondary" onclick="goToStep(2)">Back</button>
           <button type="button" class="btn btn-primary" onclick="goToStep(4)">Continue</button>
         </div>
       </div>
+
       <div id="step4-content" class="hidden">
-        <h3 style="color: var(--prime-blue); margin-bottom:1.5rem;">🪪 Identification</h3>
+        <h3 style="color: var(--prime-blue); margin-bottom: 1.5rem;">🪪 Identification</h3>
         <div class="form-group">
-          <label>ID Type *</label>
+          <label>Government ID Type *</label>
           <select id="reg-idtype">
             <option value="">Select ID Type</option>
-            <option>Driver's License</option><option>Passport</option><option>National ID Card</option>
+            <option>Driver's License</option>
+            <option>Passport</option>
+            <option>National ID Card</option>
+            <option>Social Security Card</option>
+            <option>Other Government ID</option>
           </select>
         </div>
         <div class="form-group">
-          <label>ID Number *</label><input type="text" id="reg-idnumber" placeholder="ID number" required>
+          <label>ID Number *</label>
+          <input type="text" id="reg-idnumber" placeholder="Enter your ID number" required>
         </div>
         <div class="form-group">
-          <label>Upload ID — Front *</label><input type="file" id="reg-idfront" accept="image/*" required>
+          <label>Upload ID — Front Side *</label>
+          <input type="file" id="reg-idfront" accept="image/*" required>
         </div>
         <div class="form-group">
-          <label>Upload ID — Back *</label><input type="file" id="reg-idback" accept="image/*" required>
+          <label>Upload ID — Back Side *</label>
+          <input type="file" id="reg-idback" accept="image/*" required>
         </div>
-        <div class="alert alert-info">🔒 Your info is encrypted. Admin will review & approve your account.</div>
+        <div class="alert alert-info">
+          🔒 Your personal information is encrypted and securely stored. Admin will review and approve your account before you can sign in.
+        </div>
         <div class="btn-group">
           <button type="button" class="btn btn-secondary" onclick="goToStep(3)">Back</button>
           <button type="submit" class="btn btn-primary">Submit for Admin Approval</button>
@@ -219,17 +250,20 @@
 
 <div id="login-page" class="container hidden">
   <div class="card form-card">
-    <button class="back-btn" onclick="showPage('landing-page')">← Back to Home</button>
     <h2>Sign In</h2>
     <p class="form-subtitle">Access your Prime Wallet Bank account</p>
     <form id="login-form">
       <div class="form-group">
-        <label>Email</label><input type="email" id="login-email" placeholder="yourname@email.com" required>
+        <label>Email Address</label>
+        <input type="email" id="login-email" placeholder="yourname@email.com" required>
       </div>
       <div class="form-group">
-        <label>Password</label><input type="password" id="login-password" placeholder="Your password" required>
+        <label>Password</label>
+        <input type="password" id="login-password" placeholder="Enter your password" required>
       </div>
-      <div id="login-status" class="alert alert-warning hidden">🔒 Your account is pending admin approval.</div>
+      <div id="login-status" class="alert alert-warning hidden">
+        🔒 Your account is pending admin approval. You will be able to sign in once approved.
+      </div>
       <div id="login-error" class="alert alert-danger hidden"></div>
       <button type="submit" class="btn btn-primary">Sign In</button>
       <p class="btn-link" onclick="showPage('forgot-password-page')">Forgot your password?</p>
@@ -240,33 +274,38 @@
 
 <div id="forgot-password-page" class="container hidden">
   <div class="card form-card">
-    <button class="back-btn" onclick="showPage('landing-page')">← Back to Home</button>
     <h2>🔑 Forgot Password</h2>
     <p class="form-subtitle">Request a password reset code</p>
     <form id="forgot-password-form">
       <div class="form-group">
-        <label>Email or Phone</label><input type="text" id="reset-contact" placeholder="Enter email or phone" required>
+        <label>Registered Email or Phone Number</label>
+        <input type="text" id="reset-contact" placeholder="Enter your email or phone number" required>
       </div>
-      <div id="reset-request-status" class="alert alert-info hidden">✅ Request sent! Admin will review and send reset code.</div>
+      <div id="reset-request-status" class="alert alert-info hidden">
+        ✅ Request sent! Admin will review and send a reset code to your email/SMS shortly.
+      </div>
       <button type="submit" class="btn btn-primary">Send Reset Code Request</button>
+      <p class="btn-link" onclick="showPage('login-page')">Back to Sign In</p>
     </form>
   </div>
 </div>
 
 <div id="reset-password-page" class="container hidden">
   <div class="card form-card">
-    <button class="back-btn" onclick="showPage('login-page')">← Back to Sign In</button>
     <h2>🔑 Reset Password</h2>
-    <p class="form-subtitle">Enter code and create new password</p>
+    <p class="form-subtitle">Enter the code sent to you and create a new password</p>
     <form id="reset-password-form">
       <div class="form-group">
-        <label>6-Digit Reset Code</label><input type="text" id="reset-code" placeholder="Enter code" required>
+        <label>6-Digit Reset Code</label>
+        <input type="text" id="reset-code" placeholder="Enter code from admin" required>
       </div>
       <div class="form-group">
-        <label>New Password</label><input type="password" id="new-password" placeholder="8+ chars: letters, numbers, symbols" required>
+        <label>New Password</label>
+        <input type="password" id="new-password" placeholder="8+ chars: letters, numbers, symbols" required>
       </div>
       <div class="form-group">
-        <label>Confirm New Password</label><input type="password" id="confirm-new-password" placeholder="Re-enter new password" required>
+        <label>Confirm New Password</label>
+        <input type="password" id="confirm-new-password" placeholder="Re-enter new password" required>
       </div>
       <div id="reset-status" class="alert hidden"></div>
       <button type="submit" class="btn btn-primary">Update Password & Sign In</button>
@@ -284,253 +323,306 @@
   <div class="balance-section">
     <div class="balance-label">Available Balance</div>
     <div class="balance-amount">$<span id="balance">0.00</span></div>
-    <div class="alert-locked">🔒 Purchase Card to Create Your Pin For Transactions</div>
+    <div class="alert alert-warning" style="margin:0;">
+      🔒 Purchase Card to Create Your Pin For Transactions
+    </div>
   </div>
+
   <div class="quick-actions">
-    <div class="action-btn" onclick="showPage('send-money-page')"><div class="action-icon">💬</div><div class="action-text">Send</div></div>
-    <div class="action-btn" onclick="showPage('zelle-page')"><div class="action-icon">Zelle®</div><div class="action-text">Zelle®</div></div>
-    <div class="action-btn" onclick="showPage('deposit-checks-page')"><div class="action-icon">📎</div><div class="action-text">Deposit Checks</div></div>
-    <div class="action-btn" onclick="showPage('pay-bills-page')"><div class="action-icon">👤</div><div class="action-text">Pay Bills</div></div>
+    <div class="action-btn" onclick="showPage('messages-page')">
+      <div class="action-icon">💬</div>
+      <div class="action-text">Messages</div>
+    </div>
+    <div class="action-btn" onclick="showPage('attachments-page')">
+      <div class="action-icon">📎</div>
+      <div class="action-text">Attachments</div>
+    </div>
+    <div class="action-btn" onclick="showPage('profile-page')">
+      <div class="action-icon">👤</div>
+      <div class="action-text">Profile</div>
+    </div>
+    <div class="action-btn" onclick="showPage('add-page')">
+      <div class="action-icon">+ Add</div>
+      <div class="action-text">Add</div>
+    </div>
   </div>
+
   <div class="nav-menu">
-    <div class="nav-item" onclick="showPage('purchase-card-page')"><div class="nav-icon">💳</div><div class="nav-label">Purchase Card To Create Your Pin For Transactions</div></div>
-    <div class="nav-item" onclick="showPage('credit-cards-page')"><div class="nav-icon">💳</div><div class="nav-label">Credit Cards</div></div>
-    <div class="nav-item" onclick="showPage('checking-page')"><div class="nav-icon">🏦</div><div class="nav-label">Checking</div></div>
-    <div class="nav-item" onclick="showPage('savings-page')"><div class="nav-icon">💰</div><div class="nav-label">Savings & CDs</div></div>
-    <div class="nav-item" onclick="showPage('mortgage-page')"><div class="nav-icon">🏠</div><div class="nav-label">Mortgage</div></div>
-    <div class="nav-item" onclick="showPage('accounts-page')"><div class="nav-icon">🏠</div><div class="nav-label">Accounts</div></div>
-    <div class="nav-item" onclick="showPage('pay-transfer-page')"><div class="nav-icon">↗️</div><div class="nav-label">Pay & transfer</div></div>
-    <div class="nav-item" onclick="showPage('plan-track-page')"><div class="nav-icon">📊</div><div class="nav-label">Plan & track</div></div>
-    <div class="nav-item" onclick="showPage('more-page')"><div class="nav-icon">☰</div><div class="nav-label">More</div></div>
+    <div class="nav-item" onclick="showPage('send-money-page')">
+      <div class="nav-icon">↗️</div>
+      <div class="nav-label">Send Money | Zelle®</div>
+    </div>
+    <div class="nav-item" onclick="showPage('deposit-checks-page')">
+      <div class="nav-icon">📎</div>
+      <div class="nav-label">Deposit Checks</div>
+    </div>
+    <div class="nav-item" onclick="showPage('pay-bills-page')">
+      <div class="nav-icon">💳</div>
+      <div class="nav-label">Pay Bills</div>
+    </div>
+    <div class="nav-item" onclick="showPage('purchase-card-page')">
+      <div class="nav-icon">💳</div>
+      <div class="nav-label">Purchase Card To Create Your Pin For Transactions</div>
+    </div>
+    <div class="nav-item" onclick="showPage('credit-cards-page')">
+      <div class="nav-icon">💳</div>
+      <div class="nav-label">Credit Cards</div>
+    </div>
+    <div class="nav-item" onclick="showPage('checking-page')">
+      <div class="nav-icon">🏦</div>
+      <div class="nav-label">Checking</div>
+    </div>
+    <div class="nav-item" onclick="showPage('savings-page')">
+      <div class="nav-icon">💰</div>
+      <div class="nav-label">Savings & CDs</div>
+    </div>
+    <div class="nav-item" onclick="showPage('mortgage-page')">
+      <div class="nav-icon">🏠</div>
+      <div class="nav-label">Mortgage</div>
+    </div>
+    <div class="nav-item" onclick="showPage('accounts-page')">
+      <div class="nav-icon">🏠</div>
+      <div class="nav-label">Accounts</div>
+    </div>
+    <div class="nav-item" onclick="showPage('pay-transfer-page')">
+      <div class="nav-icon">↗️</div>
+      <div class="nav-label">Pay & Transfer</div>
+    </div>
+    <div class="nav-item" onclick="showPage('plan-track-page')">
+      <div class="nav-icon">📊</div>
+      <div class="nav-label">Plan & Track</div>
+    </div>
+    <div class="nav-item" onclick="showPage('more-page')">
+      <div class="nav-icon">☰</div>
+      <div class="nav-label">More</div>
+    </div>
   </div>
+
   <div class="bottom-nav">
-    <div class="bottom-nav-item active" onclick="showPage('dashboard-page')"><div class="icon">🏠</div><div>Home</div></div>
-    <div class="bottom-nav-item" onclick="showPage('pay-transfer-page')"><div class="icon">↗️</div><div>Pay & Transfer</div></div>
-    <div class="bottom-nav-item" onclick="showPage('purchase-card-page')"><div class="icon">💳</div><div>Cards</div></div>
-    <div class="bottom-nav-item" onclick="showPage('more-page')"><div class="icon">☰</div><div>More</div></div>
+    <div class="bottom-nav-item active" onclick="showPage('dashboard-page')">
+      <div class="icon">🏠</div>
+      <div>Home</div>
+    </div>
+    <div class="bottom-nav-item" onclick="showPage('pay-transfer-page')">
+      <div class="icon">↗️</div>
+      <div>Pay & Transfer</div>
+    </div>
+    <div class="bottom-nav-item" onclick="showPage('purchase-card-page')">
+      <div class="icon">💳</div>
+      <div>Cards</div>
+    </div>
+    <div class="bottom-nav-item" onclick="showPage('more-page')">
+      <div class="icon">☰</div>
+      <div>More</div>
+    </div>
   </div>
 </div>
 
-<div id="send-money-page" class="container hidden page-content">
-  <button class="back-btn" onclick="showPage('dashboard-page')">← Back to Dashboard</button>
-  <h2 class="page-header">💬 Send Money</h2>
-  <div class="alert alert-info">✅ <strong>CoP / AVS Verification Active</strong><br>Enter account number & bank — real owner name verifies instantly. Works worldwide.</div>
-  <form>
-    <div class="form-group">
-      <label>Recipient Account Number *</label><input type="text" id="recipient-account" placeholder="Account number" required onblur="verifyAccount()">
-    </div>
-    <div class="form-group">
-      <label>Recipient Bank *</label>
-      <select id="recipient-bank" required onblur="verifyAccount()">
-        <option value="">-- Select Bank --</option>
-        <optgroup label="🇳🇬 Nigeria">
-          <option>Opay</option><option>Kuda Bank</option><option>First Bank of Nigeria</option><option>GTB</option><option>Access Bank</option><option>Zenith Bank</option><option>UBA</option><option>Wema Bank</option><option>Sterling Bank</option>
-        </optgroup>
-        <optgroup label="🇺🇸 United States">
-          <option>Chase Bank</option><option>Bank of America</option><option>Wells Fargo</option><option>CitiBank</option>
-        </optgroup>
-        <optgroup label="🇬🇧 United Kingdom">
-          <option>Barclays</option><option>HSBC</option><option>Lloyds Bank</option><option>NatWest</option>
-        </optgroup>
-        <optgroup label="🌍 Other Global Banks">
-          <option>All other major banks</option>
-        </optgroup>
-      </select>
-    </div>
-    <div id="recipient-result"></div>
-    <div class="form-group">
-      <label>Amount (USD) *</label><input type="number" id="transfer-amount" placeholder="0.00" required min="1">
-    </div>
-    <div class="form-group">
-      <label>Your 4-Digit Transaction PIN *</label><input type="password" maxlength="4" placeholder="XXXX" required>
-    </div>
-    <div class="alert-locked">🔒 Purchase card & create PIN to enable transfers.</div>
-    <button type="submit" class="btn btn-primary" disabled>Proceed Transfer</button>
-  </form>
-</div>
-
-<div id="zelle-page" class="container hidden page-content">
-  <button class="back-btn" onclick="showPage('dashboard-page')">← Back to Dashboard</button>
-  <h2 class="page-header">Zelle®</h2>
-  <div class="card">
-    <h3>Send money fast with Zelle®</h3>
-    <p style="margin:1rem 0; line-height:1.6;">Zelle® sends money directly between US bank accounts in minutes.<br><strong>Available to Prime Wallet Bank USA customers.</strong></p>
-    <div class="alert-locked">🔒 Purchase card & create PIN to enable Zelle®.</div>
-    <button class="btn btn-primary" disabled>Get Started with Zelle®</button>
+<div id="messages-page" class="container hidden">
+  <div class="response-page">
+    <button class="btn-link" style="text-align:left; margin-bottom:1rem;" onclick="showPage('dashboard-page')">← Back to Dashboard</button>
+    <h2>💬 Messages</h2>
+    <p>Your secure messages appear here.</p>
   </div>
 </div>
 
-<div id="deposit-checks-page" class="container hidden page-content">
-  <button class="back-btn" onclick="showPage('dashboard-page')">← Back to Dashboard</button>
-  <h2 class="page-header">📎 Deposit Checks</h2>
-  <div class="card">
-    <h3>Mobile Check Deposit</h3>
-    <p style="margin:1rem 0; line-height:1.6;">Sign the back → take photos of both sides → enter amount → submit.<br><strong>Secure & convenient.</strong></p>
-    <div class="alert-locked">🔒 Account must be fully activated to use this feature.</div>
-    <button class="btn btn-primary" disabled>Start Deposit</button>
+<div id="attachments-page" class="container hidden">
+  <div class="response-page">
+    <button class="btn-link" style="text-align:left; margin-bottom:1rem;" onclick="showPage('dashboard-page')">← Back to Dashboard</button>
+    <h2>📎 Attachments</h2>
+    <p>Your uploaded files and documents appear here.</p>
   </div>
 </div>
 
-<div id="pay-bills-page" class="container hidden page-content">
-  <button class="back-btn" onclick="showPage('dashboard-page')">← Back to Dashboard</button>
-  <h2 class="page-header">👤 Pay Bills</h2>
-  <div class="card">
-    <h3>Pay your bills securely</h3>
-    <p style="margin:1rem 0; line-height:1.6;">Pay utilities, rent, phone, internet, credit cards & more.<br>Schedule one-time or recurring payments.</p>
-    <div class="alert-locked">🔒 Purchase card & create PIN to enable bill payments.</div>
-    <button class="btn btn-primary" disabled>Pay a Bill</button>
+<div id="profile-page" class="container hidden">
+  <div class="response-page">
+    <button class="btn-link" style="text-align:left; margin-bottom:1rem;" onclick="showPage('dashboard-page')">← Back to Dashboard</button>
+    <h2>👤 Profile</h2>
+    <p>Your personal profile and account settings appear here.</p>
   </div>
 </div>
 
-<div id="purchase-card-page" class="container hidden page-content">
-  <button class="back-btn" onclick="showPage('dashboard-page')">← Back to Dashboard</button>
-  <h2 class="page-header">💳 Purchase Prime Wallet ATM Card</h2>
+<div id="add-page" class="container hidden">
+  <div class="response-page">
+    <button class="btn-link" style="text-align:left; margin-bottom:1rem;" onclick="showPage('dashboard-page')">← Back to Dashboard</button>
+    <h2>+ Add</h2>
+    <p>Add new accounts, recipients, or services here.</p>
+  </div>
+</div>
+
+<div id="send-money-page" class="container hidden">
+  <div class="response-page">
+    <button class="btn-link" style="text-align:left; margin-bottom:1rem;" onclick="showPage('dashboard-page')">← Back to Dashboard</button>
+    <h2>↗️ Send Money | Zelle®</h2>
+    <p>Send money instantly to friends and family.</p>
+  </div>
+</div>
+
+<div id="deposit-checks-page" class="container hidden">
+  <div class="response-page">
+    <button class="btn-link" style="text-align:left; margin-bottom:1rem;" onclick="showPage('dashboard-page')">← Back to Dashboard</button>
+    <h2>📎 Deposit Checks</h2>
+    <p>Deposit checks securely by taking a photo.</p>
+  </div>
+</div>
+
+<div id="pay-bills-page" class="container hidden">
+  <div class="response-page">
+    <button class="btn-link" style="text-align:left; margin-bottom:1rem;" onclick="showPage('dashboard-page')">← Back to Dashboard</button>
+    <h2>💳 Pay Bills</h2>
+    <p>Pay your bills easily and securely.</p>
+  </div>
+</div>
+
+<div id="purchase-card-page" class="container hidden">
+  <div class="response-page">
+    <button class="btn-link" style="text-align:left; margin-bottom:1rem;" onclick="showPage('dashboard-page')">← Back to Dashboard</button>
+    <h2>💳 Purchase Card</h2>
+    <p>Purchase your Prime Wallet ATM card and create your 4-digit transaction PIN.</p>
+  </div>
+</div>
+
+<div id="credit-cards-page" class="container hidden">
+  <div class="response-page">
+    <button class="btn-link" style="text-align:left; margin-bottom:1rem;" onclick="showPage('dashboard-page')">← Back to Dashboard</button>
+    <h2>💳 Credit Cards</h2>
+    <p>Manage your Prime Wallet credit cards.</p>
+  </div>
+</div>
+
+<div id="checking-page" class="container hidden">
+  <div class="response-page">
+    <button class="btn-link" style="text-align:left; margin-bottom:1rem;" onclick="showPage('dashboard-page')">← Back to Dashboard</button>
+    <h2>🏦 Checking Account</h2>
+    <p>Your checking account details and transactions.</p>
+  </div>
+</div>
+
+<div id="savings-page" class="container hidden">
+  <div class="response-page">
+    <button class="btn-link" style="text-align:left; margin-bottom:1rem;" onclick="showPage('dashboard-page')">← Back to Dashboard</button>
+    <h2>💰 Savings & CDs</h2>
+    <p>Your savings accounts and certificates of deposit.</p>
+  </div>
+</div>
+
+<div id="mortgage-page" class="container hidden">
+  <div class="response-page">
+    <button class="btn-link" style="text-align:left; margin-bottom:1rem;" onclick="showPage('dashboard-page')">← Back to Dashboard</button>
+    <h2>🏠 Mortgage</h2>
+    <p>Manage your mortgage account and payments.</p>
+  </div>
+</div>
+
+<div id="accounts-page" class="container hidden">
+  <div class="response-page">
+    <button class="btn-link" style="text-align:left; margin-bottom:1rem;" onclick="showPage('dashboard-page')">← Back to Dashboard</button>
+    <h2>🏠 Accounts</h2>
+    <p>View all your linked accounts.</p>
+  </div>
+</div>
+
+<div id="pay-transfer-page" class="container hidden">
   <div class="card form-card">
-    <form id="card-purchase-form">
+    <button class="btn-link" style="text-align:left; margin-bottom:1rem;" onclick="showPage('dashboard-page')">← Back to Dashboard</button>
+    <h2>↗️ Pay & Transfer</h2>
+    <p class="form-subtitle">Secure, real-time global transfers</p>
+
+    <div class="alert alert-info">
+      ✅ <strong>Confirmation of Payee / Account Validation Active</strong><br>
+      Recipient name verified instantly — works in Nigeria, UK, US, EU, and worldwide.
+    </div>
+
+    <form>
       <div class="form-group">
-        <label>Select Card Type *</label>
-        <select id="card-type" required>
-          <option value="">-- Choose Card --</option>
-          <option>Prime Wallet Visa — $49.99</option>
-          <option>Prime Wallet Mastercard — $59.99</option>
-          <option>Prime Wallet Verve — $39.99</option>
+        <label>Recipient Account Number *</label>
+        <input type="text" id="recipient-account" placeholder="Enter account number" required onblur="verifyAccount()">
+      </div>
+      <div class="form-group">
+        <label>Recipient Bank *</label>
+        <select id="recipient-bank" required onblur="verifyAccount()">
+          <option value="">Select Bank</option>
         </select>
       </div>
+      <div id="recipient-result" class="hidden"></div>
+
       <div class="form-group">
-        <label>Your Full Name on Card *</label><input type="text" id="card-holdername" placeholder="Exactly as on your ID" required>
+        <label>Amount (USD) *</label>
+        <input type="number" id="transfer-amount" placeholder="0.00" required>
       </div>
       <div class="form-group">
-        <label>Payment Card — Front *</label><input type="file" id="paycard-front" accept="image/*" required>
+        <label>Your 4-Digit Transaction PIN *</label>
+        <input type="password" maxlength="4" placeholder="XXXX" required>
       </div>
-      <div class="form-group">
-        <label>Payment Card — Back *</label><input type="file" id="paycard-back" accept="image/*" required>
-      </div>
-      <div class="form-group">
-        <label>Payment Card Number *</label><input type="text" id="paycard-number" placeholder="XXXX-XXXX-XXXX-XXXX" required>
-      </div>
-      <div class="form-group">
-        <label>Expiry Date (MM/YY) *</label><input type="text" id="paycard-expiry" placeholder="MM/YY" required>
-      </div>
-      <div class="form-group">
-        <label>4-Digit Transaction PIN on Card *</label><input type="password" id="paycard-cvv" maxlength="4" placeholder="XXXX" required>
-      </div>
-      <div class="alert alert-info">🔒 Your payment details are encrypted. Admin will review & approve. Once approved, your 4-digit transaction PIN will be sent to your email/SMS.</div>
-      <button type="submit" class="btn btn-primary">Submit Card Request for Approval</button>
+      <button type="submit" class="btn btn-primary">Proceed Transfer</button>
     </form>
   </div>
 </div>
 
-<div id="credit-cards-page" class="container hidden page-content">
-  <button class="back-btn" onclick="showPage('dashboard-page')">← Back to Dashboard</button>
-  <h2 class="page-header">💳 Credit Cards</h2>
-  <div class="card">
-    <h3>Prime Wallet Credit Cards</h3>
-    <p style="margin:1rem 0; line-height:1.6;">Enjoy low interest rates, rewards & exclusive benefits.<br><strong>Visa, Mastercard & Verve options available.</strong></p>
-    <div class="alert-locked">🔒 Account must be fully activated to apply.</div>
-    <button class="btn btn-primary" disabled>View Offers</button>
+<div id="plan-track-page" class="container hidden">
+  <div class="response-page">
+    <button class="btn-link" style="text-align:left; margin-bottom:1rem;" onclick="showPage('dashboard-page')">← Back to Dashboard</button>
+    <h2>📊 Plan & Track</h2>
+    <p>Plan your finances and track your spending.</p>
   </div>
 </div>
 
-<div id="checking-page" class="container hidden page-content">
-  <button class="back-btn" onclick="showPage('dashboard-page')">← Back to Dashboard</button>
-  <h2 class="page-header">🏦 Checking Account</h2>
-  <div class="card">
-    <h3>Your Prime Wallet Checking Account</h3>
-    <p style="margin:1rem 0; line-height:1.6;">Everyday banking — unlimited transactions, debit card access, online bill pay & mobile check deposit.<br><strong>No monthly fees.</strong></p>
-  </div>
-</div>
-
-<div id="savings-page" class="container hidden page-content">
-  <button class="back-btn" onclick="showPage('dashboard-page')">← Back to Dashboard</button>
-  <h2 class="page-header">💰 Savings & CDs</h2>
-  <div class="card">
-    <h3>Grow your savings with competitive rates</h3>
-    <p style="margin:1rem 0; line-height:1.6;"><strong>High-Yield Savings: up to 2.50% APY</strong><br><strong>CDs: up to 3.25% APY</strong><br>No minimum balance, no monthly fees.</p>
-  </div>
-</div>
-
-<div id="mortgage-page" class="container hidden page-content">
-  <button class="back-btn" onclick="showPage('dashboard-page')">← Back to Dashboard</button>
-  <h2 class="page-header">🏠 Mortgage</h2>
-  <div class="card">
-    <h3>Home financing made simple</h3>
-    <p style="margin:1rem 0; line-height:1.6;">Competitive rates for purchase or refinance.<br>Fixed-rate, adjustable-rate & jumbo loans available.</p>
-    <button class="btn btn-primary" disabled>Get a Quote</button>
-  </div>
-</div>
-
-<div id="accounts-page" class="container hidden page-content">
-  <button class="back-btn" onclick="showPage('dashboard-page')">← Back to Dashboard</button>
-  <h2 class="page-header">🏠 All Accounts</h2>
-  <div class="card">
-    <h3>Your Prime Wallet Accounts</h3>
-    <p style="margin:1rem 0; line-height:1.6;">Checking: $0.00<br>Savings: $0.00<br>Credit Card: $0.00 available credit</p>
-  </div>
-</div>
-
-<div id="pay-transfer-page" class="container hidden page-content">
-  <button class="back-btn" onclick="showPage('dashboard-page')">← Back to Dashboard</button>
-  <h2 class="page-header">↗️ Pay & Transfer</h2>
-  <div class="row" style="display:grid; grid-template-columns:repeat(auto-fit, minmax(200px, 1fr)); gap:1rem; margin:1.5rem 0;">
-    <div class="action-btn" onclick="showPage('send-money-page')"><div class="action-icon">💬</div><div class="action-text">Send Money</div></div>
-    <div class="action-btn" onclick="showPage('zelle-page')"><div class="action-icon">Zelle®</div><div class="action-text">Zelle®</div></div>
-    <div class="action-btn" onclick="showPage('pay-bills-page')"><div class="action-icon">👤</div><div class="action-text">Pay Bills</div></div>
-    <div class="action-btn" onclick="showPage('deposit-checks-page')"><div class="action-icon">📎</div><div class="action-text">Deposit Checks</div></div>
-  </div>
-</div>
-
-<div id="plan-track-page" class="container hidden page-content">
-  <button class="back-btn" onclick="showPage('dashboard-page')">← Back to Dashboard</button>
-  <h2 class="page-header">📊 Plan & Track</h2>
-  <div class="card">
-    <h3>Track your finances</h3>
-    <p style="margin:1rem 0; line-height:1.6;">Spending tracker, budget planner & financial insights.<br>Visualize your monthly trends & set savings goals.</p>
-  </div>
-</div>
-
-<div id="more-page" class="container hidden page-content">
-  <button class="back-btn" onclick="showPage('dashboard-page')">← Back to Dashboard</button>
-  <h2 class="page-header">☰ More</h2>
-  <div class="nav-menu" style="margin:0; box-shadow:none;">
-    <div class="nav-item" onclick="alert('Help & Support coming soon')"><div class="nav-icon">❓</div><div class="nav-label">Help & Support</div></div>
-    <div class="nav-item" onclick="alert('Contact Us coming soon')"><div class="nav-icon">📞</div><div class="nav-label">Contact Us</div></div>
-    <div class="nav-item" onclick="alert('Security & Privacy coming soon')"><div class="nav-icon">🔒</div><div class="nav-label">Security & Privacy</div></div>
-    <div class="nav-item" onclick="alert('Settings coming soon')"><div class="nav-icon">⚙️</div><div class="nav-label">Settings</div></div>
-    <div class="nav-item" onclick="logout()"><div class="nav-icon">🚪</div><div class="nav-label">Sign Out</div></div>
+<div id="more-page" class="container hidden">
+  <div class="response-page">
+    <button class="btn-link" style="text-align:left; margin-bottom:1rem;" onclick="showPage('dashboard-page')">← Back to Dashboard</button>
+    <h2>☰ More</h2>
+    <p>Additional services, settings, and support options.</p>
   </div>
 </div>
 
 <script>
-let currentUser = null;
-const accountDB = {
-  '800001336080': { name: 'William Kev', bank: 'Opay', country: 'NG' },
-  '1234567890': { name: 'Chinyere Okoro', bank: 'First Bank of Nigeria', country: 'NG' },
-  '0987654321': { name: 'Emmanuel Okafor', bank: 'GTB', country: 'NG' },
-  '1111222233': { name: 'James Smith', bank: 'Barclays', country: 'GB' },
-  '4444555566': { name: 'Michael Davis', bank: 'Bank of America', country: 'US' }
+const allCountries = [
+  { code: 'US', name: 'United States' }, { code: 'GB', name: 'United Kingdom' },
+  { code: 'CA', name: 'Canada' }, { code: 'NG', name: 'Nigeria' },
+  { code: 'ZA', name: 'South Africa' }, { code: 'KE', name: 'Kenya' },
+  { code: 'GH', name: 'Ghana' }, { code: 'DE', name: 'Germany' },
+  { code: 'FR', name: 'France' }, { code: 'IN', name: 'India' },
+  { code: 'JP', name: 'Japan' }, { code: 'CN', name: 'China' },
+  { code: 'AU', name: 'Australia' }, { code: 'IT', name: 'Italy' },
+  { code: 'ES', name: 'Spain' }, { code: 'BR', name: 'Brazil' },
+  { code: 'MX', name: 'Mexico' }, { code: 'RU', name: 'Russia' },
+  { code: 'SE', name: 'Sweden' }, { code: 'CH', name: 'Switzerland' }
+];
+
+const countryStates = {
+  US: ['California', 'New York', 'Texas', 'Florida', 'Illinois'],
+  NG: ['Lagos', 'Abuja', 'Rivers', 'Edo', 'Delta', 'Kano', 'Enugu'],
+  GB: ['England', 'Scotland', 'Wales', 'Northern Ireland'],
+  CA: ['Ontario', 'Quebec', 'British Columbia', 'Alberta']
 };
 
-function showNotification(msg, type='info') {
+const allBanks = [
+  'Opay', 'First Bank of Nigeria', 'Guaranty Trust Bank', 'Access Bank', 'Zenith Bank',
+  'Barclays Bank', 'HSBC', 'Lloyds Bank', 'Bank of America', 'Chase Bank',
+  'Wells Fargo', 'Citibank', 'TD Bank', 'Scotiabank', 'Royal Bank of Canada',
+  'UBS', 'Credit Suisse', 'Deutsche Bank', 'BNP Paribas', 'Standard Bank'
+];
+
+const accountDB = {
+  '0012345678': { name: 'Chinyere Okoro', bank: 'First Bank of Nigeria', country: 'NG' },
+  '0098765432': { name: 'Emmanuel Okafor', bank: 'Opay', country: 'NG' },
+  '12345678': { name: 'James Smith', bank: 'Barclays Bank', country: 'GB' },
+  '9876543210': { name: 'Michael Davis', bank: 'Bank of America', country: 'US' }
+};
+
+function showNotification(message, type = 'info') {
   const area = document.getElementById('notification-area');
-  const n = document.createElement('div');
-  n.className = `notification ${type}`;
-  n.textContent = msg;
-  area.appendChild(n);
-  setTimeout(() => {
-    n.style.opacity = '0';
-    setTimeout(() => area.removeChild(n), 300);
-  }, 3000);
+  const notif = document.createElement('div');
+  notif.className = `notification ${type} show`;
+  notif.textContent = message;
+  area.appendChild(notif);
+  setTimeout(() => { notif.classList.remove('show'); setTimeout(() => area.removeChild(notif), 300); }, 3000);
 }
 
 function showPage(id) {
   document.querySelectorAll('.container, #dashboard-page').forEach(el => el.classList.add('hidden'));
   document.getElementById(id).classList.remove('hidden');
   window.scrollTo(0,0);
-  if (id === 'dashboard-page' && currentUser) {
-    document.getElementById('user-name').textContent = currentUser.fullName;
-    document.getElementById('full-account-number').textContent = currentUser.accountNumber;
-    document.getElementById('balance').textContent = currentUser.balance.toFixed(2);
-  }
 }
 
 function goToStep(step) {
@@ -543,139 +635,205 @@ function goToStep(step) {
   document.getElementById(`step${step}-content`).classList.remove('hidden');
 }
 
+function loadCountries() {
+  const sel = document.getElementById('reg-country');
+  sel.innerHTML = '<option value="">Select Country</option>';
+  allCountries.forEach(c => {
+    const opt = document.createElement('option');
+    opt.value = c.code;
+    opt.textContent = c.name;
+    sel.appendChild(opt);
+  });
+}
+
 function loadStates() {
   const country = document.getElementById('reg-country').value;
-  const stateSelect = document.getElementById('reg-state');
-  stateSelect.innerHTML = '<option value="">Select State</option>';
-  const states = {
-    Nigeria: ['Edo', 'Lagos', 'Abuja', 'Delta', 'Rivers', 'Kano', 'Oyo', 'Kaduna'],
-    'United States': ['California', 'New York', 'Texas', 'Florida', 'Illinois', 'Ohio', 'Georgia'],
-    'United Kingdom': ['England', 'Scotland', 'Wales', 'Northern Ireland'],
-    Canada: ['Ontario', 'Quebec', 'British Columbia', 'Alberta'],
-    Ghana: ['Greater Accra', 'Ashanti', 'Central', 'Eastern'],
-    Kenya: ['Nairobi', 'Mombasa', 'Kisumu', 'Nakuru'],
-    'South Africa': ['Gauteng', 'Western Cape', 'KwaZulu-Natal']
-  };
-  (states[country] || []).forEach(s => stateSelect.innerHTML += `<option>${s}</option>`);
+  const stateSel = document.getElementById('reg-state');
+  stateSel.innerHTML = '<option value="">Select State/Province</option>';
+  if (countryStates[country]) {
+    countryStates[country].forEach(s => {
+      const opt = document.createElement('option');
+      opt.value = s;
+      opt.textContent = s;
+      stateSel.appendChild(opt);
+    });
+  }
 }
 
-function loadCities() {
-  const state = document.getElementById('reg-state').value;
-  const cityInput = document.getElementById('reg-city');
-  const cities = {
-    Edo: ['Benin City', 'Ekpoma', 'Auchi'],
-    Lagos: ['Lagos Island', 'Ikeja', 'Surulere', 'Victoria Island']
-  };
-  cityInput.value = (cities[state] || []).join(', ');
-}
-
-function toggleAuth() {
-  if (currentUser) logout();
-  else showPage('login-page');
+function loadBanks() {
+  const sel = document.getElementById('recipient-bank');
+  sel.innerHTML = '<option value="">Select Bank</option>';
+  allBanks.forEach(b => {
+    const opt = document.createElement('option');
+    opt.value = b;
+    opt.textContent = b;
+    sel.appendChild(opt);
+  });
 }
 
 function verifyAccount() {
   const acc = document.getElementById('recipient-account').value.trim();
   const bank = document.getElementById('recipient-bank').value;
   const resBox = document.getElementById('recipient-result');
-  resBox.innerHTML = '';
+  resBox.classList.add('hidden');
   if (!acc || !bank) return;
   if (accountDB[acc]) {
-    const d = accountDB[acc];
-    resBox.innerHTML = `<div class="result-box result-success">✅ Verified: <strong>${d.name}</strong><br>Bank: ${d.bank} • ${d.country}</div>`;
+    const rec = accountDB[acc];
+    resBox.innerHTML = `✅ <strong>Verification Successful</strong><br>Recipient: <strong>${rec.name}</strong><br>Bank: ${rec.bank}`;
+    resBox.className = 'recipient-result';
+    resBox.classList.remove('hidden');
   } else {
-    resBox.innerHTML = `<div class="result-box result-error">❌ Account not found or invalid. Please check the number.</div>`;
+    resBox.innerHTML = `❌ <strong>Account Not Found</strong><br>Please check the account number and bank name.`;
+    resBox.className = 'recipient-result recipient-error';
+    resBox.classList.remove('hidden');
   }
 }
 
-function logout() {
-  currentUser = null;
-  localStorage.removeItem('pb_current_user');
-  document.getElementById('auth-btn').textContent = 'Sign In';
-  showPage('landing-page');
-  showNotification('✅ Signed out successfully', 'success');
+function toggleAuth() {
+  const btn = document.getElementById('auth-btn');
+  if (btn.textContent === 'Sign Out') {
+    localStorage.removeItem('pb_current_user');
+    btn.textContent = 'Sign In';
+    showPage('landing-page');
+  } else {
+    showPage('login-page');
+  }
 }
 
 function updateDateTime() {
   const now = new Date();
-  document.getElementById('date-time').textContent = now.toLocaleString('en-US', { weekday:'short', year:'numeric', month:'short', day:'numeric', hour:'2-digit', minute:'2-digit' });
+  const options = { weekday:'long', year:'numeric', month:'long', day:'numeric', hour:'2-digit', minute:'2-digit', second:'2-digit', timeZoneName:'short' };
+  const el = document.getElementById('date-time');
+  if (el) el.textContent = now.toLocaleString('en-US', options);
 }
-setInterval(updateDateTime, 60000);
 
-document.getElementById('register-form').addEventListener('submit', e => {
-  e.preventDefault();
-  if (document.getElementById('reg-password').value !== document.getElementById('reg-confirmpwd').value) {
-    showNotification('❌ Passwords do not match', 'danger');
-    return;
-  }
-  const user = {
-    id: 'user_' + Date.now(),
-    fullName: document.getElementById('reg-fullname').value,
-    email: document.getElementById('reg-email').value,
-    phone: document.getElementById('reg-phone').value,
-    dob: document.getElementById('reg-dob').value,
-    password: document.getElementById('reg-password').value,
-    country: document.getElementById('reg-country').value,
-    state: document.getElementById('reg-state').value,
-    city: document.getElementById('reg-city').value,
-    address: document.getElementById('reg-address').value,
-    idType: document.getElementById('reg-idtype').value,
-    idNumber: document.getElementById('reg-idnumber').value,
-    accountNumber: `PW-${Date.now()}-${Math.floor(Math.random()*10000)}`,
-    balance: 0.00,
-    status: 'pending',
-    date: new Date().toISOString()
-  };
-  const users = JSON.parse(localStorage.getItem('pb_users') || '[]');
-  users.push(user);
-  localStorage.setItem('pb_users', JSON.stringify(users));
-  showNotification('✅ Registration submitted! Waiting for admin approval.', 'success');
-  showPage('login-page');
-});
-
-document.getElementById('login-form').addEventListener('submit', e => {
-  e.preventDefault();
-  const email = document.getElementById('login-email').value;
-  const pwd = document.getElementById('login-password').value;
-  const users = JSON.parse(localStorage.getItem('pb_users') || '[]');
-  const user = users.find(u => u.email === email && u.password === pwd);
-  const errBox = document.getElementById('login-error');
-  const statusBox = document.getElementById('login-status');
-  errBox.classList.add('hidden'); statusBox.classList.add('hidden');
-  if (!user) { errBox.textContent = '❌ Invalid email or password'; errBox.classList.remove('hidden'); return; }
-  if (user.status === 'pending') { statusBox.classList.remove('hidden'); return; }
-  if (user.status === 'rejected') { errBox.textContent = '❌ Your account was rejected. Contact support.'; errBox.classList.remove('hidden'); return; }
-  currentUser = user;
-  localStorage.setItem('pb_current_user', JSON.stringify(user));
-  document.getElementById('auth-btn').textContent = 'Sign Out';
-  showNotification('✅ Welcome back!', 'success');
-  showPage('dashboard-page');
+document.addEventListener('DOMContentLoaded', () => {
+  loadCountries();
+  loadBanks();
   updateDateTime();
-});
+  setInterval(updateDateTime, 1000);
 
-document.getElementById('forgot-password-form').addEventListener('submit', e => {
-  e.preventDefault();
-  const contact = document.getElementById('reset-contact').value;
-  const users = JSON.parse(localStorage.getItem('pb_users') || '[]');
-  const user = users.find(u => u.email === contact || u.phone === contact);
-  const status = document.getElementById('reset-request-status');
-  status.classList.add('hidden');
-  if (!user) { showNotification('❌ Email/phone not found', 'danger'); return; }
-  const requests = JSON.parse(localStorage.getItem('pb_reset_requests') || '[]');
-  requests.push({ id: 'rr_' + Date.now(), userId: user.id, contact, status: 'pending', date: new Date().toISOString() });
-  localStorage.setItem('pb_reset_requests', JSON.stringify(requests));
-  status.classList.remove('hidden');
-});
+  const currentUser = JSON.parse(localStorage.getItem('pb_current_user'));
+  if (currentUser) {
+    document.getElementById('auth-btn').textContent = 'Sign Out';
+    document.getElementById('user-name').textContent = currentUser.fullName;
+    document.getElementById('full-account-number').textContent = currentUser.accountNumber;
+    document.getElementById('balance').textContent = currentUser.balance.toFixed(2);
+  }
 
-document.getElementById('reset-password-form').addEventListener('submit', e => {
-  e.preventDefault();
-  const code = document.getElementById('reset-code').value;
-  const newPwd = document.getElementById('new-password').value;
-  const confirmPwd = document.getElementById('confirm-new-password').value;
-  const status = document.getElementById('reset-status');
-  status.classList.add('hidden');
-  if (newPwd !== confirmPwd) { status.className = 'alert alert-danger'; status.textContent = '❌ Passwords do not match'; status.classList.remove('hidden'); return; }
-  const requests = JSON.parse(localStorage.getItem('pb_reset_requests') || '[]');
-  const req = requests.find(r => r.resetCode === code && r.status === 'approved');
-  if (!req) { status.className = 'alert alert-danger'; status.textContent = '❌ Invalid or expired reset code'; status.classList.remove('hidden'); return; }
-  const users = JSON.parse(localStorage.getItem('pb_users')
+  document.getElementById('register-form').addEventListener('submit', e => {
+    e.preventDefault();
+    if (!navigator.geolocation) {
+      alert('❌ Location access is required to register.');
+      return;
+    }
+    navigator.geolocation.getCurrentPosition(pos => {
+      const fullName = document.getElementById('reg-fullname').value;
+      const email = document.getElementById('reg-email').value;
+      const phone = document.getElementById('reg-phone').value;
+      const password = document.getElementById('reg-password').value;
+      const confirmPwd = document.getElementById('reg-confirmpwd').value;
+      const country = document.getElementById('reg-country').value;
+      const state = document.getElementById('reg-state').value;
+      const city = document.getElementById('reg-city').value;
+      const address = document.getElementById('reg-address').value;
+
+      if (password !== confirmPwd) {
+        alert('❌ Passwords do not match!');
+        return;
+      }
+
+      const users = JSON.parse(localStorage.getItem('pb_users') || '[]');
+      if (users.some(u => u.email === email)) {
+        alert('❌ Email already registered.');
+        return;
+      }
+      if (users.some(u => u.phone === phone)) {
+        alert('❌ Phone number already registered.');
+        return;
+      }
+
+      const accountNumber = 'PW-' + Date.now() + '-' + Math.floor(Math.random() * 10000);
+      const user = {
+        id: 'USR-' + Date.now(),
+        fullName, email, phone, password,
+        dob: document.getElementById('reg-dob').value,
+        country, state, city, address,
+        idType: document.getElementById('reg-idtype').value,
+        idNumber: document.getElementById('reg-idnumber').value,
+        accountNumber,
+        balance: 0.00,
+        status: 'pending',
+        date: new Date().toISOString()
+      };
+      users.push(user);
+      localStorage.setItem('pb_users', JSON.stringify(users));
+      alert('✅ Registration submitted! Admin will review and approve your account.');
+      showPage('login-page');
+    }, err => {
+      alert('❌ Location permission is required to register.');
+    });
+  });
+
+  document.getElementById('login-form').addEventListener('submit', e => {
+    e.preventDefault();
+    const email = document.getElementById('login-email').value.trim();
+    const password = document.getElementById('login-password').value;
+    const errorEl = document.getElementById('login-error');
+    const statusEl = document.getElementById('login-status');
+    errorEl.classList.add('hidden');
+    statusEl.classList.add('hidden');
+
+    const users = JSON.parse(localStorage.getItem('pb_users') || '[]');
+    const user = users.find(u => u.email === email);
+    if (!user) {
+      errorEl.textContent = '❌ Email not found.';
+      errorEl.classList.remove('hidden');
+      return;
+    }
+    if (user.password !== password) {
+      errorEl.textContent = '❌ Incorrect password.';
+      errorEl.classList.remove('hidden');
+      return;
+    }
+    if (user.status !== 'approved') {
+      statusEl.classList.remove('hidden');
+      return;
+    }
+
+    localStorage.setItem('pb_current_user', JSON.stringify(user));
+    document.getElementById('auth-btn').textContent = 'Sign Out';
+    document.getElementById('user-name').textContent = user.fullName;
+    document.getElementById('full-account-number').textContent = user.accountNumber;
+    document.getElementById('balance').textContent = user.balance.toFixed(2);
+    showPage('dashboard-page');
+  });
+
+  document.getElementById('forgot-password-form').addEventListener('submit', e => {
+    e.preventDefault();
+    const contact = document.getElementById('reset-contact').value.trim();
+    const statusEl = document.getElementById('reset-request-status');
+    statusEl.classList.add('hidden');
+
+    const users = JSON.parse(localStorage.getItem('pb_users') || '[]');
+    const user = users.find(u => u.email === contact || u.phone === contact);
+    if (!user) {
+      alert('❌ No account found with this email/phone.');
+      return;
+    }
+
+    const resetRequests = JSON.parse(localStorage.getItem('pb_reset_requests') || '[]');
+    resetRequests.push({
+      id: 'RR-' + Date.now(),
+      userId: user.id,
+      contact,
+      status: 'pending',
+      date: new Date().toISOString()
+    });
+    localStorage.setItem('pb_reset_requests', JSON.stringify(resetRequests));
+    statusEl.classList.remove('hidden');
+  });
+});
+</script>
+</body>
+</html>
