@@ -175,26 +175,216 @@
           </div>
         </div>
 
-        <!-- Step 2 -->
-        <div id="reg-s2" class="reg-step hidden">
-          <h3 style="color:var(--deep-blue);margin-bottom:1.5rem;">📍 Location Details</h3>
-          <label>Country of Residence <span>*</span></label>
-          <select id="rCountry">
-            <option value="">Select Country</option>
-            <option value="US">United States 🇺🇸</option>
-            <option value="NG">Nigeria 🇳🇬</option>
-            <option value="UK">United Kingdom 🇬🇧</option>
-            <option value="CA">Canada 🇨🇦</option>
-          </select>
-          <label>State / Province <span>*</span></label><select id="rState"><option value="">Select State</option></select>
-          <label>City <span>*</span></label><input type="text" id="rCity" placeholder="Your city">
-          <label>Full Residential Address <span>*</span></label><input type="text" id="rAddress" placeholder="Street, Apartment, Suite">
-          <div class="info-box">📍 Location Permission Required — please allow when prompted.</div>
-          <div class="btn-group">
-            <button class="btn btn-secondary" onclick="goStep(1)">Back</button>
-            <button class="btn btn-primary" onclick="goStep(3)">Continue</button>
-          </div>
-        </div>
+       <!-- ============================================= -->
+<!-- STEP 2: LOCATION DETAILS — WORLDWIDE DROPDOWNS -->
+<!-- ============================================= -->
+<div class="form-step" id="step2">
+  <h3>📍 Location Details</h3>
+  <p class="step-desc">Where are you located?</p>
+
+  <!-- COUNTRY -->
+  <div class="form-group">
+    <label>Country of Residence *</label>
+    <select id="regCountry" required onchange="loadStates()">
+      <option value="">-- Select Your Country --</option>
+      <option value="US">🇺🇸 United States</option>
+      <option value="NG">🇳🇬 Nigeria</option>
+      <option value="GB">🇬🇧 United Kingdom</option>
+      <option value="CA">🇨🇦 Canada</option>
+      <option value="IN">🇮🇳 India</option>
+      <option value="AU">🇦🇺 Australia</option>
+      <option value="DE">🇩🇪 Germany</option>
+      <option value="FR">🇫🇷 France</option>
+      <option value="ZA">🇿🇦 South Africa</option>
+      <option value="KE">🇰🇪 Kenya</option>
+      <option value="GH">🇬🇭 Ghana</option>
+      <option value="AE">🇦🇪 UAE</option>
+      <option value="OTHER">🌍 Other Country</option>
+    </select>
+  </div>
+
+  <!-- STATE / PROVINCE -->
+  <div class="form-group">
+    <label>State / Province *</label>
+    <select id="regState" required onchange="loadCities()">
+      <option value="">-- First Select Country --</option>
+    </select>
+    <input type="text" id="regStateManual" placeholder="Or type your State/Province" style="display:none;margin-top:8px;">
+  </div>
+
+  <!-- CITY -->
+  <div class="form-group">
+    <label>City *</label>
+    <select id="regCity" required>
+      <option value="">-- First Select State --</option>
+    </select>
+    <input type="text" id="regCityManual" placeholder="Or type your City" style="display:none;margin-top:8px;">
+  </div>
+
+  <!-- FULL ADDRESS -->
+  <div class="form-group">
+    <label>Full Residential Address *</label>
+    <input type="text" id="regAddress" placeholder="Street name, House number, etc." required>
+  </div>
+
+  <!-- LOCATION NOTE -->
+  <div class="location-note">
+    <span>📍</span> Location Permission Required — please allow when prompted.
+  </div>
+
+  <!-- BUTTONS -->
+  <div class="form-buttons">
+    <button type="button" class="btn-secondary" onclick="goToStep(1)">Back</button>
+    <button type="button" class="btn-primary" onclick="validateStep2()">Continue</button>
+  </div>
+</div>
+
+<!-- ============================================= -->
+<!-- JAVASCRIPT: AUTO-LOAD STATES & CITIES -->
+<!-- ============================================= -->
+<script>
+const locationData = {
+  US: {
+    name: "United States",
+    states: {
+      "Alabama": ["Birmingham", "Montgomery", "Mobile", "Huntsville"],
+      "California": ["Los Angeles", "San Francisco", "San Diego", "Sacramento", "San Jose"],
+      "Florida": ["Miami", "Orlando", "Tampa", "Jacksonville"],
+      "Georgia": ["Atlanta", "Savannah", "Augusta"],
+      "Illinois": ["Chicago", "Springfield"],
+      "New York": ["New York City", "Buffalo", "Albany"],
+      "Texas": ["Houston", "Dallas", "Austin", "San Antonio"],
+      "Virginia": ["Richmond", "Virginia Beach", "Norfolk"],
+      "Washington": ["Seattle", "Tacoma", "Spokane"]
+    }
+  },
+  NG: {
+    name: "Nigeria",
+    states: {
+      "Lagos": ["Lagos Island", "Ikeja", "Victoria Island", "Surulere"],
+      "Abuja": ["Wuse", "Gwarinpa", "Maitama"],
+      "Rivers": ["Port Harcourt", "Obio-Akpor"],
+      "Kano": ["Kano Municipal", "Fagge"],
+      "Ogun": ["Abeokuta", "Sango Ota"],
+      "Enugu": ["Enugu North", "Enugu South"],
+      "Delta": ["Asaba", "Warri"]
+    }
+  },
+  GB: {
+    name: "United Kingdom",
+    states: {
+      "England": ["London", "Manchester", "Birmingham", "Liverpool", "Leeds"],
+      "Scotland": ["Edinburgh", "Glasgow", "Aberdeen"],
+      "Wales": ["Cardiff", "Swansea"],
+      "Northern Ireland": ["Belfast"]
+    }
+  },
+  CA: {
+    name: "Canada",
+    states: {
+      "Ontario": ["Toronto", "Ottawa", "Mississauga"],
+      "Quebec": ["Montreal", "Quebec City"],
+      "British Columbia": ["Vancouver", "Victoria"],
+      "Alberta": ["Calgary", "Edmonton"]
+    }
+  },
+  IN: {
+    name: "India",
+    states: {
+      "Maharashtra": ["Mumbai", "Pune", "Nagpur"],
+      "Delhi": ["New Delhi", "Delhi"],
+      "Karnataka": ["Bangalore", "Mysore"],
+      "Tamil Nadu": ["Chennai", "Coimbatore"]
+    }
+  },
+  GH: {
+    name: "Ghana",
+    states: {
+      "Greater Accra": ["Accra", "Tema"],
+      "Ashanti": ["Kumasi"],
+      "Central": ["Cape Coast"]
+    }
+  },
+  KE: {
+    name: "Kenya",
+    states: {
+      "Nairobi": ["Nairobi"],
+      "Mombasa": ["Mombasa"],
+      "Kisumu": ["Kisumu"]
+    }
+  },
+  ZA: {
+    name: "South Africa",
+    states: {
+      "Gauteng": ["Johannesburg", "Pretoria"],
+      "Western Cape": ["Cape Town"],
+      "KwaZulu-Natal": ["Durban"]
+    }
+  }
+};
+
+function loadStates() {
+  const countryCode = document.getElementById("regCountry").value;
+  const stateSelect = document.getElementById("regState");
+  const stateManual = document.getElementById("regStateManual");
+  const citySelect = document.getElementById("regCity");
+  const cityManual = document.getElementById("regCityManual");
+
+  stateSelect.innerHTML = `<option value="">-- Select State/Province --</option>`;
+  citySelect.innerHTML = `<option value="">-- First Select State --</option>`;
+  stateSelect.style.display = "block";
+  stateManual.style.display = "none";
+  citySelect.style.display = "block";
+  cityManual.style.display = "none";
+
+  if (locationData[countryCode]) {
+    const states = Object.keys(locationData[countryCode].states);
+    states.forEach(state => {
+      const option = document.createElement("option");
+      option.value = state;
+      option.textContent = state;
+      stateSelect.appendChild(option);
+    });
+  } else {
+    stateSelect.style.display = "none";
+    stateManual.style.display = "block";
+    citySelect.style.display = "none";
+    cityManual.style.display = "block";
+  }
+}
+
+function loadCities() {
+  const countryCode = document.getElementById("regCountry").value;
+  const stateValue = document.getElementById("regState").value;
+  const citySelect = document.getElementById("regCity");
+
+  citySelect.innerHTML = `<option value="">-- Select City --</option>`;
+
+  if (locationData[countryCode] && locationData[countryCode].states[stateValue]) {
+    const cities = locationData[countryCode].states[stateValue];
+    cities.forEach(city => {
+      const option = document.createElement("option");
+      option.value = city;
+      option.textContent = city;
+      citySelect.appendChild(option);
+    });
+  }
+}
+
+function validateStep2() {
+  const country = document.getElementById("regCountry").value;
+  const state = document.getElementById("regState").value || document.getElementById("regStateManual").value;
+  const city = document.getElementById("regCity").value || document.getElementById("regCityManual").value;
+  const address = document.getElementById("regAddress").value;
+
+  if (!country || !state || !city || !address) {
+    alert("Please fill ALL location fields!");
+    return;
+  }
+  goToStep(3);
+}
+</script>
+
 
         <!-- Step 3 -->
         <div id="reg-s3" class="reg-step hidden">
