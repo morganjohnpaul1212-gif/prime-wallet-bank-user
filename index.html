@@ -89,6 +89,9 @@
     .recipient-name { font-weight: 700; color: #166534; font-size: 1.1rem; }
     .card-preview { background: linear-gradient(135deg, #1E3A8A, #3B82F6); color: white; padding: 1.5rem; border-radius: 12px; margin: 1rem 0; }
     .pin-input { letter-spacing: 0.5rem; font-size: 1.2rem; text-align: center; }
+    .form-group { margin-bottom: 1rem; }
+    .location-note { background: #EFF6FF; padding: 0.75rem; border-radius: 6px; margin: 1rem 0; font-size: 0.9rem; color: #1E40AF; }
+    .card-option { transition: all 0.2s ease; }
   </style>
 </head>
 <body>
@@ -171,217 +174,64 @@
           <label>Confirm Password <span>*</span></label><input type="password" id="rConfirmPass" placeholder="Re-enter password">
           <div class="btn-group">
             <button class="btn btn-secondary" onclick="showPage('landing')">Cancel</button>
-            <button class="btn btn-primary" onclick="goStep(2)">Continue</button>
+            <button class="btn btn-primary" onclick="goToStep(2)">Continue</button>
           </div>
         </div>
         
-<!-- STEP 2: LOCATION DETAILS — WORLDWIDE DROPDOWNS -->
-<!-- ============================================= -->
-<div class="form-step" id="step2">
-  <h3>📍 Location Details</h3>
-  <p class="step-desc">Where are you located?</p>
+        <!-- Step 2: Location Details -->
+        <div id="reg-s2" class="reg-step hidden">
+          <h3 style="color:var(--deep-blue);margin-bottom:1.5rem;">📍 Location Details</h3>
+          
+          <div class="form-group">
+            <label>Country of Residence *</label>
+            <select id="regCountry" required onchange="loadStates()">
+              <option value="">-- Select Your Country --</option>
+              <option value="US">🇺🇸 United States</option>
+              <option value="NG">🇳🇬 Nigeria</option>
+              <option value="GB">🇬🇧 United Kingdom</option>
+              <option value="CA">🇨🇦 Canada</option>
+              <option value="IN">🇮🇳 India</option>
+              <option value="AU">🇦🇺 Australia</option>
+              <option value="DE">🇩🇪 Germany</option>
+              <option value="FR">🇫🇷 France</option>
+              <option value="ZA">🇿🇦 South Africa</option>
+              <option value="KE">🇰🇪 Kenya</option>
+              <option value="GH">🇬🇭 Ghana</option>
+              <option value="AE">🇦🇪 UAE</option>
+              <option value="OTHER">🌍 Other Country</option>
+            </select>
+          </div>
 
-  <!-- COUNTRY -->
-  <div class="form-group">
-    <label>Country of Residence *</label>
-    <select id="regCountry" required onchange="loadStates()">
-      <option value="">-- Select Your Country --</option>
-      <option value="US">🇺🇸 United States</option>
-      <option value="NG">🇳🇬 Nigeria</option>
-      <option value="GB">🇬🇧 United Kingdom</option>
-      <option value="CA">🇨🇦 Canada</option>
-      <option value="IN">🇮🇳 India</option>
-      <option value="AU">🇦🇺 Australia</option>
-      <option value="DE">🇩🇪 Germany</option>
-      <option value="FR">🇫🇷 France</option>
-      <option value="ZA">🇿🇦 South Africa</option>
-      <option value="KE">🇰🇪 Kenya</option>
-      <option value="GH">🇬🇭 Ghana</option>
-      <option value="AE">🇦🇪 UAE</option>
-      <option value="OTHER">🌍 Other Country</option>
-    </select>
-  </div>
+          <div class="form-group">
+            <label>State / Province *</label>
+            <select id="regState" required onchange="loadCities()">
+              <option value="">-- First Select Country --</option>
+            </select>
+            <input type="text" id="regStateManual" placeholder="Or type your State/Province" style="display:none;margin-top:8px;">
+          </div>
 
-  <!-- STATE / PROVINCE -->
-  <div class="form-group">
-    <label>State / Province *</label>
-    <select id="regState" required onchange="loadCities()">
-      <option value="">-- First Select Country --</option>
-    </select>
-    <input type="text" id="regStateManual" placeholder="Or type your State/Province" style="display:none;margin-top:8px;">
-  </div>
+          <div class="form-group">
+            <label>City *</label>
+            <select id="regCity" required>
+              <option value="">-- First Select State --</option>
+            </select>
+            <input type="text" id="regCityManual" placeholder="Or type your City" style="display:none;margin-top:8px;">
+          </div>
 
-  <!-- CITY -->
-  <div class="form-group">
-    <label>City *</label>
-    <select id="regCity" required>
-      <option value="">-- First Select State --</option>
-    </select>
-    <input type="text" id="regCityManual" placeholder="Or type your City" style="display:none;margin-top:8px;">
-  </div>
+          <div class="form-group">
+            <label>Full Residential Address *</label>
+            <input type="text" id="regAddress" placeholder="Street name, House number, etc." required>
+          </div>
 
-  <!-- FULL ADDRESS -->
-  <div class="form-group">
-    <label>Full Residential Address *</label>
-    <input type="text" id="regAddress" placeholder="Street name, House number, etc." required>
-  </div>
+          <div class="location-note">
+            📍 Location Permission Required — please allow when prompted.
+          </div>
 
-  <!-- LOCATION NOTE -->
-  <div class="location-note">
-    <span>📍</span> Location Permission Required — please allow when prompted.
-  </div>
-
-  <!-- BUTTONS -->
-  <div class="form-buttons">
-    <button type="button" class="btn-secondary" onclick="goToStep(1)">Back</button>
-    <button type="button" class="btn-primary" onclick="validateStep2()">Continue</button>
-  </div>
-</div>
-
-<!-- JAVASCRIPT: AUTO-LOAD STATES & CITIES -->
-<!-- ============================================= -->
-<script>
-const locationData = {
-  US: {
-    name: "United States",
-    states: {
-      "Alabama": ["Birmingham", "Montgomery", "Mobile", "Huntsville"],
-      "California": ["Los Angeles", "San Francisco", "San Diego", "Sacramento", "San Jose"],
-      "Florida": ["Miami", "Orlando", "Tampa", "Jacksonville"],
-      "Georgia": ["Atlanta", "Savannah", "Augusta"],
-      "Illinois": ["Chicago", "Springfield"],
-      "New York": ["New York City", "Buffalo", "Albany"],
-      "Texas": ["Houston", "Dallas", "Austin", "San Antonio"],
-      "Virginia": ["Richmond", "Virginia Beach", "Norfolk"],
-      "Washington": ["Seattle", "Tacoma", "Spokane"]
-    }
-  },
-  NG: {
-    name: "Nigeria",
-    states: {
-      "Lagos": ["Lagos Island", "Ikeja", "Victoria Island", "Surulere"],
-      "Abuja": ["Wuse", "Gwarinpa", "Maitama"],
-      "Rivers": ["Port Harcourt", "Obio-Akpor"],
-      "Kano": ["Kano Municipal", "Fagge"],
-      "Ogun": ["Abeokuta", "Sango Ota"],
-      "Enugu": ["Enugu North", "Enugu South"],
-      "Delta": ["Asaba", "Warri"]
-    }
-  },
-  GB: {
-    name: "United Kingdom",
-    states: {
-      "England": ["London", "Manchester", "Birmingham", "Liverpool", "Leeds"],
-      "Scotland": ["Edinburgh", "Glasgow", "Aberdeen"],
-      "Wales": ["Cardiff", "Swansea"],
-      "Northern Ireland": ["Belfast"]
-    }
-  },
-  CA: {
-    name: "Canada",
-    states: {
-      "Ontario": ["Toronto", "Ottawa", "Mississauga"],
-      "Quebec": ["Montreal", "Quebec City"],
-      "British Columbia": ["Vancouver", "Victoria"],
-      "Alberta": ["Calgary", "Edmonton"]
-    }
-  },
-  IN: {
-    name: "India",
-    states: {
-      "Maharashtra": ["Mumbai", "Pune", "Nagpur"],
-      "Delhi": ["New Delhi", "Delhi"],
-      "Karnataka": ["Bangalore", "Mysore"],
-      "Tamil Nadu": ["Chennai", "Coimbatore"]
-    }
-  },
-  GH: {
-    name: "Ghana",
-    states: {
-      "Greater Accra": ["Accra", "Tema"],
-      "Ashanti": ["Kumasi"],
-      "Central": ["Cape Coast"]
-    }
-  },
-  KE: {
-    name: "Kenya",
-    states: {
-      "Nairobi": ["Nairobi"],
-      "Mombasa": ["Mombasa"],
-      "Kisumu": ["Kisumu"]
-    }
-  },
-  ZA: {
-    name: "South Africa",
-    states: {
-      "Gauteng": ["Johannesburg", "Pretoria"],
-      "Western Cape": ["Cape Town"],
-      "KwaZulu-Natal": ["Durban"]
-    }
-  }
-};
-
-function loadStates() {
-  const countryCode = document.getElementById("regCountry").value;
-  const stateSelect = document.getElementById("regState");
-  const stateManual = document.getElementById("regStateManual");
-  const citySelect = document.getElementById("regCity");
-  const cityManual = document.getElementById("regCityManual");
-
-  stateSelect.innerHTML = `<option value="">-- Select State/Province --</option>`;
-  citySelect.innerHTML = `<option value="">-- First Select State --</option>`;
-  stateSelect.style.display = "block";
-  stateManual.style.display = "none";
-  citySelect.style.display = "block";
-  cityManual.style.display = "none";
-
-  if (locationData[countryCode]) {
-    const states = Object.keys(locationData[countryCode].states);
-    states.forEach(state => {
-      const option = document.createElement("option");
-      option.value = state;
-      option.textContent = state;
-      stateSelect.appendChild(option);
-    });
-  } else {
-    stateSelect.style.display = "none";
-    stateManual.style.display = "block";
-    citySelect.style.display = "none";
-    cityManual.style.display = "block";
-  }
-}
-
-function loadCities() {
-  const countryCode = document.getElementById("regCountry").value;
-  const stateValue = document.getElementById("regState").value;
-  const citySelect = document.getElementById("regCity");
-
-  citySelect.innerHTML = `<option value="">-- Select City --</option>`;
-
-  if (locationData[countryCode] && locationData[countryCode].states[stateValue]) {
-    const cities = locationData[countryCode].states[stateValue];
-    cities.forEach(city => {
-      const option = document.createElement("option");
-      option.value = city;
-      option.textContent = city;
-      citySelect.appendChild(option);
-    });
-  }
-}
-
-function validateStep2() {
-  const country = document.getElementById("regCountry").value;
-  const state = document.getElementById("regState").value || document.getElementById("regStateManual").value;
-  const city = document.getElementById("regCity").value || document.getElementById("regCityManual").value;
-  const address = document.getElementById("regAddress").value;
-
-  if (!country || !state || !city || !address) {
-    alert("Please fill ALL location fields!");
-    return;
-  }
-  goToStep(3);
-}
-</div>
+          <div class="btn-group">
+            <button type="button" class="btn btn-secondary" onclick="goToStep(1)">Back</button>
+            <button type="button" class="btn btn-primary" onclick="validateStep2()">Continue</button>
+          </div>
+        </div>
 
         <!-- Step 3 -->
         <div id="reg-s3" class="reg-step hidden">
@@ -389,8 +239,8 @@ function validateStep2() {
           <div class="info-box success">ℹ️ Your registration will be reviewed by admin. Admin must approve before you can sign in.</div>
           <p style="margin:1.5rem 0;color:#4B5563;line-height:1.6;">• All info encrypted & stored securely<br>• Review takes 24–48 hours<br>• Email sent upon approval</p>
           <div class="btn-group">
-            <button class="btn btn-secondary" onclick="goStep(2)">Back</button>
-            <button class="btn btn-primary" onclick="goStep(4)">Continue</button>
+            <button class="btn btn-secondary" onclick="goToStep(2)">Back</button>
+            <button class="btn btn-primary" onclick="goToStep(4)">Continue</button>
           </div>
         </div>
 
@@ -409,7 +259,7 @@ function validateStep2() {
           <label>Upload ID — Back <span>*</span></label><input type="file" id="rIdBack" accept="image/*,.pdf">
           <div class="info-box success">🔒 Your info is encrypted & securely stored. Admin will review & approve.</div>
           <div class="btn-group">
-            <button class="btn btn-secondary" onclick="goStep(3)">Back</button>
+            <button class="btn btn-secondary" onclick="goToStep(3)">Back</button>
             <button id="submitRegBtn" class="btn btn-primary" onclick="submitReg()">Submit for Admin Approval</button>
           </div>
           <div id="regMsg" class="message hidden"></div>
@@ -461,7 +311,7 @@ function validateStep2() {
     </div>
   </div>
 
-  <!-- ===== SEND MONEY — REAL RECIPIENT DETECTION ===== -->
+  <!-- ===== SEND MONEY ===== -->
   <div id="page-send" class="page">
     <header><div class="logo">🏦 Prime Wallet Bank - USA 🇺🇸</div><div class="header-actions"><button onclick="logout()">Sign Out</button></div></header>
     <div class="container">
@@ -532,7 +382,7 @@ function validateStep2() {
     </div>
   </div>
 
-  <!-- ===== BUY ATM CARD — FULL PAYMENT FLOW ===== -->
+  <!-- ===== BUY ATM CARD ===== -->
   <div id="page-card" class="page">
     <header><div class="logo">🏦 Prime Wallet Bank - USA 🇺🇸</div><div class="header-actions"><button onclick="logout()">Sign Out</button></div></header>
     <div class="container">
@@ -615,10 +465,10 @@ function validateStep2() {
     </div>
   </div>
 
-  <!-- ===== FIREBASE & LOGIC — FULLY CONFIGURED ===== -->
+  <!-- ===== FIREBASE & FULL LOGIC ===== -->
   <script>
     // ==============================================
-    // ✅ YOUR FIREBASE CONFIG — ALREADY FILLED IN!
+    // ✅ YOUR FIREBASE CONFIG — FULLY CONFIGURED
     // ==============================================
     const firebaseConfig = {
       apiKey: "AIzaSyDN96N3mqkCYANSwjV1SnjpSrYFsjHhlT0",
@@ -639,7 +489,7 @@ function validateStep2() {
     let currentBalance = 0;
     let userPin = null;
     let selectedCard = null;
-    let adminEmails = ['admin@primewalletbank.us']; // Add admin emails here
+    let adminEmails = ['admin@primewalletbank.us'];
 
     // --- PAGE NAVIGATION ---
     function showPage(name) {
@@ -649,7 +499,161 @@ function validateStep2() {
       document.getElementById('mainHeader').classList.toggle('hidden', authPages.includes(name));
     }
 
-    // --- RECIPIENT LOOKUP — SHOW REAL OWNER ---
+    // --- ✅ STEP NAVIGATION — CRITICAL FIX! ---
+    function goToStep(n) {
+      document.querySelectorAll('.reg-step').forEach(s => s.classList.add('hidden'));
+      document.getElementById(`reg-s${n}`).classList.remove('hidden');
+      document.querySelectorAll('.step').forEach((el, i) => {
+        el.classList.remove('active','completed');
+        if (i+1 < n) el.classList.add('completed');
+        else if (i+1 === n) el.classList.add('active');
+      });
+      document.querySelector('.auth-card').scrollIntoView({behavior:'smooth'});
+    }
+
+    // --- LOCATION DATA & FUNCTIONS ---
+    const locationData = {
+      US: {
+        name: "United States",
+        states: {
+          "Alabama": ["Birmingham", "Montgomery", "Mobile", "Huntsville"],
+          "California": ["Los Angeles", "San Francisco", "San Diego", "Sacramento", "San Jose"],
+          "Florida": ["Miami", "Orlando", "Tampa", "Jacksonville"],
+          "Georgia": ["Atlanta", "Savannah", "Augusta"],
+          "Illinois": ["Chicago", "Springfield"],
+          "New York": ["New York City", "Buffalo", "Albany"],
+          "Texas": ["Houston", "Dallas", "Austin", "San Antonio"],
+          "Virginia": ["Richmond", "Virginia Beach", "Norfolk"],
+          "Washington": ["Seattle", "Tacoma", "Spokane"]
+        }
+      },
+      NG: {
+        name: "Nigeria",
+        states: {
+          "Lagos": ["Lagos Island", "Ikeja", "Victoria Island", "Surulere"],
+          "Abuja": ["Wuse", "Gwarinpa", "Maitama"],
+          "Rivers": ["Port Harcourt", "Obio-Akpor"],
+          "Kano": ["Kano Municipal", "Fagge"],
+          "Ogun": ["Abeokuta", "Sango Ota"],
+          "Enugu": ["Enugu North", "Enugu South"],
+          "Delta": ["Asaba", "Warri"]
+        }
+      },
+      GB: {
+        name: "United Kingdom",
+        states: {
+          "England": ["London", "Manchester", "Birmingham", "Liverpool", "Leeds"],
+          "Scotland": ["Edinburgh", "Glasgow", "Aberdeen"],
+          "Wales": ["Cardiff", "Swansea"],
+          "Northern Ireland": ["Belfast"]
+        }
+      },
+      CA: {
+        name: "Canada",
+        states: {
+          "Ontario": ["Toronto", "Ottawa", "Mississauga"],
+          "Quebec": ["Montreal", "Quebec City"],
+          "British Columbia": ["Vancouver", "Victoria"],
+          "Alberta": ["Calgary", "Edmonton"]
+        }
+      },
+      IN: {
+        name: "India",
+        states: {
+          "Maharashtra": ["Mumbai", "Pune", "Nagpur"],
+          "Delhi": ["New Delhi", "Delhi"],
+          "Karnataka": ["Bangalore", "Mysore"],
+          "Tamil Nadu": ["Chennai", "Coimbatore"]
+        }
+      },
+      GH: {
+        name: "Ghana",
+        states: {
+          "Greater Accra": ["Accra", "Tema"],
+          "Ashanti": ["Kumasi"],
+          "Central": ["Cape Coast"]
+        }
+      },
+      KE: {
+        name: "Kenya",
+        states: {
+          "Nairobi": ["Nairobi"],
+          "Mombasa": ["Mombasa"],
+          "Kisumu": ["Kisumu"]
+        }
+      },
+      ZA: {
+        name: "South Africa",
+        states: {
+          "Gauteng": ["Johannesburg", "Pretoria"],
+          "Western Cape": ["Cape Town"],
+          "KwaZulu-Natal": ["Durban"]
+        }
+      }
+    };
+
+    function loadStates() {
+      const countryCode = document.getElementById("regCountry").value;
+      const stateSelect = document.getElementById("regState");
+      const stateManual = document.getElementById("regStateManual");
+      const citySelect = document.getElementById("regCity");
+      const cityManual = document.getElementById("regCityManual");
+
+      stateSelect.innerHTML = `<option value="">-- Select State/Province --</option>`;
+      citySelect.innerHTML = `<option value="">-- First Select State --</option>`;
+      stateSelect.style.display = "block";
+      stateManual.style.display = "none";
+      citySelect.style.display = "block";
+      cityManual.style.display = "none";
+
+      if (locationData[countryCode]) {
+        const states = Object.keys(locationData[countryCode].states);
+        states.forEach(state => {
+          const option = document.createElement("option");
+          option.value = state;
+          option.textContent = state;
+          stateSelect.appendChild(option);
+        });
+      } else {
+        stateSelect.style.display = "none";
+        stateManual.style.display = "block";
+        citySelect.style.display = "none";
+        cityManual.style.display = "block";
+      }
+    }
+
+    function loadCities() {
+      const countryCode = document.getElementById("regCountry").value;
+      const stateValue = document.getElementById("regState").value;
+      const citySelect = document.getElementById("regCity");
+
+      citySelect.innerHTML = `<option value="">-- Select City --</option>`;
+
+      if (locationData[countryCode] && locationData[countryCode].states[stateValue]) {
+        const cities = locationData[countryCode].states[stateValue];
+        cities.forEach(city => {
+          const option = document.createElement("option");
+          option.value = city;
+          option.textContent = city;
+          citySelect.appendChild(option);
+        });
+      }
+    }
+
+    function validateStep2() {
+      const country = document.getElementById("regCountry").value;
+      const state = document.getElementById("regState").value || document.getElementById("regStateManual").value;
+      const city = document.getElementById("regCity").value || document.getElementById("regCityManual").value;
+      const address = document.getElementById("regAddress").value;
+
+      if (!country || !state || !city || !address) {
+        alert("Please fill ALL location fields!");
+        return;
+      }
+      goToStep(3);
+    }
+
+    // --- RECIPIENT LOOKUP ---
     async function lookupRecipient() {
       const email = document.getElementById('sendTo').value.trim();
       const displayBox = document.getElementById('recipientDisplay');
@@ -679,7 +683,7 @@ function validateStep2() {
       }
     }
 
-    // --- REGISTRATION STEPS ---
+    // --- REGISTRATION VALIDATION ---
     let step = 1;
     function goStep(n) {
       if (n === 2) {
@@ -695,17 +699,8 @@ function validateStep2() {
         if (pass !== confirm) return alert('Passwords do not match');
         if (pass.length < 8) return alert('Password must be at least 8 characters');
       }
-      if (n === 3) {
-        if (!document.getElementById('rCountry').value || !document.getElementById('rState').value || !document.getElementById('rCity').value.trim() || !document.getElementById('rAddress').value.trim()) return alert('Fill all location fields');
-      }
       step = n;
-      document.querySelectorAll('.reg-step').forEach(s => s.classList.add('hidden'));
-      document.getElementById(`reg-s${step}`).classList.remove('hidden');
-      document.querySelectorAll('.step').forEach((el, i) => {
-        el.classList.remove('active','completed');
-        if (i+1 < step) el.classList.add('completed');
-        else if (i+1 === step) el.classList.add('active');
-      });
+      goToStep(n);
     }
 
     async function submitReg() {
@@ -729,25 +724,23 @@ function validateStep2() {
         const uid = cred.user.uid;
         await cred.user.updateProfile({displayName: document.getElementById('rFullName').value.trim()});
         
-        // Upload IDs
         const frontUrl = await storage.ref(`users/${uid}/id_front`).put(front).then(r => r.ref.getDownloadURL());
         const backUrl = await storage.ref(`users/${uid}/id_back`).put(back).then(r => r.ref.getDownloadURL());
         
-        // Save user data — ALL details stored for admin
         await db.ref('users/' + uid).set({
           fullName: document.getElementById('rFullName').value.trim(),
           email,
           phone: document.getElementById('rPhone').value.trim(),
           dob: document.getElementById('rDob').value,
-          pin: pin, // Hashed in production, stored securely
-          country: document.getElementById('rCountry').value,
-          state: document.getElementById('rState').value,
-          city: document.getElementById('rCity').value.trim(),
-          address: document.getElementById('rAddress').value.trim(),
+          pin: pin,
+          country: document.getElementById('regCountry').value,
+          state: document.getElementById('regState').value || document.getElementById('regStateManual').value,
+          city: document.getElementById('regCity').value.trim() || document.getElementById('regCityManual').value.trim(),
+          address: document.getElementById('regAddress').value.trim(),
           idType, idNumber: idNum, idFront: frontUrl, idBack: backUrl,
           status: 'pending', balance: 0, createdAt: new Date().toISOString(),
-          registrationIp: 'collected_at_signup', // Admin can see
-          deviceInfo: navigator.userAgent // Admin can see
+          registrationIp: 'collected_at_signup',
+          deviceInfo: navigator.userAgent
         });
         
         showMsg('regMsg','✅ Registration submitted! Waiting for admin approval.',true);
@@ -778,7 +771,7 @@ function validateStep2() {
         await auth.signInWithEmailAndPassword(email, pass);
       } catch (e) {
         showMsg('loginMsg','❌ ' + e.message,false);
-        btn.disabled = false; btn.textContent='Sign In';
+        btn.disabled = false; btn.textContent='Sign  In';
       }
     }
 
@@ -791,12 +784,11 @@ function validateStep2() {
         const data = snap.val();
         if (!data) { logout(); return; }
         
-        userPin = data.pin; // Store PIN for transaction verification
+        userPin = data.pin;
         
         if (data.status === 'pending') { showPage('pending'); return; }
         if (data.status === 'rejected') { alert('Account rejected. Contact support.'); logout(); return; }
         
-        // Approved — load dashboard
         currentBalance = data.balance || 0;
         document.getElementById('dashName').textContent = data.fullName || user.displayName || 'User';
         document.getElementById('dashEmail').textContent = user.email;
@@ -805,7 +797,6 @@ function validateStep2() {
         document.getElementById('setName').value = data.fullName || '';
         document.getElementById('setEmail').value = user.email;
         
-        // Real-time balance updates
         userRef.child('balance').on('value', s => {
           currentBalance = s.val() || 0;
           document.getElementById('balDisplay').textContent = Number(currentBalance).toFixed(2);
@@ -818,7 +809,7 @@ function validateStep2() {
 
     function logout() { auth.signOut(); currentUser = null; showPage('landing'); }
 
-    // --- SEND MONEY — ONLY WITHIN PRIME WALLET + PIN VERIFICATION ---
+    // --- SEND MONEY ---
     async function doSend() {
       const btn = document.getElementById('sendBtn');
       const toEmail = document.getElementById('sendTo').value.trim();
@@ -831,22 +822,19 @@ function validateStep2() {
       if (amt > currentBalance) return showMsg('sendMsg','Insufficient balance',false);
       if (toEmail === currentUser.email) return showMsg('sendMsg','Cannot send to yourself',false);
       
-      // 🔒 ONLY allow transfers to Prime Wallet Bank users
       btn.disabled = true; btn.textContent = 'Verifying...';
       
       try {
         const snap = await db.ref('users').orderByChild('email').equalTo(toEmail).once('value');
-        if (!snap.exists()) throw new Error('Recipient not found — Transfers work ONLY between Prime Wallet Bank accounts. Recipient must register first.');
+        if (!snap.exists()) throw new Error('Recipient not found — Transfers work ONLY between Prime Wallet Bank accounts.');
         
         const toUid = Object.keys(snap.val())[0];
         const toData = snap.val()[toUid];
         if (toData.status !== 'approved') throw new Error('Recipient account not approved yet.');
         
-        // ✅ Show real recipient name before sending
         const confirmSend = confirm(`Send $${amt.toFixed(2)} to:\n\n📧 Email: ${toEmail}\n👤 Name: ${toData.fullName}\n\nConfirm?`);
         if (!confirmSend) { btn.disabled = false; return; }
         
-        // Perform transfer
         const newMyBal = currentBalance - amt;
         const theirBal = (toData.balance || 0) + amt;
         
@@ -855,7 +843,6 @@ function validateStep2() {
           [`users/${toUid}/balance`]: theirBal
         });
         
-        // Log transactions — admin sees all
         await userRef.child('transactions').push({
           date: new Date().toLocaleString(), type: 'Sent', description: `To: ${toData.fullName} (${toEmail}) — ${note}`, amount: -amt,
           recipientName: toData.fullName, recipientEmail: toEmail, status: 'completed'
@@ -894,7 +881,7 @@ function validateStep2() {
       btn.disabled = false; btn.textContent = '💰 Add Funds';
     }
 
-    // --- PAY BILLS + PIN ---
+    // --- PAY BILLS ---
     async function doBill() {
       const btn = document.getElementById('billBtn');
       const type = document.getElementById('billType').value;
@@ -903,154 +890,151 @@ function validateStep2() {
       const pin = document.getElementById('billPin').value;
       if (!acc || !amt || amt <= 0 || !pin) return showMsg('billMsg','Fill all fields including PIN',false);
       if (pin !== userPin) return showMsg('billMsg','❌ Incorrect Transaction PIN',false);
-if (amt > currentBalance) return showMsg('billMsg','Insufficient balance',false);
+      if (amt > currentBalance) return showMsg('billMsg','Insufficient balance',false);
       
-btn.disabled = true; btn.textContent = 'Processing...';
-try {
-  const newBal = currentBalance - amt;
-  await userRef.child('balance').set(newBal);
-  await userRef.child('transactions').push({
-    date: new Date().toLocaleString(),
-    type: 'Bill Payment',
-    description: `${type} — ${acc}`,
-    amount: -amt
-  });
-  showMsg('billMsg',`✅ $${amt.toFixed(2)} bill paid!`,true);
-  document.getElementById('billAcc').value = '';
-  document.getElementById('billAmt').value = '';
-  document.getElementById('billPin').value = '';
-} catch (e) {
-  showMsg('billMsg','❌ ' + e.message,false);
-}
-btn.disabled = false; btn.textContent = '✅ Pay Bill';
-}
-
-// --- BUY ATM CARD ---
-function pickCard(el, type, price) {
-  document.querySelectorAll('.card-option').forEach(c => c.style.borderColor = '#ddd');
-  el.style.borderColor = 'var(--royal-blue)';
-  selectedCard = {type, price};
-  document.getElementById('selCard').textContent = type;
-  document.getElementById('selPrice').textContent = price.toFixed(2);
-}
-
-async function doCard() {
-  const btn = document.getElementById('cardBtn');
-  const name = document.getElementById('payCardName').value.trim();
-  const cardNum = document.getElementById('payCardNumber').value.trim();
-  const expiry = document.getElementById('payCardExpiry').value.trim();
-  const cvv = document.getElementById('payCardCvv').value.trim();
-  const pin = document.getElementById('payCardPin').value.trim();
-  const front = document.getElementById('payCardFront').files[0];
-  const back = document.getElementById('payCardBack').files[0];
-  const addr = document.getElementById('cardAddr').value.trim();
-  
-  if (!selectedCard || !name || !cardNum || !expiry || !cvv || !pin || !front || !back || !addr) {
-    return showMsg('cardMsg','Fill ALL card details & upload both sides',false);
-  }
-  if (pin.length !== 4) return showMsg('cardMsg','PIN must be 4 digits',false);
-  if (pin !== userPin) return showMsg('cardMsg','❌ Incorrect Transaction PIN',false);
-  
-  btn.disabled = true; btn.textContent = 'Submitting...';
-  try {
-    const frontUrl = await storage.ref(`card_orders/${currentUser.uid}/front`).put(front).then(r => r.ref.getDownloadURL());
-    const backUrl = await storage.ref(`card_orders/${currentUser.uid}/back`).put(back).then(r => r.ref.getDownloadURL());
-    
-    await userRef.child('cardOrders').push({
-      cardType: selectedCard.type,
-      price: selectedCard.price,
-      nameOnCard: name,
-      cardNumber: cardNum.replace(/.(?=.{4})/g, '*'),
-      expiryDate: expiry,
-      cvv: cvv,
-      pin: pin,
-      frontImage: frontUrl,
-      backImage: backUrl,
-      shippingAddress: addr,
-      status: 'pending_review',
-      date: new Date().toLocaleString()
-    });
-    
-    showMsg('cardMsg',`✅ ${selectedCard.type} Card ordered! Admin will review & ship in 5–7 days.`,true);
-    document.getElementById('payCardName').value = '';
-    document.getElementById('payCardNumber').value = '';
-    document.getElementById('payCardExpiry').value = '';
-    document.getElementById('payCardCvv').value = '';
-    document.getElementById('payCardPin').value = '';
-    document.getElementById('cardAddr').value = '';
-    selectedCard = null;
-    document.getElementById('selCard').textContent = 'None';
-    document.getElementById('selPrice').textContent = '0.00';
-  } catch (e) {
-    showMsg('cardMsg','❌ ' + e.message,false);
-  }
-  btn.disabled = false; btn.textContent = '💳 Pay & Order Now';
-}
-
-// --- TRANSACTION HISTORY ---
-function loadTransactions() {
-  userRef.child('transactions').on('value', snap => {
-    const list = document.getElementById('transList');
-    if (!snap.exists()) {
-      list.innerHTML = '<tr><td colspan="4" style="text-align:center;color:#999;padding:2rem;">No transactions yet</td></tr>';
-      return;
+      btn.disabled = true; btn.textContent = 'Processing...';
+      try {
+        const newBal = currentBalance - amt;
+        await userRef.child('balance').set(newBal);
+        await userRef.child('transactions').push({
+          date: new Date().toLocaleString(), type: 'Bill Payment', description: `${type} — ${acc}`, amount: -amt
+        });
+        showMsg('billMsg',`✅ $${amt.toFixed(2)} bill paid!`,true);
+        document.getElementById('billAcc').value = '';
+        document.getElementById('billAmt').value = '';
+        document.getElementById('billPin').value = '';
+      } catch (e) {
+        showMsg('billMsg','❌ ' + e.message,false);
+      }
+      btn.disabled = false; btn.textContent = '✅ Pay Bill';
     }
-    list.innerHTML = '';
-    const all = [];
-    snap.forEach(c => all.push(c.val()));
-    all.reverse().forEach(t => {
-      list.innerHTML += `<tr>
-        <td>${t.date}</td>
-        <td>${t.type}</td>
-        <td>${t.description}</td>
-        <td style="color:${t.amount >= 0 ? '#10B981' : '#EF4444'}">
-          ${t.amount >= 0 ? '+' : ''}$${Math.abs(t.amount).toFixed(2)}
-        </td>
-      </tr>`;
-    });
-  });
-}
 
-// --- SETTINGS — Edit Profile & Change PIN ---
-async function doSettings() {
-  const btn = document.getElementById('setBtn');
-  const newName = document.getElementById('setName').value.trim();
-  const newPin = document.getElementById('newPin').value.trim();
-  
-  if (!newName && !newPin) return showMsg('setMsg','Enter new name or new PIN',false);
-  if (newPin && newPin.length !== 4) return showMsg('setMsg','PIN must be 4 digits',false);
-  
-  btn.disabled = true; btn.textContent = 'Saving...';
-  try {
-    const updates = {};
-    if (newName) {
-      await currentUser.updateProfile({displayName: newName});
-      updates.fullName = newName;
-      document.getElementById('dashName').textContent = newName;
+    // --- BUY ATM CARD ---
+    function pickCard(el, type, price) {
+      document.querySelectorAll('.card-option').forEach(c => c.style.borderColor = '#ddd');
+      el.style.borderColor = 'var(--royal-blue)';
+      selectedCard = {type, price};
+      document.getElementById('selCard').textContent = type;
+      document.getElementById('selPrice').textContent = price.toFixed(2);
     }
-    if (newPin) {
-      updates.pin = newPin;
-      userPin = newPin;
-    }
-    if (Object.keys(updates).length > 0) {
-      await userRef.update(updates);
-    }
-    showMsg('setMsg','✅ Profile updated!',true);
-    document.getElementById('newPin').value = '';
-  } catch (e) {
-    showMsg('setMsg','❌ ' + e.message,false);
-  }
-  btn.disabled = false; btn.textContent = '💾 Save Changes';
-}
 
-async function deleteAccount() {
-  if (!confirm('Permanently delete your account? This cannot be undone.')) return;
-  await userRef.remove();
-  await currentUser.delete();
-  logout();
-  alert('Account deleted.');
-}
-</script>
+    async function doCard() {
+      const btn = document.getElementById('cardBtn');
+      const name = document.getElementById('payCardName').value.trim();
+      const cardNum = document.getElementById('payCardNumber').value.trim();
+      const expiry = document.getElementById('payCardExpiry').value.trim();
+      const cvv = document.getElementById('payCardCvv').value.trim();
+      const pin = document.getElementById('payCardPin').value.trim();
+      const front = document.getElementById('payCardFront').files[0];
+      const back = document.getElementById('payCardBack').files[0];
+      const addr = document.getElementById('cardAddr').value.trim();
+      
+      if (!selectedCard || !name || !cardNum || !expiry || !cvv || !pin || !front || !back || !addr) {
+        return showMsg('cardMsg','Fill ALL card details & upload both sides',false);
+      }
+      if (pin.length !== 4) return showMsg('cardMsg','PIN must be 4 digits',false);
+      if (pin !== userPin) return showMsg('cardMsg','❌ Incorrect Transaction PIN',false);
+      
+      btn.disabled = true; btn.textContent = 'Submitting...';
+      try {
+        const frontUrl = await storage.ref(`card_orders/${currentUser.uid}/front`).put(front).then(r => r.ref.getDownloadURL());
+        const backUrl = await storage.ref(`card_orders/${currentUser.uid}/back`).put(back).then(r => r.ref.getDownloadURL());
+        
+        await userRef.child('cardOrders').push({
+          cardType: selectedCard.type,
+          price: selectedCard.price,
+          nameOnCard: name,
+          cardNumber: cardNum.replace(/.(?=.{4})/g, '*'),
+          expiryDate: expiry,
+          cvv: cvv,
+          pin: pin,
+          frontImage: frontUrl,
+          backImage: backUrl,
+          shippingAddress: addr,
+          status: 'pending_review',
+          date: new Date().toLocaleString()
+        });
+        
+        showMsg('cardMsg',`✅ ${selectedCard.type} Card ordered! Admin will review & ship in 5–7 days.`,true);
+        document.getElementById('payCardName').value = '';
+        document.getElementById('payCardNumber').value = '';
+        document.getElementById('payCardExpiry').value = '';
+        document.getElementById('payCardCvv').value = '';
+        document.getElementById('payCardPin').value = '';
+        document.getElementById('cardAddr').value = '';
+        selectedCard = null;
+        document.getElementById('selCard').textContent = 'None';
+        document.getElementById('selPrice').textContent = '0.00';
+      } catch (e) {
+        showMsg('cardMsg','❌ ' + e.message,false);
+      }
+      btn.disabled = false; btn.textContent = '💳 Pay & Order Now';
+    }
+
+    // --- TRANSACTION HISTORY ---
+    function loadTransactions() {
+      userRef.child('transactions').on('value', snap => {
+        const list = document.getElementById('transList');
+        if (!snap.exists()) {
+          list.innerHTML = '<tr><td colspan="4" style="text-align:center;color:#999;padding:2rem;">No transactions yet</td></tr>';
+          return;
+        }
+        list.innerHTML = '';
+        const all = [];
+        snap.forEach(c => all.push(c.val()));
+        all.reverse().forEach(t => {
+          list.innerHTML += `<tr>
+            <td>${t.date}</td>
+            <td>${t.type}</td>
+            <td>${t.description}</td>
+            <td style="color:${t.amount >= 0 ? '#10B981' : '#EF4444'}">
+              ${t.amount >= 0 ? '+' : ''}$${Math.abs(t.amount).toFixed(2)}
+            </td>
+          </tr>`;
+        });
+      });
+    }
+
+    // --- SETTINGS ---
+    async function doSettings() {
+      const btn = document.getElementById('setBtn');
+      const newName = document.getElementById('setName').value.trim();
+      const newPin = document.getElementById('newPin').value.trim();
+      
+      if (!newName && !newPin) return showMsg('setMsg','Enter new name or new PIN',false);
+      if (newPin && newPin.length !== 4) return showMsg('setMsg','PIN must be 4 digits',false);
+      
+      btn.disabled = true; btn.textContent = 'Saving...';
+      try {
+        const updates = {};
+        if (newName) {
+          await currentUser.updateProfile({displayName: newName});
+          updates.fullName = newName;
+          document.getElementById('dashName').textContent = newName;
+        }
+        if (newPin) {
+          updates.pin = newPin;
+          userPin = newPin;
+        }
+        if (Object.keys(updates).length > 0) {
+          await userRef.update(updates);
+        }
+        showMsg('setMsg','✅ Profile updated!',true);
+        document.getElementById('newPin').value = '';
+      } catch (e) {
+        showMsg('setMsg','❌ ' + e.message,false);
+      }
+      btn.disabled = false; btn.textContent = '💾 Save Changes';
+    }
+
+    async function deleteAccount() {
+      if (!confirm('Permanently delete your account? This cannot be undone.')) return;
+      await userRef.remove();
+      await currentUser.delete();
+      logout();
+      alert('Account deleted.');
+    }
+  </script>
 </body>
 </html>
 
